@@ -1,11 +1,57 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ThemeToggle from '../components/ThemeToggle.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Seller Calc Hub - Free Marketplace Fee & Profit Calculators">
+  <header class="border-b border-hairline bg-canvas sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime"></span>
+        <a href="/" class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/design-tokens/" class="text-ui-label text-link hover:underline">Design Tokens</a>
+        <ThemeToggle />
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-12 space-y-12">
+    <!-- Hero Band -->
+    <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-8 md:p-12 shadow-level-3">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-micro font-bold uppercase tracking-wider text-lime-panel bg-forest/50 px-2 py-0.5 rounded-xs">
+          100% Free · Verified 2026 Fee Schedules
+        </span>
+      </div>
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-white mb-4">
+        Keep More of What You Sell
+      </h1>
+      <p class="text-body-lg font-light text-mint-50 max-w-2xl mb-8">
+        Fast, accurate marketplace fee and profit calculators for online resellers across Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="/design-tokens/"
+          class="bg-primary text-on-primary font-bold text-ui-label uppercase p-md rounded-xs hover:bg-primary-deep transition-colors inline-block shadow-level-3"
+        >
+          Explore Design Tokens
+        </a>
+      </div>
+    </section>
+
+    <!-- Platform Quick Links Grid -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">Supported Marketplaces</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {['Whatnot', 'TikTok Shop', 'Depop', 'Etsy', 'eBay', 'Twitch Bits'].map((platform) => (
+          <div class="rounded-lg border border-hairline-strong bg-canvas p-4 text-center hover:border-primary transition-colors">
+            <span class="text-heading-4 text-ink font-bold block mb-1">{platform}</span>
+            <span class="text-caption text-muted">Fee Calculator</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
 </Layout>

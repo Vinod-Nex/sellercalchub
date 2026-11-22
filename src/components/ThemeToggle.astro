@@ -1,0 +1,91 @@
+---
+interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<div class={`inline-flex items-center gap-1 p-1 rounded-sm border border-hairline-strong bg-canvas-soft ${className}`} role="group" aria-label="Theme selector">
+  <button
+    type="button"
+    id="theme-light-btn"
+    class="theme-btn px-2.5 py-1 text-ui-sm font-medium rounded-xs text-muted hover:text-ink transition-colors cursor-pointer data-[active=true]:bg-canvas data-[active=true]:text-ink data-[active=true]:shadow-xs"
+    aria-pressed="false"
+    data-theme-value="light"
+  >
+    Light
+  </button>
+  <button
+    type="button"
+    id="theme-system-btn"
+    class="theme-btn px-2.5 py-1 text-ui-sm font-medium rounded-xs text-muted hover:text-ink transition-colors cursor-pointer data-[active=true]:bg-canvas data-[active=true]:text-ink data-[active=true]:shadow-xs"
+    aria-pressed="false"
+    data-theme-value="system"
+  >
+    System
+  </button>
+  <button
+    type="button"
+    id="theme-dark-btn"
+    class="theme-btn px-2.5 py-1 text-ui-sm font-medium rounded-xs text-muted hover:text-ink transition-colors cursor-pointer data-[active=true]:bg-canvas data-[active=true]:text-ink data-[active=true]:shadow-xs"
+    aria-pressed="false"
+    data-theme-value="dark"
+  >
+    Dark
+  </button>
+</div>
+
+<script>
+  function setupThemeToggle() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.theme-btn');
+    const getStoredTheme = () => localStorage.getItem('theme') || 'system';
+
+    function applyTheme(theme: string) {
+      const isDarkPreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const effectiveDark = theme === 'dark' || (theme === 'system' && isDarkPreferred);
+
+      if (effectiveDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      }
+
+      if (theme === 'system') {
+        localStorage.removeItem('theme');
+      } else {
+        localStorage.setItem('theme', theme);
+      }
+
+      buttons.forEach((btn) => {
+        const val = btn.dataset.themeValue;
+        const isActive = val === theme;
+        btn.setAttribute('data-active', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    const current = getStoredTheme();
+    applyTheme(current);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selected = btn.dataset.themeValue;
+        if (selected) {
+          applyTheme(selected);
+        }
+      });
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme('system');
+      }
+    });
+  }
+
+  // Run on initial page load
+  setupThemeToggle();
+</script>

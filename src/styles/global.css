@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "@fontsource-variable/montserrat";
+
+/* Metric-matched fallbacks for zero CLS with font-display: swap */
+@font-face {
+  font-family: "Montserrat Fallback";
+  src: local("Arial");
+  ascent-override: 95.8%;
+  descent-override: 25.1%;
+  line-gap-override: 0%;
+  size-adjust: 101.4%;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand & Accent */
+  --color-primary: #008254;
+  --color-primary-deep: #006642;
+  --color-forest: #00482f;
+  --color-on-primary: #ffffff;
+
+  --color-lime-hero: #9ae600;
+  --color-lime-panel: #e8fdac;
+  --color-lime-accent: #ddfa88;
+  --color-lime-ribbon: #a8ea4c;
+  --color-logo-lime: #8dc63f;
+
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f7f7f7;
+  --color-mint-50: #effcf8;
+  --color-mint-100: #e3faf2;
+  --color-mint-200: #b7ecda;
+  --color-hairline: #ebebec;
+  --color-hairline-strong: #d8d9da;
+
+  /* Text */
+  --color-ink: #000000;
+  --color-body: #3d4045;
+  --color-muted: #64666a;
+  --color-faint: #b1b3b5;
+
+  /* Semantic */
+  --color-link: #005fb9;
+  --color-info: #4b99e6;
+  --color-error: #de2828;
+
+  /* Shadows */
+  --shadow-level-3:
+    0 4px 16px rgba(100, 102, 106, 0.05), 0 16px 40px rgba(100, 102, 104, 0.05);
+  --shadow-level-4:
+    0 20px 25px -5px oklab(0 0 0 / 0.04), 0 8px 10px -6px oklab(0 0 0 / 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Brand & Accent */
+    --color-primary: #059669;
+    --color-primary-deep: #004d32;
+    --color-forest: #003823;
+    --color-on-primary: #ffffff;
+
+    --color-lime-hero: #a3e635;
+    --color-lime-panel: #162a14;
+    --color-lime-accent: #bef264;
+    --color-lime-ribbon: #84cc16;
+    --color-logo-lime: #8dc63f;
+
+    /* Surfaces */
+    --color-canvas: #0c120f;
+    --color-canvas-soft: #121a16;
+    --color-mint-50: #13251e;
+    --color-mint-100: #183328;
+    --color-mint-200: #1f4536;
+    --color-hairline: #1f2d26;
+    --color-hairline-strong: #2e4036;
+
+    /* Text */
+    --color-ink: #f4f7f5;
+    --color-body: #c3cac6;
+    --color-muted: #88938d;
+    --color-faint: #55605a;
+
+    /* Semantic */
+    --color-link: #60a5fa;
+    --color-info: #38bdf8;
+    --color-error: #f87171;
+
+    /* Shadows */
+    --shadow-level-3:
+      0 4px 16px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.45);
+    --shadow-level-4:
+      0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+html.dark {
+  /* Brand & Accent */
+  --color-primary: #059669;
+  --color-primary-deep: #004d32;
+  --color-forest: #003823;
+  --color-on-primary: #ffffff;
+
+  --color-lime-hero: #a3e635;
+  --color-lime-panel: #162a14;
+  --color-lime-accent: #bef264;
+  --color-lime-ribbon: #84cc16;
+  --color-logo-lime: #8dc63f;
+
+  /* Surfaces */
+  --color-canvas: #0c120f;
+  --color-canvas-soft: #121a16;
+  --color-mint-50: #13251e;
+  --color-mint-100: #183328;
+  --color-mint-200: #1f4536;
+  --color-hairline: #1f2d26;
+  --color-hairline-strong: #2e4036;
+
+  /* Text */
+  --color-ink: #f4f7f5;
+  --color-body: #c3cac6;
+  --color-muted: #88938d;
+  --color-faint: #55605a;
+
+  /* Semantic */
+  --color-link: #60a5fa;
+  --color-info: #38bdf8;
+  --color-error: #f87171;
+
+  /* Shadows */
+  --shadow-level-3:
+    0 4px 16px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.45);
+  --shadow-level-4:
+    0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+html.light {
+  /* Brand & Accent */
+  --color-primary: #008254;
+  --color-primary-deep: #006642;
+  --color-forest: #00482f;
+  --color-on-primary: #ffffff;
+
+  --color-lime-hero: #9ae600;
+  --color-lime-panel: #e8fdac;
+  --color-lime-accent: #ddfa88;
+  --color-lime-ribbon: #a8ea4c;
+  --color-logo-lime: #8dc63f;
+
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f7f7f7;
+  --color-mint-50: #effcf8;
+  --color-mint-100: #e3faf2;
+  --color-mint-200: #b7ecda;
+  --color-hairline: #ebebec;
+  --color-hairline-strong: #d8d9da;
+
+  /* Text */
+  --color-ink: #000000;
+  --color-body: #3d4045;
+  --color-muted: #64666a;
+  --color-faint: #b1b3b5;
+
+  /* Semantic */
+  --color-link: #005fb9;
+  --color-info: #4b99e6;
+  --color-error: #de2828;
+
+  /* Shadows */
+  --shadow-level-3:
+    0 4px 16px rgba(100, 102, 106, 0.05), 0 16px 40px rgba(100, 102, 104, 0.05);
+  --shadow-level-4:
+    0 20px 25px -5px oklab(0 0 0 / 0.04), 0 8px 10px -6px oklab(0 0 0 / 0.04);
+}
+
+@theme {
+  /* Font Families */
+  --font-sans:
+    "Montserrat Variable", "Montserrat", "Montserrat Fallback", system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display:
+    "Montserrat Variable", "Montserrat", "Montserrat Fallback", system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Color Tokens */
+  --color-primary: var(--color-primary);
+  --color-primary-deep: var(--color-primary-deep);
+  --color-forest: var(--color-forest);
+  --color-on-primary: var(--color-on-primary);
+
+  --color-lime-hero: var(--color-lime-hero);
+  --color-lime-panel: var(--color-lime-panel);
+  --color-lime-accent: var(--color-lime-accent);
+  --color-lime-ribbon: var(--color-lime-ribbon);
+  --color-logo-lime: var(--color-logo-lime);
+
+  --color-canvas: var(--color-canvas);
+  --color-canvas-soft: var(--color-canvas-soft);
+  --color-mint-50: var(--color-mint-50);
+  --color-mint-100: var(--color-mint-100);
+  --color-mint-200: var(--color-mint-200);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-strong: var(--color-hairline-strong);
+
+  --color-ink: var(--color-ink);
+  --color-body: var(--color-body);
+  --color-muted: var(--color-muted);
+  --color-faint: var(--color-faint);
+
+  --color-link: var(--color-link);
+  --color-info: var(--color-info);
+  --color-error: var(--color-error);
+
+  /* Spacing Tokens */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-section: 40px;
+
+  /* Radius Tokens */
+  --radius-none: 0px;
+  --radius-xxs: 1px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-xxl: 12px;
+  --radius-xxxl: 16px;
+  --radius-tooltip: 20px;
+  --radius-full: 9999px;
+
+  /* Shadow Tokens */
+  --shadow-level-3: var(--shadow-level-3);
+  --shadow-level-4: var(--shadow-level-4);
+
+  /* Typography Scale */
+  --text-display-xl: 52px;
+  --text-display-xl--line-height: 1.15;
+  --text-display-lg: 40px;
+  --text-display-lg--line-height: 1.2;
+  --text-heading-1: 36px;
+  --text-heading-1--line-height: 1.2;
+  --text-heading-2: 28px;
+  --text-heading-2--line-height: 1.25;
+  --text-stat-value: 24px;
+  --text-stat-value--line-height: 1.2;
+  --text-heading-3: 20px;
+  --text-heading-3--line-height: 1.3;
+  --text-heading-4: 20px;
+  --text-heading-4--line-height: 1.3;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.5;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.5;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.5;
+  --text-ui-label: 14px;
+  --text-ui-label--line-height: 1.2;
+  --text-ui-sm: 13px;
+  --text-ui-sm--line-height: 1.3;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.4;
+  --text-eyebrow: 12px;
+  --text-eyebrow--line-height: 1.2;
+  --text-micro: 11px;
+  --text-micro--line-height: 1.4;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
