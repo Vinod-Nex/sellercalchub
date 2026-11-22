@@ -88,12 +88,15 @@ def build_seo_pages():
                 
             page_keywords[dest].append(item)
 
-    # Define metadata for planned pages
+    # Metadata, Titles (max 60), Meta Descriptions (max 160), H1s, and ogTitles
     page_definitions = [
         {
             "url": "/ebay-fee-calculator/",
-            "title": "eBay Fee Calculator (US Managed Payments & Store Rates)",
             "primary_keyword": "ebay fee calculator",
+            "title": "eBay Fee Calculator: Calculate Net Profit & Fees (2026)",
+            "h1": "Calculate Your Exact eBay Seller Fees & Take-Home Profit",
+            "metaDescription": "Calculate your exact eBay seller fees, payment processing, and final value rates. Enter your price to see your real take-home profit before you list today.",
+            "ogTitle": "eBay Fee Calculator - Free & Accurate Reseller Profit Tool",
             "search_intent": "Commercial",
             "tier": "Later (KD over 35)",
             "cluster": "eBay generic fee calculator",
@@ -104,8 +107,11 @@ def build_seo_pages():
         },
         {
             "url": "/ebay-fee-calculator-uk/",
-            "title": "eBay Fee Calculator UK (0% Private Sellers & Business Rates)",
             "primary_keyword": "ebay fee calculator uk",
+            "title": "eBay Fee Calculator UK: 0% Private & Business Fees (2026)",
+            "h1": "Free eBay UK Fee Calculator for Private & Business Sellers",
+            "metaDescription": "Calculate eBay UK fees with 0% private seller rates, 20% VAT, and business tiers. Enter your item price to see your exact payout before listing in the UK.",
+            "ogTitle": "eBay Fee Calculator UK - 0% Private Seller Fee Estimator",
             "search_intent": "Commercial",
             "tier": "Tier 2 (KD 26-35)",
             "cluster": "eBay UK",
@@ -116,8 +122,11 @@ def build_seo_pages():
         },
         {
             "url": "/etsy-fee-calculator/",
-            "title": "Etsy Fee Calculator (Transaction, Listing & Payment Fees)",
             "primary_keyword": "etsy fee calculator",
+            "title": "Etsy Fee Calculator: Accurate Seller Profit & Fees (2026)",
+            "h1": "Calculate Your True Etsy Seller Fees, Margins & Net Profit",
+            "metaDescription": "Calculate exact Etsy fees including 6.5% transaction, listing, and payment processing. Enter your item costs to see your net profit before listing your item.",
+            "ogTitle": "Etsy Fee Calculator - Know Your Exact Fees Before Listing",
             "search_intent": "Informational",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "Etsy fee calculator",
@@ -128,8 +137,11 @@ def build_seo_pages():
         },
         {
             "url": "/twitch-bits-to-usd/",
-            "title": "Twitch Bits to USD Converter & Streamer Payout Calculator",
             "primary_keyword": "twitch bits to usd",
+            "title": "Twitch Bits to USD: Convert Bits to Streamer Payout (2026)",
+            "h1": "Convert Twitch Bits into Exact Creator Cash Payouts",
+            "metaDescription": "Convert Twitch bits to USD instantly at the official 1 cent per bit streamer rate. Enter any bit amount to calculate your total creator earnings right now.",
+            "ogTitle": "Twitch Bits to USD Calculator - Streamer Earnings Estimator",
             "search_intent": "Informational",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "Twitch bits to USD",
@@ -140,8 +152,11 @@ def build_seo_pages():
         },
         {
             "url": "/whatnot-fee-calculator/",
-            "title": "Whatnot Fee Calculator (Live Sale Commission & Processing)",
             "primary_keyword": "whatnot fee calculator",
+            "title": "Whatnot Fee Calculator: Live Sale Commission & Profit",
+            "h1": "Calculate Your Whatnot Commission, Fees and Net Margin",
+            "metaDescription": "Calculate exact Whatnot live seller fees with 8.0% commission and 2.9% payment processing. Enter your hammer price to see what you keep before your next stream.",
+            "ogTitle": "Whatnot Fee Calculator - Live Auction Seller Profit Tool",
             "search_intent": "Commercial",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "Whatnot fee calculator",
@@ -152,8 +167,11 @@ def build_seo_pages():
         },
         {
             "url": "/ebay-final-value-fee-calculator/",
-            "title": "eBay Final Value Fee Calculator (Category Tiers & Rates)",
             "primary_keyword": "ebay final value fee calculator",
+            "title": "eBay Final Value Fee Calculator: Category FVF Tiers (2026)",
+            "h1": "Calculate Category-Specific eBay Final Value Rates & Fees",
+            "metaDescription": "Calculate exact eBay final value fees across electronics, sneakers, watches, and guitars. Check category percentage rates to optimize your seller profit today.",
+            "ogTitle": "eBay Final Value Fee Calculator - Category-Specific FVF Tool",
             "search_intent": "Informational",
             "tier": "Tier 2 (KD 26-35)",
             "cluster": "eBay final value fee",
@@ -164,8 +182,11 @@ def build_seo_pages():
         },
         {
             "url": "/ebay-and-paypal-fee-calculator/",
-            "title": "eBay and PayPal Fee Calculator (Legacy vs Managed Payments)",
             "primary_keyword": "ebay and paypal fee calculator",
+            "title": "eBay and PayPal Fee Calculator: Legacy vs Modern Fees",
+            "h1": "Compare Legacy eBay + PayPal Fees with Managed Payments",
+            "metaDescription": "Calculate combined eBay and PayPal transaction fees compared to modern Managed Payments. Enter sale figures to see historical fee differences before you sell.",
+            "ogTitle": "eBay & PayPal Fee Calculator - Compare Legacy vs Managed Rates",
             "search_intent": "Informational",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "eBay + PayPal (legacy)",
@@ -176,8 +197,11 @@ def build_seo_pages():
         },
         {
             "url": "/ebay-shipping-fee-calculator/",
-            "title": "eBay Shipping Fee Calculator (FVF on Shipping & Deductions)",
             "primary_keyword": "ebay shipping fee calculator",
+            "title": "eBay Shipping Fee Calculator: FVF on Shipping Rates (2026)",
+            "h1": "Calculate eBay Fees Charged on Buyer-Paid Shipping Costs",
+            "metaDescription": "Calculate how eBay final value fees apply to buyer-paid shipping and postage charges. Enter your shipping numbers to protect your reseller margins on shipping.",
+            "ogTitle": "eBay Shipping Fee Calculator - Avoid Fee Surprises on Shipping",
             "search_intent": "Informational",
             "tier": "Tier 2 (KD 26-35)",
             "cluster": "eBay shipping/handling",
@@ -188,8 +212,11 @@ def build_seo_pages():
         },
         {
             "url": "/tiktok-shop-fee-calculator/",
-            "title": "TikTok Shop Fee Calculator (Referral & Transaction Fees)",
             "primary_keyword": "tiktok shop fee calculator",
+            "title": "TikTok Shop Fee Calculator: Referral Fees & Profit (2026)",
+            "h1": "Calculate Real TikTok Shop Referral Fees and Net Profit",
+            "metaDescription": "Calculate exact TikTok Shop seller fees with 6.0% referral rates and payment deductions. Enter your product price to preview take-home earnings before listing.",
+            "ogTitle": "TikTok Shop Fee Calculator - Free E-Commerce Seller Estimator",
             "search_intent": "Informational",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "TikTok Shop fee calculator",
@@ -200,8 +227,11 @@ def build_seo_pages():
         },
         {
             "url": "/ebay-profit-calculator/",
-            "title": "eBay Profit Calculator (Margin, ROI & Reverse Pricing)",
             "primary_keyword": "ebay after fees calculator",
+            "title": "eBay After Fees Calculator: Reverse Profit & Margin (2026)",
+            "h1": "Calculate Real Take-Home Profit and ROI on Every eBay Sale",
+            "metaDescription": "Calculate your exact net profit after eBay fees, item cost, and postage. Enter your target profit or margin to find the required listing price before you sell.",
+            "ogTitle": "eBay Profit Calculator - Reverse Pricing & Margin Tool",
             "search_intent": "Informational",
             "tier": "Tier 2 (KD 26-35)",
             "cluster": "eBay profit after fees",
@@ -212,8 +242,11 @@ def build_seo_pages():
         },
         {
             "url": "/etsy-offsite-ads-fee-calculator/",
-            "title": "Etsy Offsite Ads Fee Calculator (12% vs 15% Ad Rates)",
             "primary_keyword": "etsy offsite ads fees",
+            "title": "Etsy Offsite Ads Fees: 12% vs 15% Ad Calculator (2026)",
+            "h1": "Calculate the Real Cost of Etsy Mandatory & Optional Ads",
+            "metaDescription": "Calculate Etsy offsite ads fees at mandatory 12% ($10k+ revenue) or optional 15% tiers. Enter your item price to see how ad attribution impacts profit margins.",
+            "ogTitle": "Etsy Offsite Ads Fee Calculator - 12% vs 15% Profit Impact",
             "search_intent": "Informational",
             "tier": "Tier 2 (KD 26-35)",
             "cluster": "Etsy offsite ads",
@@ -224,8 +257,11 @@ def build_seo_pages():
         },
         {
             "url": "/depop-fee-calculator/",
-            "title": "Depop Fee Calculator (0% Selling Fee & Payment Processing)",
             "primary_keyword": "depop seller fees calculator",
+            "title": "Depop Seller Fees Calculator: 0% Fee & Processing (2026)",
+            "h1": "Calculate Depop Payment Processing Fees and Payout Total",
+            "metaDescription": "Calculate Depop fees with 0% selling fee and 3.3% + $0.45 payment processing. Enter your sale price to calculate take-home profit before listing your items.",
+            "ogTitle": "Depop Fee Calculator - 0% Selling Fee & Profit Estimator",
             "search_intent": "Informational",
             "tier": "Tier 1 (KD 25 or lower)",
             "cluster": "Other resale marketplaces",
@@ -236,8 +272,11 @@ def build_seo_pages():
         },
         {
             "url": "/marketplace-fee-calculators/",
-            "title": "Marketplace Fee Calculator (Side-by-Side Profit Comparison)",
             "primary_keyword": "seller fee calculator",
+            "title": "Seller Fee Calculator: Compare Marketplace Profits (2026)",
+            "h1": "Compare Reseller Fees Across Whatnot, TikTok, Etsy & eBay",
+            "metaDescription": "Compare seller fees side by side across Whatnot, TikTok Shop, Depop, Etsy and eBay. Enter your price once to see which platform pays you the highest profit.",
+            "ogTitle": "Marketplace Fee Calculator - Side-by-Side Profit Comparison",
             "search_intent": "Commercial",
             "tier": "Unscored, 30+ searches",
             "cluster": "Generic seller fee calculator",
@@ -287,6 +326,9 @@ def build_seo_pages():
         page_entry = {
             "url": url,
             "title": p_def["title"],
+            "metaDescription": p_def["metaDescription"],
+            "h1": p_def["h1"],
+            "ogTitle": p_def["ogTitle"],
             "target_market": p_def["target_market"],
             "cluster": p_def["cluster"],
             "primary_keyword": prim_kw,
@@ -354,7 +396,7 @@ def build_seo_pages():
                 "/etsy-offsite-ads-fee-calculator/"
             ],
             "overlap_nature": "Base Etsy seller fees vs 12% / 15% offsite advertising fee surcharges",
-            "resolution_strategy": "/etsy-offsite-ads-fee-calculator/ targets shop owners navigating mandatory 12% ($10k+ trailing 12-month revenue) and optional 15% offsite ads; /etsy-fee-calculator/ models standard 6.5% transaction and listing fees."
+            "resolution_strategy": "/etsy-offsite-ads-fee-calculator/ targets shop owners navigating mandatory 12% ($10k+ revenue) and optional 15% offsite ads; /etsy-fee-calculator/ models standard 6.5% transaction and listing fees."
         },
         {
             "query": "marketplace fee calculator",

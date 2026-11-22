@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:prod": "STRICT_PROD=true astro build",
+    "build:prod": "tsx scripts/lint-seo.ts && STRICT_PROD=true astro build",
+    "lint:seo": "tsx scripts/lint-seo.ts",
     "verify:fees": "STRICT_PROD=true astro sync",
     "preview": "astro preview",
     "astro": "astro",
