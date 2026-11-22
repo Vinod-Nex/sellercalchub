@@ -1,33 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { getEntry } from "astro:content";
-import { PLATFORM_CONFIGS } from "../lib/calc";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
+import FAQ from "../components/FAQ.astro";
+import RelatedCalculators from "../components/RelatedCalculators.astro";
+import LastVerified from "../components/LastVerified.astro";
+import AuthorByline from "../components/AuthorByline.astro";
+import { getPageSeo } from "../lib/seo";
 
-// Load verified Twitch Bits fee metadata directly from content collection
-const twitchEntry = await getEntry("fees", "twitch-bits");
-const feeData = twitchEntry?.data;
-const config = PLATFORM_CONFIGS["twitch-bits"];
-
-const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
-const sourceUrl = feeData?.source_url ?? config.sourceUrl;
-
-function formatVerifiedDate(isoDate: string): string {
-  try {
-    const [year, month, day] = isoDate.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      timeZone: "UTC",
-    });
-  } catch {
-    return isoDate;
-  }
-}
-
-const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+const seo = getPageSeo("/twitch-bits-to-usd/");
 
 // Standard Twitch Bits Bundle Table Data
 const commonAmounts = [
@@ -165,8 +149,8 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="Twitch Bits to USD Converter & Fee Calculator (Verified 2026)"
-  description="Convert Twitch Bits to USD instantly. See exact streamer payouts ($0.01 per Bit), viewer web bundle costs, Twitch platform markups, and minimum payout thresholds."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/twitch-bits-to-usd/"
   structuredData={structuredData}
 >
@@ -180,27 +164,16 @@ const structuredData = [
       ]}
     />
 
-    <!-- Header & Direct Answer -->
+    <!-- Header & Direct Answer in the First Paragraph -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>Verified Twitch Payout: Flat $0.01 USD per 1 Bit Cheered</span>
-      </div>
+      <TrustHeader platform="twitch-bits" />
 
-      <!-- 1. H1 -->
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        Twitch Bits to USD Converter & Calculator
+        {seo.h1}
       </h1>
 
-      <!-- 2. One-paragraph answer -->
       <p class="text-body-lg text-body leading-relaxed max-w-3xl">
-        Twitch pays streamers exactly{" "}
-        <strong>$0.01 USD (1 cent) per Bit cheered</strong> on eligible
-        Affiliate and Partner channels. Twitch takes its cut upfront from
-        viewers when purchasing Bits bundles (typically $1.40 per 100 Bits on
-        desktop web), meaning streamers experience{" "}
-        <strong>0% platform deduction</strong> on cheer revenue. Payouts
-        transfer once your combined channel balance reaches the $50.00 minimum
-        threshold.
+        Twitch pays creators exactly <strong class="text-ink">$0.01 USD (1 cent) per Bit cheered</strong> on eligible Twitch Affiliate and Partner channels. There are zero platform fee deductions taken from the creator's 1 cent per bit payout; Twitch collects its revenue upfront from viewers, who pay $1.40 for 100 bits on web (a ~40% markup). Enter any bit amount below to calculate your exact cash payout and progress toward Twitch's $50 payout threshold.
       </p>
     </header>
 
@@ -496,162 +469,33 @@ const structuredData = [
       </div>
     </section>
 
-    <!-- 6. FAQ Section -->
-    <section class="space-y-6 pt-6 border-t border-hairline">
-      <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Frequently Asked Questions About Twitch Bits
-        </h2>
-        <p class="text-body-md text-muted max-w-2xl">
-          Common questions on cheering conversions, payout schedules, and bank
-          transfer fees.
-        </p>
-      </div>
+    <!-- 4. Formula Block -->
+    <FormulaBlock platform="twitch-bits" />
 
-      <div class="space-y-3">
-        {faqs.map((faq) => (
-          <details class="group rounded-lg border border-hairline-strong bg-canvas p-4 transition-colors hover:border-primary">
-            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink text-ui-label cursor-pointer list-none select-none">
-              <span>{faq.question}</span>
-              <svg
-                class="w-4 h-4 text-muted group-open:rotate-180 transition-transform duration-150 shrink-0 ml-2"
-                width="16"
-                height="16"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </summary>
-            <div class="mt-3 text-body text-body-sm leading-relaxed border-t border-hairline pt-3">
-              {faq.answer}
-            </div>
-          </details>
-        ))}
-      </div>
-    </section>
+    <!-- 5. Worked Example -->
+    <WorkedExample
+      platform="twitch-bits"
+      title="Worked Example: Receiving 5,000 Bits ($50.00)"
+      description="Here is the step-by-step breakdown of creator payout and viewer web purchase cost for 5,000 Bits:"
+      itemPrice={50.0}
+    />
 
-    <!-- 7. Related Calculators Grid -->
-    <section class="space-y-6 pt-6 border-t border-hairline">
-      <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">
-          More Creator & Seller Fee Calculators
-        </h2>
-        <p class="text-body-md text-muted max-w-2xl">
-          Monetizing across multiple live or e-commerce platforms? Calculate
-          your exact net payout.
-        </p>
-      </div>
+    <!-- 6. Edge Cases -->
+    <EdgeCases platform="twitch-bits" />
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[
-          {
-            name: "Whatnot Fee Calculator",
-            rate: "8.0% + 2.9% + $0.30",
-            desc: "Calculate live auction fees, card processing, and net payouts for livestream sellers.",
-            href: "/whatnot-fee-calculator/",
-          },
-          {
-            name: "TikTok Shop Fee Calculator",
-            rate: "6.0% + $0.30",
-            desc: "Calculate live-shopping referral fees, affiliate creator commissions, and margins.",
-            href: "/tiktok-shop-fee-calculator/",
-          },
-          {
-            name: "Etsy Fee Calculator",
-            rate: "6.5% + $0.20 + 3% + $0.25",
-            desc: "Calculate handmade marketplace fees, listing fees, and processing costs.",
-            href: "/etsy-fee-calculator/",
-          },
-          {
-            name: "Depop Fee Calculator",
-            rate: "0% selling + 3.3% + $0.45",
-            desc: "Calculate marketplace processing fees for vintage apparel and second-hand fashion.",
-            href: "/depop-fee-calculator/",
-          },
-          {
-            name: "eBay US Fee Calculator",
-            rate: "13.25% + $0.40",
-            desc: "Calculate final value fees, store subscription discounts, and promoted listing rates.",
-            href: "/ebay-fee-calculator/",
-          },
-          {
-            name: "Etsy Offsite Ads Calculator",
-            rate: "15% / 12% ($100 cap)",
-            desc: "Model the impact of Etsy external advertising deductions on your net margins.",
-            href: "/etsy-offsite-ads-fee-calculator/",
-          },
-        ].map((item) => (
-          <a
-            href={item.href}
-            class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-          >
-            <span class="text-caption font-bold text-primary block mb-1">
-              {item.rate}
-            </span>
-            <span class="text-heading-4 font-bold text-ink block mb-2">
-              {item.name}
-            </span>
-            <span class="text-caption text-muted block">{item.desc}</span>
-          </a>
-        ))}
-      </div>
-    </section>
+    <!-- 7. FAQ Section -->
+    <FAQ
+      items={faqs}
+      title="Frequently Asked Questions About Twitch Bits"
+      description="Common questions on cheering conversions, payout schedules, and bank transfer fees."
+    />
 
-    <!-- 8. Last-Verified Stamp -->
-    <footer class="pt-6 border-t border-hairline">
-      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span
-              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
-              aria-hidden="true"
-            ></span>
-            <span class="text-ui-label font-bold text-ink">
-              Official Rate Verification
-            </span>
-          </div>
-          <p class="text-caption text-muted">
-            Twitch Bits terms and payout schedule officially verified on{" "}
-            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
-            directly from Twitch’s Guide to Cheering with Bits.
-          </p>
-        </div>
+    <!-- 8. Related Tools -->
+    <RelatedCalculators currentPlatform="twitch-bits" />
 
-        <a
-          href={sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-        >
-          <span>Official Twitch Guide</span>
-          <svg
-            class="w-3.5 h-3.5"
-            width="14"
-            height="14"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
-              clip-rule="evenodd"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-    </footer>
+    <!-- Trust signals footer -->
+    <AuthorByline platform="twitch-bits" />
+    <LastVerified platform="twitch-bits" />
   </div>
 </BaseLayout>
 

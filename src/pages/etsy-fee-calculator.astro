@@ -2,14 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CalculatorIsland from "../components/CalculatorIsland.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import AuthorByline from "../components/AuthorByline.astro";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
 import FAQ from "../components/FAQ.astro";
 import RelatedCalculators from "../components/RelatedCalculators.astro";
 import LastVerified from "../components/LastVerified.astro";
-import { formatFeeSummary } from "../lib/calc/fee-data";
+import AuthorByline from "../components/AuthorByline.astro";
+import { getPageSeo } from "../lib/seo";
 
-// Load verified Etsy fee summary
-const feeSummary = formatFeeSummary("etsy");
+const seo = getPageSeo("/etsy-fee-calculator/");
 
 // FAQ definitions
 const faqs = [
@@ -40,15 +43,14 @@ const faqs = [
   },
 ];
 
-// Structured Data: WebPage, SoftwareApplication, and FAQPage schemas
+// Structured Data
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Etsy Fee & Profit Calculator",
     url: "https://sellercalchub.com/etsy-fee-calculator/",
-    description:
-      "Free, verified Etsy fee and profit calculator. Calculate your exact $0.20 listing fee, 6.5% transaction fee, 3% + $0.25 payment processing, Offsite Ads, and net profit margin.",
+    description: seo.metaDescription,
   },
   {
     "@context": "https://schema.org",
@@ -78,13 +80,13 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="Etsy Fee & Profit Calculator (Verified 2026 Official Rates)"
-  description="Free Etsy fee and profit calculator. Calculate your $0.20 listing fee, 6.5% transaction fee, 3% + $0.25 payment processing, Offsite Ads toggle, and break-even sale price."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/etsy-fee-calculator/"
   structuredData={structuredData}
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
-    <!-- Breadcrumbs -->
+    <!-- 1. Breadcrumbs -->
     <Breadcrumbs
       items={[
         { name: "Home", href: "/" },
@@ -93,31 +95,20 @@ const structuredData = [
       ]}
     />
 
-    <!-- Header & 1-Paragraph Direct Answer -->
+    <!-- Header & Direct Answer in First Paragraph -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>Verified Etsy Rates: {feeSummary}</span>
-      </div>
+      <TrustHeader platform="etsy" />
 
-      <!-- 1. H1 -->
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        Etsy Fee & Profit Calculator
+        {seo.h1}
       </h1>
 
-      <!-- 2. One-paragraph answer -->
       <p class="text-body-lg text-body leading-relaxed max-w-3xl">
-        Etsy charges a <strong>$0.20 listing fee</strong> per item (active for 4
-        months or until sold), a <strong>6.5% transaction fee</strong> on the
-        total buyer-paid price including shipping and gift wrapping, and an Etsy
-        Payments processing fee of <strong>3.0% + $0.25</strong> in the United
-        States. If a sale is attributed to Etsy’s Offsite Ads program, an
-        additional <strong>15% (or 12%)</strong> fee applies, capped at $100 per
-        order. Your net profit is what remains after these deductions and your
-        inventory and shipping costs.
+        Etsy charges a <strong class="text-ink">6.5% transaction fee</strong> on the total sale price (including shipping and gift wrapping), a flat <strong class="text-ink">$0.20 listing fee</strong> active for 4 months, and a <strong class="text-ink">3.0% + $0.25 payment processing fee</strong> via Etsy Payments in the US. Total standard fees average 9.5% to 10.5% + $0.45 per transaction. An additional 15% (or mandatory 12% for shops over $10,000 trailing sales) applies only if an item sells through Etsy Offsite Ads. Enter your item price and production costs below to see your true take-home earnings.
       </p>
     </header>
 
-    <!-- 3. Calculator Above the Fold -->
+    <!-- 2. Calculator Island Above the Fold -->
     <section aria-label="Etsy Fee Calculator Island">
       <CalculatorIsland
         platform="etsy"
@@ -130,267 +121,22 @@ const structuredData = [
       />
     </section>
 
-    <!-- 4. Formula in Plain Text -->
-    <section class="space-y-6 pt-6 border-t border-hairline">
-      <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Etsy Fee Formula Breakdown
-        </h2>
-        <p class="text-body-md text-muted max-w-2xl">
-          Etsy calculates deductions across three core fee types on every
-          standard sale, plus an optional advertising fee when attributed.
-        </p>
-      </div>
+    <!-- 3. Formula in Plain Text -->
+    <FormulaBlock platform="etsy" />
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
-          <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
-            1. Listing Fee
-          </span>
-          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
-            $0.20 USD per unit
-          </p>
-          <p class="text-caption text-muted">
-            Charged when an item is listed or automatically renewed after 4
-            months or upon multi-quantity sale.
-          </p>
-        </div>
+    <!-- 4. One Worked Example -->
+    <WorkedExample
+      platform="etsy"
+      title="Worked Example: Selling a $45 Handmade Ceramic Mug"
+      description="Here is the step-by-step breakdown of what you actually keep when selling an artisan mug for $45.00 with $4.50 buyer shipping and $12.00 materials:"
+      itemPrice={45.0}
+      shippingCharged={4.5}
+      itemCost={12.0}
+      shippingCost={4.5}
+    />
 
-        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
-          <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
-            2. Transaction Fee
-          </span>
-          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
-            6.5% × Total Revenue
-          </p>
-          <p class="text-caption text-muted">
-            Assessed on the item sold price plus shipping charged and gift
-            wrapping fees.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
-          <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
-            3. Payment Processing
-          </span>
-          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
-            (3.0% × Total) + $0.25
-          </p>
-          <p class="text-caption text-muted">
-            Standard Etsy Payments processing rate for US banks, calculated on
-            gross order total.
-          </p>
-        </div>
-      </div>
-
-      <!-- Plain Text Formulas -->
-      <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-3 font-mono text-ui-sm text-body">
-        <div class="text-caption font-sans font-bold uppercase tracking-wider text-muted">
-          Exact Calculation Equations
-        </div>
-        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
-          <code>Gross Revenue = Item Sold Price + Buyer-Paid Shipping</code>
-        </div>
-        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
-          <code>
-            Standard Etsy Fees = ($0.20 × Qty) + (Gross Revenue × 0.065) +
-            (Gross Revenue × 0.030 + $0.25)
-          </code>
-        </div>
-        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
-          <code>
-            Offsite Ads Fee (if attributed) = min($100.00, Gross Revenue × 0.15
-            [or 0.12])
-          </code>
-        </div>
-        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
-          <code>
-            Net Profit = Gross Revenue − Standard Fees − Offsite Ads − Item Cost
-            (COGS) − Seller Postage
-          </code>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. One Worked Example -->
-    <section class="space-y-6 pt-6 border-t border-hairline">
-      <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Worked Example: Selling a $45 Handmade Ceramic Mug
-        </h2>
-        <p class="text-body-md text-muted max-w-2xl">
-          Here is the step-by-step math for an artisan mug sold for $45.00 with
-          $4.50 buyer shipping, $12.00 materials, and $4.50 postage.
-        </p>
-      </div>
-
-      <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3">
-        <div class="p-4 bg-canvas-soft border-b border-hairline flex flex-wrap justify-between items-center gap-2">
-          <span class="font-bold text-ink">Transaction Assumptions</span>
-          <span class="text-caption text-muted">
-            Sold Price: $45.00 · Buyer Shipping: $4.50 · Gross Order: $49.50 ·
-            Materials Cost: $12.00 · Actual Postage: $4.50
-          </span>
-        </div>
-
-        <div
-          class="overflow-x-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-          tabindex="0"
-          role="region"
-          aria-label="Etsy worked example table"
-        >
-          <table class="w-full text-ui-sm text-left">
-            <caption class="sr-only">
-              Step-by-step Etsy fee and profit calculation for a $45 mug sale
-            </caption>
-            <thead class="bg-canvas-soft/50 text-caption text-muted uppercase font-bold border-b border-hairline">
-              <tr>
-                <th scope="col" class="py-3 px-4">
-                  Fee Item
-                </th>
-                <th scope="col" class="py-3 px-4">
-                  Formula / Basis
-                </th>
-                <th scope="col" class="py-3 px-4 text-right">
-                  Standard Sale
-                </th>
-                <th scope="col" class="py-3 px-4 text-right">
-                  With Offsite Ads (15%)
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-hairline">
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Etsy Listing Fee
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  $0.20 per unit listed
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$0.20
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$0.20
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Transaction Fee (6.5%)
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  $49.50 gross × 6.5%
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$3.22
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$3.22
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Payment Processing (3% + $0.25)
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  ($49.50 × 3.0%) + $0.25
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$1.74
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$1.74
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Offsite Ads Fee
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  $49.50 gross × 15.0%
-                </td>
-                <td class="py-3 px-4 text-right text-muted tabular-nums">
-                  $0.00
-                </td>
-                <td class="py-3 px-4 text-right text-error font-semibold tabular-nums">
-                  -$7.43
-                </td>
-              </tr>
-              <tr class="bg-mint-50/50 dark:bg-mint-200/5 font-bold">
-                <th scope="row" class="py-3 px-4 text-primary">
-                  Total Marketplace Deductions
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  Sum of all Etsy fees
-                </td>
-                <td class="py-3 px-4 text-right text-primary tabular-nums">
-                  -$5.16 (10.4%)
-                </td>
-                <td class="py-3 px-4 text-right text-error tabular-nums">
-                  -$12.59 (25.4%)
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Etsy Payout to Bank
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  Gross revenue − fees
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  $44.34
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  $36.91
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="py-3 px-4 font-medium text-ink">
-                  Expenses (COGS + Postage)
-                </th>
-                <td class="py-3 px-4 text-muted font-mono">
-                  $12.00 clay/glaze + $4.50 label
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$16.50
-                </td>
-                <td class="py-3 px-4 text-right text-ink font-semibold tabular-nums">
-                  -$16.50
-                </td>
-              </tr>
-            </tbody>
-            <tfoot class="bg-canvas-soft border-t-2 border-hairline-strong font-bold text-ui-label">
-              <tr>
-                <th scope="row" colspan="2" class="py-3 px-4 text-ink">
-                  Net Take-Home Profit
-                </th>
-                <td class="py-3 px-4 text-right text-primary text-stat-value tabular-nums">
-                  +$27.84
-                </td>
-                <td class="py-3 px-4 text-right text-ink text-stat-value tabular-nums">
-                  +$20.41
-                </td>
-              </tr>
-              <tr>
-                <th
-                  scope="row"
-                  colspan="2"
-                  class="py-2 px-4 text-caption text-muted font-normal"
-                >
-                  Profit Margin (% of Gross)
-                </th>
-                <td class="py-2 px-4 text-right text-caption text-primary tabular-nums">
-                  56.2% Margin
-                </td>
-                <td class="py-2 px-4 text-right text-caption text-muted tabular-nums">
-                  41.2% Margin
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </div>
-    </section>
+    <!-- 5. Edge Cases -->
+    <EdgeCases platform="etsy" />
 
     <!-- Offsite Ads Specialized Deep-Dive Callout -->
     <section class="rounded-lg border-2 border-primary/20 bg-mint-50/50 dark:bg-mint-200/10 p-6 md:p-8 space-y-4">
@@ -403,37 +149,20 @@ const structuredData = [
         Evaluating the Impact of Etsy Offsite Ads?
       </h2>
       <p class="text-body-md text-body leading-relaxed max-w-3xl">
-        Offsite Ads add an extra 12% to 15% deduction on attributed sales,
-        bringing total fees over 25%. We built a dedicated Offsite Ads
-        calculator to help you analyze your break-even pricing, evaluate opt-out
-        thresholds, and model the $100 fee cap.
+        Offsite Ads add an extra 12% to 15% deduction on attributed sales, bringing total fees over 25%. We built a dedicated Offsite Ads calculator to help you analyze your break-even pricing, evaluate opt-out thresholds, and model the $100 fee cap.
       </p>
       <div>
         <a
           href="/etsy-offsite-ads-fee-calculator/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-bold text-ui-label rounded-xs hover:bg-primary-deep transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-bold text-ui-label rounded-xs hover:bg-primary-deep transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
         >
           <span>Open Dedicated Etsy Offsite Ads Calculator</span>
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            />
+          <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </a>
       </div>
     </section>
-
-    <!-- Author & Fact Check Byline -->
-    <AuthorByline platform="etsy" />
 
     <!-- 6. FAQ Section -->
     <FAQ
@@ -445,7 +174,8 @@ const structuredData = [
     <!-- 7. Related Calculators Grid -->
     <RelatedCalculators currentPlatform="etsy" />
 
-    <!-- 8. Last-Verified Stamp -->
+    <!-- Trust signals footer -->
+    <AuthorByline platform="etsy" />
     <LastVerified platform="etsy" />
   </div>
 </BaseLayout>

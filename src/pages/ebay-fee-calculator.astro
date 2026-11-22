@@ -3,11 +3,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import CalculatorIsland from "../components/CalculatorIsland.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import AuthorByline from "../components/AuthorByline.astro";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
 import FAQ from "../components/FAQ.astro";
 import RelatedCalculators from "../components/RelatedCalculators.astro";
 import LastVerified from "../components/LastVerified.astro";
 import { formatFeeSummary } from "../lib/calc/fee-data";
 import { EBAY_US_CATEGORIES } from "../lib/calc/ebay-us";
+import { getPageSeo } from "../lib/seo";
+
+const seo = getPageSeo("/ebay-fee-calculator/");
 
 // Load verified eBay US fee summary
 const feeSummary = formatFeeSummary("ebay-us");
@@ -85,8 +92,8 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="eBay Fee Calculator (US) - 2026 Profit & Final Value Fees"
-  description="Free eBay US fee and profit calculator. Calculate final value fees, category rates, store discounts, per-order fees, promoted listings, and net seller payout."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/ebay-fee-calculator/"
   structuredData={structuredData}
 >
@@ -102,29 +109,14 @@ const structuredData = [
 
     <!-- Header & 1-Paragraph Direct Answer -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>Verified eBay US Rates: {feeSummary}</span>
-      </div>
+      <TrustHeader platform="ebay-us" />
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        eBay Fee & Profit Calculator
+        {seo.h1}
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        eBay charges a category-based{" "}
-        <strong class="text-ink">
-          Final Value Fee (typically 13.25% for standard sellers or 12.35% for
-          Store subscribers)
-        </strong>{" "}
-        plus a fixed{" "}
-        <strong class="text-ink">
-          per-order fee of $0.30 (orders &le; $10.00) or $0.40 (orders &gt;
-          $10.00)
-        </strong>
-        . Optional Promoted Listings standard ad rates (typically 2%–15%) and a
-        10% Top Rated Plus discount further tailor your bottom line. Enter your
-        pricing, category, and expenses below to see your exact take-home
-        payout, margin, and break-even point.
+        eBay charges a standard Final Value Fee of <strong class="text-ink">13.25%</strong> plus a fixed <strong class="text-ink">$0.40 per order ($0.30 if $10.00 or less)</strong> on the total amount paid by the buyer, including item price, shipping charged, and applicable sales tax. Sellers with an active Basic or higher eBay Store pay a reduced <strong class="text-ink">12.35%</strong> (and down to 9.35% in Consumer Electronics). Sellers pay zero listing fees on their first 250 listings each month. Use this calculator to enter your sale price, shipping, and item costs to see your exact net payout and profit margin.
       </p>
 
       <!-- Prominent Order Total Shipping Callout -->
@@ -164,197 +156,21 @@ const structuredData = [
     </section>
 
     <!-- Plain-Text Fee Formula -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        The eBay US Fee Formula in Plain Text
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        eBay simplifies third-party merchant fees by charging a single combined
-        Final Value Fee rather than separate commission and merchant gateway
-        charges. The exact math operates as follows:
-      </p>
-
-      <div
-        class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="eBay fee formulas"
-      >
-        <div class="text-primary font-bold">1. Gross Order Total</div>
-        <div class="pl-4 text-muted">
-          Gross Order Total = (Sold Item Price &times; Quantity) + Shipping
-          Charged to Buyer
-        </div>
-
-        <div class="text-primary font-bold">2. Final Value Fee (FVF)</div>
-        <div class="pl-4 text-muted">
-          Base FVF = Gross Order Total &times; Category Rate % (e.g., 13.25%
-          standard or 12.35% store)
-        </div>
-        <div class="pl-4 text-muted">
-          If Top Rated Plus: Net FVF = Base FVF &times; 0.90 (10% discount
-          applied)
-        </div>
-
-        <div class="text-primary font-bold">3. Fixed Per-Order Fee</div>
-        <div class="pl-4 text-muted">
-          Per-Order Fee = $0.30 if Gross Order Total &le; $10.00 | $0.40 if
-          Gross Order Total &gt; $10.00
-        </div>
-        <div class="pl-4 text-muted">
-          (Waived to $0.00 for Men's and Women's Athletic Shoes sold at $150 or
-          more)
-        </div>
-
-        <div class="text-primary font-bold">
-          4. Promoted Listings (Optional)
-        </div>
-        <div class="pl-4 text-muted">
-          Promoted Fee = Gross Order Total &times; Selected Ad Rate % (e.g.,
-          2%–15%)
-        </div>
-
-        <div class="text-primary font-bold">5. Net Seller Profit</div>
-        <div class="pl-4 text-muted">
-          Net Profit = Gross Order Total &minus; Total eBay Fees &minus; Cost of
-          Goods (COGS) &minus; Actual Postage Paid
-        </div>
-      </div>
-    </section>
+    <FormulaBlock platform="ebay-us" />
 
     <!-- Worked Practical Example -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Worked Example: Selling a $60 Jacket on eBay
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        Consider a standard non-store seller listing a vintage jacket in{" "}
-        <strong class="text-ink">Clothing, Shoes & Accessories</strong>. The
-        jacket sells for <strong class="text-ink">$60.00</strong>, and the
-        seller charges the buyer <strong class="text-ink">$6.00</strong> for
-        shipping. The seller originally sourced the jacket for{" "}
-        <strong class="text-ink">$20.00</strong> and purchases a shipping label
-        via eBay Delivery for <strong class="text-ink">$5.50</strong>:
-      </p>
+    <WorkedExample
+      platform="ebay-us"
+      title="Worked Example: Selling a $60 Jacket on eBay"
+      description="Consider a standard non-store seller listing a vintage jacket for $60.00 with $6.00 shipping charged to the buyer, $20.00 inventory cost, and $5.50 postage:"
+      itemPrice={60.0}
+      shippingCharged={6.0}
+      itemCost={20.0}
+      shippingCost={5.5}
+    />
 
-      <div
-        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="eBay worked example transaction table"
-      >
-        <table class="w-full text-body-sm text-left border-collapse">
-          <thead>
-            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
-              <th class="p-3.5">Line Item</th>
-              <th class="p-3.5 text-right">Calculation</th>
-              <th class="p-3.5 text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hairline">
-            <tr>
-              <td class="p-3.5 text-ink font-medium">Sold Item Price</td>
-              <td class="p-3.5 text-right text-muted">1 unit &times; $60.00</td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                $60.00
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink font-medium">
-                Shipping Charged to Buyer
-              </td>
-              <td class="p-3.5 text-right text-muted">
-                Paid by buyer at checkout
-              </td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                $6.00
-              </td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">Gross Order Total (Fee Base)</td>
-              <td class="p-3.5 text-right text-muted">$60.00 + $6.00</td>
-              <td class="p-3.5 text-right font-mono text-ink">$66.00</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Final Value Fee (13.25%)</td>
-              <td class="p-3.5 text-right text-muted">13.25% of $66.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$8.75</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Fixed Per-Order Fee</td>
-              <td class="p-3.5 text-right text-muted">Order exceeds $10.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$0.40</td>
-            </tr>
-            <tr class="bg-negative/5 font-semibold text-negative">
-              <td class="p-3.5">Total eBay Fees Deducted</td>
-              <td class="p-3.5 text-right">FVF + Per-Order Fee</td>
-              <td class="p-3.5 text-right font-mono">-$9.15</td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">Net Payout Transferred to Bank</td>
-              <td class="p-3.5 text-right text-muted">$66.00 &minus; $9.15</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                $56.85
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Item Acquisition Cost (COGS)</td>
-              <td class="p-3.5 text-right text-muted">Inventory cost</td>
-              <td class="p-3.5 text-right font-mono text-muted">-$20.00</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Actual Postage Cost</td>
-              <td class="p-3.5 text-right text-muted">Carrier label expense</td>
-              <td class="p-3.5 text-right font-mono text-muted">-$5.50</td>
-            </tr>
-            <tr class="bg-primary/10 font-bold text-ink">
-              <td class="p-3.5 text-forest dark:text-emerald-300">
-                Clear Net Profit
-              </td>
-              <td class="p-3.5 text-right text-muted">$56.85 &minus; $25.50</td>
-              <td class="p-3.5 text-right font-mono text-forest dark:text-emerald-300 text-body-md">
-                $31.35
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Effective Fee Rate
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            13.86%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Profit Margin
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            47.50%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Return on Investment
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            122.94%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Break-Even Price
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            $23.57
-          </span>
-        </div>
-      </div>
-    </section>
+    <!-- Edge Cases -->
+    <EdgeCases platform="ebay-us" />
 
     <!-- Category & Store Fee Comparison Table -->
     <section class="space-y-4 border-t border-hairline pt-8">

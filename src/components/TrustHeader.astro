@@ -1,0 +1,104 @@
+---
+import { getPlatformFeeData, formatVerifiedDate } from '../lib/calc/fee-data';
+
+export interface Props {
+  platform?: string;
+  author?: string;
+  authorRole?: string;
+  verifiedDate?: string;
+  sourceUrl?: string;
+  platformName?: string;
+  class?: string;
+}
+
+const {
+  platform,
+  author = 'Seller Calc Hub Research Team',
+  authorRole = 'Fee Analysts',
+  verifiedDate,
+  sourceUrl,
+  platformName,
+  class: className = '',
+} = Astro.props;
+
+const feeData = platform ? getPlatformFeeData(platform) : undefined;
+const resolvedDateIso = verifiedDate ?? feeData?.verified_on ?? '2026-11-22';
+const resolvedFormattedDate = formatVerifiedDate(resolvedDateIso);
+const resolvedPlatformName = platformName ?? feeData?.platform_name ?? 'Marketplace';
+const resolvedSourceUrl = sourceUrl ?? feeData?.source_url ?? 'https://sellercalchub.com/methodology/';
+---
+
+<div
+  class={`flex flex-wrap items-center gap-x-4 gap-y-2 py-2 text-caption text-muted border-b border-hairline/70 pb-3 mb-2 ${className}`}
+  aria-label="Author byline and fee verification details"
+>
+  <!-- Author Attribution -->
+  <div class="inline-flex items-center gap-1.5 text-ink font-medium">
+    <div
+      class="w-5 h-5 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center shrink-0"
+      aria-hidden="true"
+    >
+      SCH
+    </div>
+    <span>
+      By <a
+        href="/about/"
+        class="text-ink hover:text-primary hover:underline font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+      >
+        {author}
+      </a>
+    </span>
+    <span class="text-hairline-strong" aria-hidden="true">|</span>
+    <span class="text-muted text-[12px]">{authorRole}</span>
+  </div>
+
+  <span class="hidden sm:inline text-hairline-strong" aria-hidden="true">&bull;</span>
+
+  <!-- Last Updated / Verified Date Driven by Fee Data -->
+  <div class="inline-flex items-center gap-1.5 text-muted">
+    <svg
+      class="w-3.5 h-3.5 text-primary shrink-0"
+      width="14"
+      height="14"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <span>
+      Rates Verified: <time datetime={resolvedDateIso} class="font-semibold text-ink">{resolvedFormattedDate}</time>
+    </span>
+  </div>
+
+  <span class="hidden sm:inline text-hairline-strong" aria-hidden="true">&bull;</span>
+
+  <!-- Official Platform Fee Schedule Link -->
+  <a
+    href={resolvedSourceUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-analytics-event="fee_source_clicked"
+    data-analytics-platform={platform || 'general'}
+    class="inline-flex items-center gap-1 text-primary hover:underline font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+  >
+    <span>Official {resolvedPlatformName} Fee Policy</span>
+    <svg class="w-3 h-3 shrink-0" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path
+        fill-rule="evenodd"
+        d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+        clip-rule="evenodd"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    <span class="sr-only">(opens official policy in a new window)</span>
+  </a>
+</div>

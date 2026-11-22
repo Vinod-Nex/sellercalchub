@@ -2,34 +2,18 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CalculatorIsland from "../components/CalculatorIsland.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { getEntry } from "astro:content";
-import { PLATFORM_CONFIGS } from "../lib/calc";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
+import FAQ from "../components/FAQ.astro";
+import RelatedCalculators from "../components/RelatedCalculators.astro";
+import LastVerified from "../components/LastVerified.astro";
+import AuthorByline from "../components/AuthorByline.astro";
 import { EBAY_US_CATEGORIES } from "../lib/calc/ebay-us";
+import { getPageSeo } from "../lib/seo";
 
-// Load eBay US fee metadata from content collection
-const ebayEntry = await getEntry("fees", "ebay-us");
-const feeData = ebayEntry?.data;
-const config = PLATFORM_CONFIGS["ebay-us"];
-
-const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
-const sourceUrl = feeData?.source_url ?? config.sourceUrl;
-
-function formatVerifiedDate(isoDate: string): string {
-  try {
-    const [year, month, day] = isoDate.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      timeZone: "UTC",
-    });
-  } catch {
-    return isoDate;
-  }
-}
-
-const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+const seo = getPageSeo("/ebay-final-value-fee-calculator/");
 
 // FAQ definitions
 const faqs = [
@@ -69,8 +53,7 @@ const structuredData = [
     "@type": "WebPage",
     name: "eBay Final Value Fee Calculator",
     url: "https://sellercalchub.com/ebay-final-value-fee-calculator/",
-    description:
-      "Calculate your exact eBay Final Value Fee. See standard category rates (13.25%), Store discounts (12.35%), $0.30 vs $0.40 per-order fees, and high-value threshold discounts.",
+    description: seo.metaDescription,
   },
   {
     "@context": "https://schema.org",
@@ -100,13 +83,13 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="eBay Final Value Fee Calculator - 2026 Category Rates & Tiers"
-  description="Calculate your exact eBay Final Value Fee. See standard category rates (13.25%), Store discounts (12.35%), $0.30 vs $0.40 per-order fees, and high-value threshold discounts."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/ebay-final-value-fee-calculator/"
   structuredData={structuredData}
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
-    <!-- Breadcrumbs -->
+    <!-- 1. Breadcrumbs -->
     <Breadcrumbs
       items={[
         { name: "Home", href: "/" },
@@ -116,234 +99,80 @@ const structuredData = [
       ]}
     />
 
-    <!-- Header & Direct Answer -->
+    <!-- Header & Direct Answer in the First Paragraph -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>
-          FVF Isolated: 13.25% Standard · 12.35% Store · $0.30 / $0.40 Per Order
-        </span>
-      </div>
+      <TrustHeader platform="ebay-us" />
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        eBay Final Value Fee Calculator
+        {seo.h1}
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        eBay’s Final Value Fee (FVF) is the primary commission fee deducted when
-        an item sells. For most categories, eBay charges{" "}
-        <strong class="text-ink">13.25% for standard sellers</strong> or{" "}
-        <strong class="text-ink">12.35% for Basic+ Store subscribers</strong> on
-        the total amount paid by the buyer up to $7,500 (2.35% on the portion
-        over $7,500), plus a fixed per-order fee of{" "}
-        <strong class="text-ink">
-          $0.30 (for sales &le; $10.00) or $0.40 (for sales &gt; $10.00)
-        </strong>
-        . Use this calculator to isolate your platform deductions before
-        factoring in inventory or postage expenses.
+        eBay Final Value Fees (FVF) range from <strong class="text-ink">3.0% to 15.3%</strong> depending on category, plus a fixed <strong class="text-ink">$0.40 per order ($0.30 for orders $10.00 or less)</strong>. Most standard categories are charged <strong class="text-ink">13.25%</strong> on the first $7,500 of the sale and <strong class="text-ink">2.35%</strong> on the portion over $7,500. Guitars are charged 6.7%, heavy equipment 3.0%, jewelry and watches 15.0% up to $5,000, and sneakers $150+ are 8.0% with the $0.40 order fee waived. Enter your sale price and category to isolate your exact final value fee.
       </p>
 
       <!-- Reciprocal Link to Pillar -->
       <div class="pt-1">
         <a
           href="/ebay-fee-calculator/"
-          class="inline-flex items-center gap-1.5 min-h-[44px] text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] text-primary hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-              clip-rule="evenodd"
-            />
+          <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
           </svg>
           <span>
-            Need full net profit, postage costs, and COGS? Go to the main eBay
-            Fee & Profit Calculator
+            Need full net profit, postage costs, and COGS? Go to the main eBay Fee & Profit Calculator
           </span>
         </a>
       </div>
     </header>
 
-    <!-- Calculator Island Above the Fold -->
+    <!-- 2. Calculator Island Above the Fold -->
     <section class="space-y-4" id="calculator">
       <CalculatorIsland platform="ebay-us" showPlatformTabs={false} />
     </section>
 
-    <!-- FVF Math Breakdown -->
+    <!-- 3. Formula in Plain Text -->
+    <FormulaBlock platform="ebay-us" />
+
+    <!-- 4. One Worked Example -->
+    <WorkedExample
+      platform="ebay-us"
+      title="Worked Example: Final Value Fee on a $120 Sale"
+      description="Step-by-step isolation of the percentage final value fee and per-order fee on a $120 transaction:"
+      itemPrice={120.0}
+      itemCost={40.0}
+      shippingCharged={10.0}
+      shippingCost={9.5}
+    />
+
+    <!-- 5. Edge Cases -->
+    <EdgeCases platform="ebay-us" />
+
+    <!-- Category Rate Schedule Table -->
     <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        How eBay Final Value Fees Are Calculated
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        Unlike platforms that charge separate payment gateway fees (like Stripe
-        or PayPal), eBay incorporates payment processing directly into its Final
-        Value Fee. The fee breaks down into:
-      </p>
-
-      <div
-        class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="Final value fee formulas"
-      >
-        <div class="text-primary font-bold">
-          1. Percentage Component (Tiered by Category & Threshold)
-        </div>
-        <div class="pl-4 text-muted">
-          Portion up to Threshold ($7,500) = Sale Amount &times; Category Rate %
-          (e.g. 13.25%)
-        </div>
-        <div class="pl-4 text-muted">
-          Portion above Threshold ($7,500) = Excess Amount &times; 2.35%
-        </div>
-
-        <div class="text-primary font-bold">
-          2. Top Rated Plus Discount (If Applicable)
-        </div>
-        <div class="pl-4 text-muted">
-          Discounted Percentage Fee = Percentage Component &times; 0.90 (10%
-          savings)
-        </div>
-
-        <div class="text-primary font-bold">3. Fixed Per-Order Fee</div>
-        <div class="pl-4 text-muted">
-          +$0.30 if Total Buyer Payment &le; $10.00 | +$0.40 if Total Buyer
-          Payment &gt; $10.00
-        </div>
-        <div class="pl-4 text-muted">
-          (Waived for Men's & Women's Athletic Shoes sold at $150 or more)
-        </div>
-
-        <div class="text-primary font-bold">4. Total Final Value Fee</div>
-        <div class="pl-4 text-muted">
-          Total FVF = Discounted Percentage Component + Per-Order Fee
-        </div>
+      <div class="space-y-1">
+        <h2 class="text-heading-2 font-bold text-ink">
+          Official eBay US Category Rate Schedule
+        </h2>
+        <p class="text-body text-body leading-relaxed">
+          eBay final value fees vary by listing category and whether you subscribe to a Basic or higher eBay Store:
+        </p>
       </div>
-    </section>
-
-    <!-- Worked Example -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Worked Example: FVF on a $120 Sale
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        A seller lists a collectible toy for{" "}
-        <strong class="text-ink">$110.00</strong> with{" "}
-        <strong class="text-ink">$10.00</strong> shipping charged to the buyer
-        ($120.00 gross buyer payment). The seller does not have an eBay Store
-        and is in <strong class="text-ink">Most Categories (13.25%)</strong>:
-      </p>
 
       <div
         class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
         tabindex="0"
         role="region"
-        aria-label="Final value fee calculation breakdown table"
-      >
-        <table class="w-full text-body-sm text-left border-collapse">
-          <thead>
-            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
-              <th class="p-3.5">Component</th>
-              <th class="p-3.5 text-right">Calculation</th>
-              <th class="p-3.5 text-right">Fee Deducted</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hairline">
-            <tr>
-              <td class="p-3.5 text-ink font-medium">Gross Buyer Payment</td>
-              <td class="p-3.5 text-right text-muted">
-                $110.00 item + $10.00 shipping
-              </td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                $120.00
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">
-                Percentage Final Value Fee (13.25%)
-              </td>
-              <td class="p-3.5 text-right text-muted">13.25% of $120.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$15.90</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Fixed Per-Order Fee</td>
-              <td class="p-3.5 text-right text-muted">Order exceeds $10.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$0.40</td>
-            </tr>
-            <tr class="bg-primary/10 font-bold text-ink">
-              <td class="p-3.5 text-forest dark:text-emerald-300">Total eBay Final Value Fee</td>
-              <td class="p-3.5 text-right text-muted">$15.90 + $0.40</td>
-              <td class="p-3.5 text-right font-mono text-negative text-body-md">
-                -$16.30
-              </td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">
-                Net Seller Payout (Before COGS & Postage)
-              </td>
-              <td class="p-3.5 text-right text-muted">
-                $120.00 &minus; $16.30
-              </td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                $103.70
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Effective FVF Rate
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            13.58%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Store Subscriber Savings
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            $1.08 / order
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Top Rated Plus Savings
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            $1.59 / order
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Category Rate Table -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Category FVF Rate Comparison
-      </h2>
-      <div
-        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="Category final value fee comparison table"
+        aria-label="eBay category fee rate comparison table"
       >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
               <th class="p-3.5">Category</th>
-              <th class="p-3.5 text-center">Standard Rate</th>
-              <th class="p-3.5 text-center">Store Rate</th>
-              <th class="p-3.5">Tier Threshold</th>
+              <th class="p-3.5 text-center">Standard Seller Rate</th>
+              <th class="p-3.5 text-center">eBay Store Rate</th>
+              <th class="p-3.5">Threshold & High-Value Rules</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-hairline">
@@ -358,10 +187,10 @@ const structuredData = [
                 </td>
                 <td class="p-3.5 text-caption text-muted">
                   {cat.threshold
-                    ? `${cat.rateAboveThreshold}% over $${cat.threshold.toLocaleString()}`
+                    ? `${cat.rateAboveThreshold}% on portion over $${cat.threshold.toLocaleString()}`
                     : cat.id === "athletic_shoes_150"
-                      ? "$0 per-order fee for $150+"
-                      : "Flat tier"}
+                      ? "No per-order fee for items $150+"
+                      : "Standard tier"}
                 </td>
               </tr>
             ))}
@@ -370,137 +199,18 @@ const structuredData = [
       </div>
     </section>
 
-    <!-- FAQs -->
-    <section class="space-y-6 border-t border-hairline pt-8">
-      <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Frequently Asked Questions
-        </h2>
-        <p class="text-body text-body leading-relaxed">
-          Common questions about eBay Final Value Fee deductions, percentages,
-          and seller exemptions.
-        </p>
-      </div>
+    <!-- 6. FAQ Section -->
+    <FAQ
+      items={faqs}
+      title="Frequently Asked Questions About Final Value Fees"
+      description="Common questions about eBay Final Value Fee deductions, percentages, and seller exemptions."
+    />
 
-      <div class="space-y-3">
-        {faqs.map((faq) => (
-          <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-              <span>{faq.question}</span>
-              <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
-                &#9660;
-              </span>
-            </summary>
-            <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-              {faq.answer}
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
+    <!-- 7. Related Calculators -->
+    <RelatedCalculators currentPlatform="ebay-us" />
 
-    <!-- Related Calculators -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Related eBay Calculators
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a
-          href="/ebay-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Pillar Calculator
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            The full all-in-one calculator with store subscriptions and promoted
-            listings.
-          </span>
-        </a>
-        <a
-          href="/ebay-profit-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Profit & Loss
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Profit Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            Calculate net cash profit, margins, ROI, and break-even listing
-            price.
-          </span>
-        </a>
-        <a
-          href="/ebay-shipping-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Postage Analysis
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Shipping Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            Understand eBay fees on shipping charged and avoid losing money on
-            postage.
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Last-Verified Stamp -->
-    <footer class="pt-6 border-t border-hairline">
-      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span
-              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
-              aria-hidden="true"
-            ></span>
-            <span class="text-ui-label font-bold text-ink">
-              Official Rate Verification
-            </span>
-          </div>
-          <p class="text-caption text-muted">
-            eBay US Final Value Fee rates officially verified on{" "}
-            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
-            directly from eBay’s official Selling Fees policy.
-          </p>
-        </div>
-
-        <a
-          href={sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
-        >
-          <span>View Official eBay Selling Fees</span>
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
-              clip-rule="evenodd"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-    </footer>
+    <!-- Trust signals footer -->
+    <AuthorByline platform="ebay-us" />
+    <LastVerified platform="ebay-us" />
   </div>
 </BaseLayout>

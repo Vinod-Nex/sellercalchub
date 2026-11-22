@@ -129,6 +129,37 @@ function resolveDefaultCards(): FormulaCard[] {
         },
       ];
     }
+    case 'ebay-uk': {
+      const bizFvf = feeData.rates.find((r) => r.name?.includes('Business Final Value'))?.percentage ?? 12.8;
+      const bizOrder = feeData.rates.find((r) => r.name?.includes('Business Per-Order'))?.fixed_amount ?? 0.3;
+      return [
+        {
+          label: '1. Private Seller Rate',
+          formula: 'Selling Fee = £0.00 (0% Commission)',
+          note: 'UK private individual sellers pay zero final value fees across all eligible categories.',
+        },
+        {
+          label: '2. Business Final Value Fee',
+          formula: `Business FVF = (Item Price + Shipping) × ${bizFvf.toFixed(1)}% + £${bizOrder.toFixed(2)}`,
+          note: `Registered business sellers pay ${bizFvf.toFixed(1)}% + £${bizOrder.toFixed(2)} per order, plus 20% UK VAT on fees.`,
+        },
+      ];
+    }
+    case 'twitch-bits': {
+      const streamerRate = feeData.rates.find((r) => r.fee_kind === 'revenue_share')?.fixed_amount ?? 0.01;
+      return [
+        {
+          label: '1. Streamer Cash Payout Rate',
+          formula: `Creator Payout = Number of Bits × $${streamerRate.toFixed(2)} USD`,
+          note: 'Twitch guarantees creators a flat 1 cent ($0.01) per Bit cheered, with zero platform cuts deducted.',
+        },
+        {
+          label: '2. Viewer Purchase Markup',
+          formula: 'Viewer Cost = ~$0.0140 per Bit on Desktop Web',
+          note: 'Twitch earns its profit upfront from viewers purchasing bits (e.g., $1.40 for 100 bits).',
+        },
+      ];
+    }
     default:
       return [];
   }
@@ -233,6 +264,40 @@ function resolveDefaultFormulas(): FormulaCode[] {
         {
           label: 'Profit Margin Percentage',
           code: 'Profit Margin (%) = (Net Profit ÷ Gross Revenue) × 100',
+        },
+      ];
+    }
+    case 'ebay-uk': {
+      const bizFvf = feeData.rates.find((r) => r.name?.includes('Business Final Value'))?.percentage ?? 12.8;
+      const bizOrder = feeData.rates.find((r) => r.name?.includes('Business Per-Order'))?.fixed_amount ?? 0.3;
+      return [
+        {
+          label: 'Business Seller Total Deductions (with 20% VAT)',
+          code: `Total eBay UK Fees = [((Sold Price + Postage) × ${(bizFvf / 100).toFixed(3)}) + £${bizOrder.toFixed(2)}] × 1.20`,
+        },
+        {
+          label: 'Private Individual Seller Fees',
+          code: 'Private Seller Fee = £0.00 (100% Free selling across eligible categories)',
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = (Sold Price + Postage) − Total eBay UK Fees − Inventory Cost − Carrier Postage',
+        },
+      ];
+    }
+    case 'twitch-bits': {
+      return [
+        {
+          label: 'Streamer Cash Payout Formula',
+          code: 'Streamer Cash Payout = Number of Bits × $0.01 USD',
+        },
+        {
+          label: 'Viewer Purchase Cost (Desktop Web)',
+          code: 'Viewer Cost = Number of Bits × $0.0140 USD (approx 40% Twitch markup)',
+        },
+        {
+          label: 'Progress to Minimum Payout ($50 Threshold)',
+          code: 'Payout Progress (%) = (Streamer Payout ÷ $50.00) × 100',
         },
       ];
     }

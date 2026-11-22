@@ -2,33 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CalculatorIsland from "../components/CalculatorIsland.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { getEntry } from "astro:content";
-import { PLATFORM_CONFIGS } from "../lib/calc";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
+import FAQ from "../components/FAQ.astro";
+import RelatedCalculators from "../components/RelatedCalculators.astro";
+import LastVerified from "../components/LastVerified.astro";
+import AuthorByline from "../components/AuthorByline.astro";
+import { getPageSeo } from "../lib/seo";
 
-// Load eBay US fee metadata from content collection
-const ebayEntry = await getEntry("fees", "ebay-us");
-const feeData = ebayEntry?.data;
-const config = PLATFORM_CONFIGS["ebay-us"];
-
-const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
-const sourceUrl = feeData?.source_url ?? config.sourceUrl;
-
-function formatVerifiedDate(isoDate: string): string {
-  try {
-    const [year, month, day] = isoDate.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      timeZone: "UTC",
-    });
-  } catch {
-    return isoDate;
-  }
-}
-
-const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+const seo = getPageSeo("/ebay-profit-calculator/");
 
 // FAQ definitions
 const faqs = [
@@ -66,8 +50,7 @@ const structuredData = [
     "@type": "WebPage",
     name: "eBay Profit & Margin Calculator",
     url: "https://sellercalchub.com/ebay-profit-calculator/",
-    description:
-      "Free eBay profit calculator. Calculate true net profit, profit margins, return on investment (ROI), break-even listing price, and reverse target pricing.",
+    description: seo.metaDescription,
   },
   {
     "@context": "https://schema.org",
@@ -97,13 +80,13 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="eBay Profit Calculator - Net Margin & Break-Even Tool"
-  description="Calculate your true take-home eBay profit, margin, and ROI after product cost, shipping labels, packaging, promoted listing fees, and eBay final value fees."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/ebay-profit-calculator/"
   structuredData={structuredData}
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
-    <!-- Breadcrumbs -->
+    <!-- 1. Breadcrumbs -->
     <Breadcrumbs
       items={[
         { name: "Home", href: "/" },
@@ -113,276 +96,80 @@ const structuredData = [
       ]}
     />
 
-    <!-- Header & Direct Answer -->
+    <!-- Header & Direct Answer in First Paragraph -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>
-          True Take-Home: COGS · Postage Expenses · Profit Margin % · Break-Even
-          Price
-        </span>
-      </div>
+      <TrustHeader platform="ebay-us" />
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        eBay Profit & Margin Calculator
+        {seo.h1}
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        Calculating true eBay profit requires subtracting all operating
-        costs—including product inventory acquisition cost (COGS), actual
-        shipping label postage, packaging materials, and optional Promoted
-        Listings ad spend—from your gross buyer payment after eBay takes its
-        Final Value Fee (13.25% + $0.30/$0.40). Use this free profit calculator
-        to inspect your net cash take-home, profit margin percentage, return on
-        investment (ROI), and exact break-even listing price.
+        To calculate net profit after eBay fees, deduct your total Final Value Fee (<strong class="text-ink">13.25% + $0.40</strong> on gross buyer payment), item acquisition cost (COGS), actual postage label costs, and packaging supplies from your gross sale price. For example, on a $100 sale with $30 inventory cost and $8 shipping, your net profit is <strong class="text-ink">$48.35</strong> (a 48.4% net margin and 127% ROI). Use this calculator to model your net profit or switch to reverse target-pricing mode to find the exact price required for your profit goal.
       </p>
 
       <!-- Reciprocal Link to Pillar -->
       <div class="pt-1">
         <a
           href="/ebay-fee-calculator/"
-          class="inline-flex items-center gap-1.5 min-h-[44px] py-2 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] py-2 text-primary hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-              clip-rule="evenodd"
-            />
+          <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
           </svg>
-          <span>
-            Looking for category commission schedules? Go to the main eBay Fee
-            Calculator
-          </span>
+          <span>Looking for category commission schedules? Go to the main eBay Fee Calculator</span>
         </a>
       </div>
     </header>
 
-    <!-- Calculator Island Above the Fold -->
+    <!-- 2. Calculator Island Above the Fold -->
     <section class="space-y-4" id="calculator">
-      <CalculatorIsland platform="ebay-us" showPlatformTabs={false} />
+      <CalculatorIsland
+        platform="ebay-us"
+        showPlatformTabs={false}
+        initialPrice={100.0}
+        initialItemCost={30.0}
+        initialShippingCharged={0.0}
+        initialShippingCost={8.0}
+      />
     </section>
 
-    <!-- The Profit & Loss Formula in Plain Text -->
+    <!-- 3. Formula in Plain Text -->
+    <FormulaBlock platform="ebay-us" />
+
+    <!-- 4. One Worked Example -->
+    <WorkedExample
+      platform="ebay-us"
+      title="Worked Example: Net Profit & ROI on a $100 Sale"
+      description="Step-by-step P&L breakdown for an item sold at $100.00 with free shipping, $30.00 acquisition cost, and $8.00 postage:"
+      itemPrice={100.0}
+      itemCost={30.0}
+      shippingCharged={0.0}
+      shippingCost={8.0}
+    />
+
+    <!-- 5. Edge Cases -->
+    <EdgeCases platform="ebay-us" />
+
+    <!-- Reverse Pricing Mode Guide -->
     <section class="space-y-4 border-t border-hairline pt-8">
       <h2 class="text-heading-2 font-bold text-ink">
-        The Complete eBay Profit & Loss Formula
+        How Reverse Pricing Mode Works
       </h2>
       <p class="text-body text-body leading-relaxed">
-        Many sellers mistakenly assume their profit is simply sale price minus
-        what they paid for the item. In reality, marketplace fees and postage
-        expenses eat into both the top and bottom lines:
+        Instead of guessing prices and seeing what profit is left over, reverse mode calculates backwards to solve for your target bottom line:
       </p>
-
-      <div
-        class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="eBay profit and loss formula"
-      >
-        <div class="text-primary font-bold">1. Gross Buyer Payment</div>
-        <div class="pl-4 text-muted">
-          Gross Revenue = (Item Sold Price &times; Quantity) + Shipping
-          Collected from Buyer
-        </div>
-
-        <div class="text-primary font-bold">
-          2. Total Marketplace Deductions
-        </div>
-        <div class="pl-4 text-muted">
-          eBay Fees = (Gross Revenue &times; FVF %) + Per-Order Fee ($0.30 or
-          $0.40) + Promoted Listing Fee
-        </div>
-
-        <div class="text-primary font-bold">
-          3. Total Seller Out-of-Pocket Expenses
-        </div>
-        <div class="pl-4 text-muted">
-          Operating Costs = (Item Acquisition Cost &times; Quantity) + Actual
-          Shipping Label Cost + Packaging Supplies
-        </div>
-
-        <div class="text-primary font-bold">4. Net Cash Profit</div>
-        <div class="pl-4 text-muted">
-          Net Profit = Gross Revenue &minus; eBay Fees &minus; Operating Costs
-        </div>
-
-        <div class="text-primary font-bold">5. Financial Health Metrics</div>
-        <div class="pl-4 text-muted">
-          Profit Margin % = (Net Profit &divide; Gross Revenue) &times; 100%
-        </div>
-        <div class="pl-4 text-muted">
-          ROI % = (Net Profit &divide; Total Costs) &times; 100%
-        </div>
-      </div>
-    </section>
-
-    <!-- Worked Practical Example -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Worked Example: Reselling an Antique Camera
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        Suppose an online reseller sources a vintage 35mm film camera for{" "}
-        <strong class="text-ink">$35.00</strong> at an estate sale. They list it
-        on eBay for <strong class="text-ink">$110.00</strong> with{" "}
-        <strong class="text-ink">$10.00</strong> shipping charged to the buyer
-        ($120.00 gross order total). The seller purchases a USPS Ground
-        Advantage shipping label for <strong class="text-ink">$8.50</strong> and
-        spends <strong class="text-ink">$1.50</strong> on bubble wrap and a box:
-      </p>
-
-      <div
-        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="Worked practical profit calculation table"
-      >
-        <table class="w-full text-body-sm text-left border-collapse">
-          <thead>
-            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
-              <th class="p-3.5">Financial Step</th>
-              <th class="p-3.5 text-right">Calculation</th>
-              <th class="p-3.5 text-right">Cash Amount</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hairline">
-            <tr>
-              <td class="p-3.5 text-ink font-medium">Gross Buyer Payment</td>
-              <td class="p-3.5 text-right text-muted">
-                $110.00 sale + $10.00 shipping
-              </td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                $120.00
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">eBay Final Value Fee (13.25%)</td>
-              <td class="p-3.5 text-right text-muted">13.25% of $120.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$15.90</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">eBay Per-Order Fee</td>
-              <td class="p-3.5 text-right text-muted">Orders over $10.00</td>
-              <td class="p-3.5 text-right font-mono text-negative">-$0.40</td>
-            </tr>
-            <tr class="bg-negative/5 font-semibold text-negative">
-              <td class="p-3.5">Total eBay Marketplace Cut</td>
-              <td class="p-3.5 text-right">$15.90 + $0.40</td>
-              <td class="p-3.5 text-right font-mono">-$16.30</td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">eBay Bank Payout</td>
-              <td class="p-3.5 text-right text-muted">
-                $120.00 &minus; $16.30
-              </td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                $103.70
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Inventory Sourcing Cost (COGS)</td>
-              <td class="p-3.5 text-right text-muted">
-                Purchase cost at estate sale
-              </td>
-              <td class="p-3.5 text-right font-mono text-muted">-$35.00</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Actual Postage Expense</td>
-              <td class="p-3.5 text-right text-muted">
-                Commercial rate USPS label
-              </td>
-              <td class="p-3.5 text-right font-mono text-muted">-$8.50</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Packaging Materials</td>
-              <td class="p-3.5 text-right text-muted">
-                Box, bubble wrap, label sheet
-              </td>
-              <td class="p-3.5 text-right font-mono text-muted">-$1.50</td>
-            </tr>
-            <tr class="bg-primary/10 font-bold text-ink">
-              <td class="p-3.5 text-forest dark:text-emerald-300">
-                Clear Net Profit Kept
-              </td>
-              <td class="p-3.5 text-right text-muted">
-                $103.70 payout &minus; $45.00 costs
-              </td>
-              <td class="p-3.5 text-right font-mono text-forest dark:text-emerald-300 text-body-md">
-                $58.70
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Net Cash Kept
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            $58.70
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Profit Margin
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            48.92%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Return on Investment
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            130.44%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Break-Even Listing Price
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            $42.48
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reverse Mode: Price for Target Profit -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Using Reverse Mode to Price for Target Profit
-        </h2>
-        <p class="text-body text-body leading-relaxed">
-          Rather than guessing what listing price will earn you your desired
-          take-home, switch the calculator above to{" "}
-          <strong class="text-ink">Reverse Mode</strong>:
-        </p>
-      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-2">
           <span class="text-caption font-bold text-primary uppercase tracking-wider block">
-            Target Cash Profit Mode
+            Target Profit ($) Mode
           </span>
           <h3 class="text-heading-4 font-bold text-ink">
             Set Desired Net Dollars
           </h3>
           <p class="text-body-sm text-body leading-relaxed">
-            Enter the exact amount of cash you want to deposit into your bank
-            account after all fees and expenses (e.g. $40.00). The engine solves
-            for the required listing price using exact round-trip validation.
+            Enter the exact amount of cash you want to deposit into your bank account after all fees and expenses (e.g. $40.00). The engine solves for the required listing price using exact round-trip validation.
           </p>
         </div>
 
@@ -394,145 +181,24 @@ const structuredData = [
             Set Desired Profit Margin
           </h3>
           <p class="text-body-sm text-body leading-relaxed">
-            Enter your business margin goal (e.g. 50%). The engine determines
-            the exact price where your net profit divided by the gross buyer
-            total matches your target margin percentage.
+            Enter your business margin goal (e.g. 50%). The engine determines the exact price where your net profit divided by the gross buyer total matches your target margin percentage.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- FAQs -->
-    <section class="space-y-6 border-t border-hairline pt-8">
-      <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Frequently Asked Questions
-        </h2>
-        <p class="text-body text-body leading-relaxed">
-          Expert guidance on improving margins, controlling packaging costs, and
-          price optimization.
-        </p>
-      </div>
+    <!-- 6. FAQ Section -->
+    <FAQ
+      items={faqs}
+      title="Frequently Asked Questions About eBay Profit & Margins"
+      description="Expert guidance on improving margins, controlling packaging costs, and price optimization."
+    />
 
-      <div class="space-y-3">
-        {faqs.map((faq) => (
-          <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-              <span>{faq.question}</span>
-              <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
-                &#9660;
-              </span>
-            </summary>
-            <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-              {faq.answer}
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
+    <!-- 7. Related Calculators -->
+    <RelatedCalculators currentPlatform="ebay-us" />
 
-    <!-- Related Calculators -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Related eBay Calculators
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a
-          href="/ebay-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Pillar Guide
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            The comprehensive calculator covering all categories and store
-            subscription discounts.
-          </span>
-        </a>
-        <a
-          href="/ebay-final-value-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Commission Only
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Final Value Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            Isolate platform fees and review category rates and the $7,500 cap.
-          </span>
-        </a>
-        <a
-          href="/ebay-shipping-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Shipping Margins
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Shipping Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            See why eBay charges fees on shipping and avoid losing money on
-            postage.
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Last-Verified Stamp -->
-    <footer class="pt-6 border-t border-hairline">
-      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span
-              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
-              aria-hidden="true"
-            ></span>
-            <span class="text-ui-label font-bold text-ink">
-              Official Rate Verification
-            </span>
-          </div>
-          <p class="text-caption text-muted">
-            eBay US fee rates officially verified on{" "}
-            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
-            directly from eBay’s official Selling Fees policy and Store Fee
-            Schedules.
-          </p>
-        </div>
-
-        <a
-          href={sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
-        >
-          <span>View Official eBay Selling Fees</span>
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
-              clip-rule="evenodd"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-    </footer>
+    <!-- Trust signals footer -->
+    <AuthorByline platform="ebay-us" />
+    <LastVerified platform="ebay-us" />
   </div>
 </BaseLayout>

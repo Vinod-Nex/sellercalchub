@@ -2,16 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CalculatorIsland from '../components/CalculatorIsland.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TrustHeader from '../components/TrustHeader.astro';
 import FormulaBlock from '../components/FormulaBlock.astro';
 import WorkedExample from '../components/WorkedExample.astro';
+import EdgeCases from '../components/EdgeCases.astro';
 import AuthorByline from '../components/AuthorByline.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedCalculators from '../components/RelatedCalculators.astro';
 import LastVerified from '../components/LastVerified.astro';
-import { formatFeeSummary } from '../lib/calc/fee-data';
+import { getPageSeo } from '../lib/seo';
 
-// Load Whatnot fee metadata directly from fee data
-const feeSummary = formatFeeSummary('whatnot');
+const seo = getPageSeo('/whatnot-fee-calculator/');
 
 // FAQ definitions
 const faqs = [
@@ -49,8 +50,7 @@ const structuredData = [
     '@type': 'WebPage',
     name: 'Whatnot Fee & Profit Calculator',
     url: 'https://sellercalchub.com/whatnot-fee-calculator/',
-    description:
-      'Free, fast Whatnot fee and profit calculator. Calculate your exact 8% commission, 2.9% + $0.30 processing fees, profit margin, and break-even sale price.',
+    description: seo.metaDescription,
   },
   {
     '@context': 'https://schema.org',
@@ -80,13 +80,13 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="Whatnot Fee & Profit Calculator (Verified 2026 Rates)"
-  description="Free Whatnot fee and profit calculator. Calculate your 8.0% commission, 2.9% + $0.30 processing fee, net payout, profit margin, and break-even price instantly."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/whatnot-fee-calculator/"
   structuredData={structuredData}
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
-    <!-- Breadcrumbs -->
+    <!-- 1. Breadcrumbs -->
     <Breadcrumbs
       items={[
         { name: 'Home', href: '/' },
@@ -97,56 +97,55 @@ const structuredData = [
 
     <!-- Header & 1-Paragraph Direct Answer -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>Verified Whatnot Rate: {feeSummary}</span>
-      </div>
+      <TrustHeader platform="whatnot" />
 
       <!-- 1. H1 -->
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        Whatnot Fee &amp; Profit Calculator
+        {seo.h1}
       </h1>
 
       <!-- 2. One-paragraph answer -->
       <p class="text-body-lg text-body leading-relaxed max-w-3xl">
-        Whatnot charges an <strong>8.0% commission</strong> on the final sold price of the item plus a <strong>2.9% + $0.30 payment processing fee</strong> on the buyer's full order total (including shipping and applicable sales tax). There are no listing fees, insertion fees, or monthly subscription charges to sell on Whatnot. Your net take-home payout is the sale price minus these two deductions and your own inventory and packaging costs.
+        Whatnot charges an <strong class="text-ink">8.0% commission</strong> on the final hammer price of the sold item plus a <strong class="text-ink">2.9% + $0.30 payment processing fee</strong> on the buyer's full order total (including shipping and applicable sales tax). Whatnot charges zero listing fees, zero insertion fees, and no monthly subscription charges. Buyers pay for shipping by default through Whatnot prepaid labels. Enter your sold price and inventory costs below to calculate your exact net cash payout.
       </p>
     </header>
 
-    <!-- 3. Calculator Above the Fold -->
+    <!-- 2. Calculator Above the Fold -->
     <section aria-label="Whatnot Fee Calculator Island">
       <CalculatorIsland platform="whatnot" showPlatformTabs={false} />
     </section>
 
-    <!-- 4. Formula in Plain Text (Driven by Whatnot Fee Data) -->
+    <!-- 3. Formula in Plain Text -->
     <FormulaBlock
       platform="whatnot"
       title="Whatnot Fee Formula"
       description="Whatnot breaks its fees into two distinct deductions on every completed sale:"
     />
 
-    <!-- 5. One Worked Example (Dynamically Calculated) -->
+    <!-- 4. One Worked Example -->
     <WorkedExample
       platform="whatnot"
       title="Worked Example: Selling a $50 Collectible"
-      description="Here is a step-by-step breakdown of what you actually keep when selling an item for $50.00 on a Whatnot livestream."
+      description="Here is a step-by-step breakdown of what you actually keep when selling an item for $50.00 on a Whatnot livestream:"
       itemPrice={50.0}
       itemCost={15.0}
     />
 
-    <!-- 6. Fact-Check & Author Byline -->
-    <AuthorByline platform="whatnot" />
+    <!-- 5. Edge Cases -->
+    <EdgeCases platform="whatnot" />
 
-    <!-- 7. FAQ Section (Accessible Plain HTML Accordion) -->
+    <!-- 6. FAQ Section -->
     <FAQ
       items={faqs}
       title="Frequently Asked Questions About Whatnot Fees"
       description="Clear answers to common questions about selling fees, payouts, shipping labels, and cancellations on Whatnot."
     />
 
-    <!-- 8. Related Calculators Grid (Dynamic Rates from Fee Data) -->
+    <!-- 7. Related Calculators Grid -->
     <RelatedCalculators currentPlatform="whatnot" />
 
-    <!-- 9. Last-Verified Stamp (Sourced from JSON) -->
+    <!-- Trust signals footer -->
+    <AuthorByline platform="whatnot" />
     <LastVerified platform="whatnot" />
   </div>
 </BaseLayout>

@@ -2,33 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CalculatorIsland from "../components/CalculatorIsland.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { getEntry } from "astro:content";
-import { PLATFORM_CONFIGS } from "../lib/calc";
+import TrustHeader from "../components/TrustHeader.astro";
+import FormulaBlock from "../components/FormulaBlock.astro";
+import WorkedExample from "../components/WorkedExample.astro";
+import EdgeCases from "../components/EdgeCases.astro";
+import FAQ from "../components/FAQ.astro";
+import RelatedCalculators from "../components/RelatedCalculators.astro";
+import LastVerified from "../components/LastVerified.astro";
+import AuthorByline from "../components/AuthorByline.astro";
+import { getPageSeo } from "../lib/seo";
 
-// Load eBay UK fee metadata from content collection
-const ebayUkEntry = await getEntry("fees", "ebay-uk");
-const feeData = ebayUkEntry?.data;
-const config = PLATFORM_CONFIGS["ebay-uk"];
-
-const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
-const sourceUrl = feeData?.source_url ?? config.sourceUrl;
-
-function formatVerifiedDate(isoDate: string): string {
-  try {
-    const [year, month, day] = isoDate.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      timeZone: "UTC",
-    });
-  } catch {
-    return isoDate;
-  }
-}
-
-const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+const seo = getPageSeo("/ebay-fee-calculator-uk/");
 
 // FAQ definitions
 const faqs = [
@@ -68,8 +52,7 @@ const structuredData = [
     "@type": "WebPage",
     name: "eBay UK Fee Calculator",
     url: "https://sellercalchub.com/ebay-fee-calculator-uk/",
-    description:
-      "Free eBay UK fee calculator in GBP (£). Calculate 0% private seller fees, 12.8% + 30p business rates, and 20% UK VAT on fees. Know your exact take-home payout.",
+    description: seo.metaDescription,
   },
   {
     "@context": "https://schema.org",
@@ -99,13 +82,13 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title="eBay UK Fee Calculator - 2026 Private (0%) & Business Rates"
-  description="Free eBay UK fee calculator in GBP (£). Calculate 0% private seller fees, 12.8% + 30p business rates, and 20% UK VAT on fees. Know your exact take-home payout."
+  title={seo.title}
+  description={seo.metaDescription}
   canonicalPath="/ebay-fee-calculator-uk/"
   structuredData={structuredData}
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
-    <!-- Breadcrumbs -->
+    <!-- 1. Breadcrumbs -->
     <Breadcrumbs
       items={[
         { name: "Home", href: "/" },
@@ -114,40 +97,23 @@ const structuredData = [
       ]}
     />
 
-    <!-- Header & Direct Answer -->
+    <!-- Header & Direct Answer in the First Paragraph -->
     <header class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>
-          Verified UK Rates: Private Sellers 0% · Business Sellers 12.8% + 30p
-          (+ 20% VAT)
-        </span>
-      </div>
+      <TrustHeader platform="ebay-uk" />
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        eBay UK Fee Calculator
+        {seo.h1}
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        Under eBay UK’s landmark fee reform,{" "}
-        <strong class="text-ink">
-          UK private individuals pay 0% Final Value Fees
-        </strong>
-        —selling clothes, electronics, home goods, and collectibles is
-        completely free. In contrast,{" "}
-        <strong class="text-ink">
-          registered UK business sellers pay a 12.8% Final Value Fee plus a
-          £0.30 per-order fee, plus 20% UK VAT on eBay fees
-        </strong>{" "}
-        (bringing the effective business fee to 15.36% + £0.36 per order). Use
-        this calculator to compare private vs. business take-home payouts, model
-        VAT deductions, and calculate net profit in GBP (£).
+        eBay UK charges private individual sellers <strong class="text-ink">0% final value fees</strong> across all eligible categories, making it completely free to sell personal items. Registered business sellers pay a standard <strong class="text-ink">12.8% final value fee plus a fixed £0.30 per order</strong>, subject to <strong class="text-ink">20% UK VAT on eBay fees</strong> (an effective 15.36% + £0.36 total charge per sale). Enter your sale price and costs below to calculate your exact net proceeds in GBP (£).
       </p>
 
       <!-- US vs UK Cross Link -->
       <div class="pt-1">
         <a
           href="/ebay-fee-calculator/"
-          class="inline-flex items-center gap-1.5 min-h-[44px] py-2 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] py-2 text-primary hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
           <svg
             class="w-4 h-4"
@@ -164,26 +130,41 @@ const structuredData = [
             />
           </svg>
           <span>
-            Selling in the United States? Check the US eBay Fee Calculator (USD
-            $)
+            Selling in the United States? Check the US eBay Fee Calculator (USD $)
           </span>
         </a>
       </div>
     </header>
 
-    <!-- Calculator Island Above the Fold -->
+    <!-- 2. Calculator Island Above the Fold -->
     <section class="space-y-4" id="calculator">
       <CalculatorIsland platform="ebay-uk" showPlatformTabs={false} />
     </section>
 
-    <!-- Private vs Business Fee Comparison in Plain Text -->
+    <!-- 3. Formula in Plain Text -->
+    <FormulaBlock platform="ebay-uk" />
+
+    <!-- 4. One Worked Example -->
+    <WorkedExample
+      platform="ebay-uk"
+      title="Worked Example: £50 Item Sold in the UK"
+      description="Here is the step-by-step breakdown of what you actually keep when selling an item for £50.00 with £4.00 buyer postage and £15.00 sourcing cost:"
+      itemPrice={50.0}
+      shippingCharged={4.0}
+      itemCost={15.0}
+      shippingCost={4.0}
+    />
+
+    <!-- 5. Edge Cases -->
+    <EdgeCases platform="ebay-uk" />
+
+    <!-- Private vs Business Comparison Guide -->
     <section class="space-y-4 border-t border-hairline pt-8">
       <h2 class="text-heading-2 font-bold text-ink">
         Private vs. Business Sellers on eBay UK
       </h2>
       <p class="text-body text-body leading-relaxed">
-        The fee structure on eBay UK differs dramatically depending on your
-        account registration status with HMRC and eBay:
+        The fee structure on eBay UK differs dramatically depending on your account registration status with HMRC and eBay:
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -197,23 +178,19 @@ const structuredData = [
           </h3>
           <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
             <li>
-              <strong>Listing Fee:</strong> £0.00 (up to 300 free monthly
-              listings).
+              <strong>Listing Fee:</strong> £0.00 (up to 300 free monthly listings).
             </li>
             <li>
-              <strong>Final Value Fee:</strong> 0.0% on total order (item price
-              + postage).
+              <strong>Final Value Fee:</strong> 0.0% on total order (item price + postage).
             </li>
             <li>
               <strong>Per-Order Fee:</strong> £0.00.
             </li>
             <li>
-              <strong>Payment Processing:</strong> 100% free via eBay Managed
-              Payments.
+              <strong>Payment Processing:</strong> 100% free via eBay Managed Payments.
             </li>
             <li>
-              <strong>VAT:</strong> Any optional listing upgrades (e.g.,
-              subtitle) are inclusive of 20% VAT.
+              <strong>VAT:</strong> Any optional listing upgrades (e.g., subtitle) are inclusive of 20% VAT.
             </li>
           </ul>
         </div>
@@ -231,360 +208,34 @@ const structuredData = [
               <strong>Base Final Value Fee:</strong> 12.8% (exclusive of VAT).
             </li>
             <li>
-              <strong>Per-Order Fee:</strong> £0.30 per order (exclusive of
-              VAT).
+              <strong>Per-Order Fee:</strong> £0.30 per order (exclusive of VAT).
             </li>
             <li>
-              <strong>HMRC VAT:</strong> 20% VAT added to all eBay fees billed
-              to the seller.
+              <strong>HMRC VAT:</strong> 20% VAT added to all eBay fees billed to the seller.
             </li>
             <li>
               <strong>Effective Total Fee:</strong> 15.36% + £0.36 per order.
             </li>
             <li>
-              <strong>VAT Recovery:</strong> VAT-registered businesses can
-              reclaim this input VAT on HMRC returns.
+              <strong>VAT Recovery:</strong> VAT-registered businesses can reclaim this input VAT on HMRC returns.
             </li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Worked Practical Example in GBP -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Worked Example: £50 Item Sold in the UK
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        Let’s compare what an individual private seller keeps versus a
-        registered business seller when selling an item for{" "}
-        <strong class="text-ink">£50.00</strong> with{" "}
-        <strong class="text-ink">£4.00</strong> Royal Mail shipping charged to
-        the buyer (£54.00 gross order total). The item cost was{" "}
-        <strong class="text-ink">£15.00</strong>, and the postage label costs{" "}
-        <strong class="text-ink">£4.00</strong>:
-      </p>
+    <!-- 6. FAQ Section -->
+    <FAQ
+      items={faqs}
+      title="Frequently Asked Questions About eBay UK Fees"
+      description="Clear answers regarding eBay UK private seller exemptions, business rates, and HMRC VAT compliance."
+    />
 
-      <div
-        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-        tabindex="0"
-        role="region"
-        aria-label="eBay UK fee breakdown table"
-      >
-        <table class="w-full text-body-sm text-left border-collapse">
-          <thead>
-            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
-              <th class="p-3.5">Line Item</th>
-              <th class="p-3.5 text-right">Private Seller (0%)</th>
-              <th class="p-3.5 text-right">Business Seller (12.8% + VAT)</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-hairline">
-            <tr>
-              <td class="p-3.5 text-ink font-medium">Sold Item Price</td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                £50.00
-              </td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">
-                £50.00
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink font-medium">
-                Postage Collected from Buyer
-              </td>
-              <td class="p-3.5 text-right font-mono text-ink">£4.00</td>
-              <td class="p-3.5 text-right font-mono text-ink">£4.00</td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">Gross Buyer Total</td>
-              <td class="p-3.5 text-right font-mono text-ink">£54.00</td>
-              <td class="p-3.5 text-right font-mono text-ink">£54.00</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">eBay Final Value Fee</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £0.00 (Free)
-              </td>
-              <td class="p-3.5 text-right font-mono text-negative">
-                -£6.91 (12.8%)
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">eBay Fixed Per-Order Fee</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £0.00 (Free)
-              </td>
-              <td class="p-3.5 text-right font-mono text-negative">-£0.30</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">20% UK VAT on eBay Fees</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £0.00
-              </td>
-              <td class="p-3.5 text-right font-mono text-negative">
-                -£1.44 (20% of £7.21)
-              </td>
-            </tr>
-            <tr class="bg-negative/5 font-semibold text-negative">
-              <td class="p-3.5">Total eBay Fees Deducted</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £0.00
-              </td>
-              <td class="p-3.5 text-right font-mono text-negative">-£8.65</td>
-            </tr>
-            <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">eBay Payout to Bank</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £54.00
-              </td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">
-                £45.35
-              </td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Item Sourcing Cost (COGS)</td>
-              <td class="p-3.5 text-right font-mono text-muted">-£15.00</td>
-              <td class="p-3.5 text-right font-mono text-muted">-£15.00</td>
-            </tr>
-            <tr>
-              <td class="p-3.5 text-ink">Actual Postage Expense</td>
-              <td class="p-3.5 text-right font-mono text-muted">-£4.00</td>
-              <td class="p-3.5 text-right font-mono text-muted">-£4.00</td>
-            </tr>
-            <tr class="bg-primary/10 font-bold text-ink">
-              <td class="p-3.5 text-forest dark:text-emerald-300">
-                Clear Net Profit Kept
-              </td>
-              <td class="p-3.5 text-right font-mono text-forest dark:text-emerald-300 text-body-md">
-                £35.00
-              </td>
-              <td class="p-3.5 text-right font-mono text-forest dark:text-emerald-300 text-body-md">
-                £26.35
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- 7. Related Calculators -->
+    <RelatedCalculators currentPlatform="ebay-uk" />
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Private Seller Margin
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            64.81%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Business Seller Margin
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            48.80%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Private Seller ROI
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-primary">
-            184.21%
-          </span>
-        </div>
-        <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">
-            Business Seller ROI
-          </span>
-          <span class="text-heading-3 font-mono font-bold text-ink">
-            138.68%
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- VAT on Fees Guide -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Understanding UK VAT on eBay Fees
-      </h2>
-      <p class="text-body text-body leading-relaxed">
-        HMRC requires all businesses supplying digital marketplace services to
-        charge standard UK VAT (20%) on their service fees. Here is how it
-        impacts UK sellers:
-      </p>
-
-      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 space-y-3 text-body-sm text-body leading-relaxed">
-        <div>
-          <strong class="text-ink block mb-1">
-            1. Are fees inclusive or exclusive of VAT?
-          </strong>
-          <p>
-            Private seller fee schedules are displayed{" "}
-            <strong>inclusive of VAT</strong>. Business seller fee schedules are
-            displayed <strong>exclusive of VAT</strong>. If you are registered
-            as a business seller, eBay adds 20% VAT to your final value fees,
-            order fees, and monthly shop subscription fees.
-          </p>
-        </div>
-        <div class="border-t border-hairline pt-3">
-          <strong class="text-ink block mb-1">
-            2. How can VAT-registered businesses reclaim this?
-          </strong>
-          <p>
-            If your business is VAT-registered with HMRC, the 20% VAT added to
-            your eBay fees is considered input tax. You can download monthly VAT
-            invoices from your eBay Seller Hub (under{" "}
-            <em>Payments &gt; Reports &gt; Invoices</em>) and offset this VAT
-            against your output tax on your quarterly VAT return.
-          </p>
-        </div>
-        <div class="border-t border-hairline pt-3">
-          <strong class="text-ink block mb-1">
-            3. What if I am an unregistered business?
-          </strong>
-          <p>
-            If you trade as a business but your turnover is below the HMRC
-            registration threshold (£90,000 in 2026), the 20% VAT charged by
-            eBay becomes a real cost that cannot be reclaimed. Your effective
-            fee rate will be 15.36% + £0.36 per order.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQs -->
-    <section class="space-y-6 border-t border-hairline pt-8">
-      <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">
-          Frequently Asked Questions
-        </h2>
-        <p class="text-body text-body leading-relaxed">
-          Clear answers regarding eBay UK private seller exemptions, business
-          rates, and HMRC VAT compliance.
-        </p>
-      </div>
-
-      <div class="space-y-3">
-        {faqs.map((faq) => (
-          <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-              <span>{faq.question}</span>
-              <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
-                &#9660;
-              </span>
-            </summary>
-            <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-              {faq.answer}
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
-
-    <!-- Related Calculators -->
-    <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">
-        Related Marketplace Calculators
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a
-          href="/ebay-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            United States
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay Fee Calculator (US)
-          </span>
-          <span class="text-caption text-muted block">
-            Calculate US final value fees, category rates, and store
-            subscription tiers in USD.
-          </span>
-        </a>
-        <a
-          href="/ebay-and-paypal-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Payment Explainer
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            eBay & PayPal Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            Learn how eBay Managed Payments works today and why there are no
-            separate PayPal fees.
-          </span>
-        </a>
-        <a
-          href="/etsy-fee-calculator/"
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
-        >
-          <span class="text-caption font-bold text-primary block mb-1">
-            Handmade Marketplace
-          </span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">
-            Etsy Fee Calculator
-          </span>
-          <span class="text-caption text-muted block">
-            Calculate listing fees, 6.5% transaction fees, and payment
-            processing margins.
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Last-Verified Stamp -->
-    <footer class="pt-6 border-t border-hairline">
-      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span
-              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
-              aria-hidden="true"
-            ></span>
-            <span class="text-ui-label font-bold text-ink">
-              Official Rate Verification
-            </span>
-          </div>
-          <p class="text-caption text-muted">
-            eBay UK fee rates officially verified on{" "}
-            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
-            directly from eBay UK’s official Selling Fees policy and HMRC
-            guidance.
-          </p>
-        </div>
-
-        <a
-          href={sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
-        >
-          <span>View Official eBay UK Fees</span>
-          <svg
-            class="w-4 h-4"
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
-              clip-rule="evenodd"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-    </footer>
+    <!-- Trust signals footer -->
+    <AuthorByline platform="ebay-uk" />
+    <LastVerified platform="ebay-uk" />
   </div>
 </BaseLayout>
