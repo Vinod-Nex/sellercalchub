@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: '404 Page Not Found' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Page Not Found (404) - Seller Calc Hub',
+    url: 'https://sellercalchub.com/404/',
+    description: 'The requested marketplace fee calculator or resource could not be found.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/404/'),
+];
+
+const popularCalculators = [
+  {
+    name: 'eBay Fee Calculator',
+    href: '/ebay-fee-calculator/',
+    rate: '13.25% + $0.40',
+    desc: 'Calculate final value fees, store subscriber discounts, and promoted listing fees.',
+  },
+  {
+    name: 'Whatnot Fee Calculator',
+    href: '/whatnot-fee-calculator/',
+    rate: '8.0% + 2.9% + $0.30',
+    desc: 'Accurately estimate livestream sales earnings and buyer-paid shipping fees.',
+  },
+  {
+    name: 'TikTok Shop Fee Calculator',
+    href: '/tiktok-shop-fee-calculator/',
+    rate: '6.0% Referral Fee',
+    desc: 'Calculate social commerce take-home profits and creator affiliate commissions.',
+  },
+  {
+    name: 'Depop Fee Calculator',
+    href: '/depop-fee-calculator/',
+    rate: '0% Selling Fee',
+    desc: 'Project earnings under Depop’s 0% commission structure for US and UK sellers.',
+  },
+  {
+    name: 'Etsy Fee Calculator',
+    href: '/etsy-fee-calculator/',
+    rate: '6.5% + $0.20 + 3%',
+    desc: 'Account for listing renewals, transaction fees, and Offsite Ads deductions.',
+  },
+  {
+    name: 'Twitch Bits to USD Converter',
+    href: '/twitch-bits-to-usd/',
+    rate: '$0.01 / bit',
+    desc: 'Convert cheered Bits to streamer payouts across all official web bundle tiers.',
+  },
+];
+---
+
+<BaseLayout
+  title="Page Not Found (404) - Seller Calc Hub"
+  description="The requested marketplace fee calculator or resource could not be found. Explore our verified profit and fee calculators."
+  canonicalPath="/404/"
+  noindex={true}
+  structuredData={structuredData}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8 md:py-16 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- 404 Hero Section -->
+    <header class="space-y-4 text-center md:text-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-mint-100 dark:bg-mint-200/10 border border-mint-200 text-caption font-bold text-primary">
+        <span>HTTP 404 · Resource Not Found</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Looking for a Fee Calculator?
+      </h1>
+
+      <p class="text-body-lg text-body max-w-2xl leading-relaxed">
+        The link you followed may be outdated, mistyped, or the page may have moved. Use the shortcuts below to find the exact marketplace calculator you need.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-3 pt-2 justify-center md:justify-start">
+        <a
+          href="/marketplace-fee-calculators/"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xs bg-primary text-on-primary font-bold text-ui-label hover:bg-primary-deep transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        >
+          <span>Browse All Marketplace Calculators</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-ui-label hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        >
+          <span>Return to Homepage</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Popular Calculators Grid -->
+    <section class="space-y-6 border-t border-hairline pt-10">
+      <div class="space-y-1">
+        <h2 class="text-heading-2 font-bold text-ink">Popular Reseller Fee Calculators</h2>
+        <p class="text-body-md text-muted">
+          Jump directly to our most frequently used verified calculators:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+          popularCalculators.map((calc) => (
+            <a
+              href={calc.href}
+              class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
+            >
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <span class="text-caption font-bold text-primary block">{calc.rate}</span>
+              </div>
+              <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-1">
+                {calc.name}
+              </span>
+              <span class="text-caption text-muted block leading-relaxed">{calc.desc}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Need Help / Report -->
+    <section class="rounded-lg border border-hairline-strong bg-canvas-soft p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="space-y-1">
+        <h3 class="text-body-md font-bold text-ink">Looking for a specific tool or found a broken link?</h3>
+        <p class="text-caption text-muted">
+          Report broken links or request new platform fee models to our editorial team.
+        </p>
+      </div>
+      <a
+        href="/contact/"
+        class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-caption hover:border-primary transition-colors"
+      >
+        <span>Contact Editorial Team</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
+  </div>
+</BaseLayout>
