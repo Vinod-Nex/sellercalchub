@@ -8,6 +8,9 @@ export default defineConfig({
   output: "static",
   site: "https://sellercalchub.com",
   trailingSlash: "always",
+  redirects: {
+    "/twitch-bits-calculator/": "/twitch-bits-to-usd/",
+  },
   build: {
     inlineStylesheets: "always",
   },

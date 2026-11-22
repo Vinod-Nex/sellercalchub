@@ -38,16 +38,16 @@ const websiteSchema = {
       </p>
       <div class="flex flex-wrap gap-4">
         <a
-          href="/design-tokens/"
+          href="/whatnot-fee-calculator/"
           class="bg-primary text-on-primary font-bold text-ui-label uppercase p-md rounded-xs hover:bg-primary-deep transition-colors inline-block shadow-level-3"
         >
-          Explore Design Tokens
+          Calculate Fees
         </a>
       </div>
     </section>
 
     <!-- Interactive Calculator Island -->
-    <section class="space-y-4">
+    <section id="calculator" class="space-y-4">
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-heading-2 font-bold text-ink">Instant Profit & Fee Calculator</h2>
@@ -69,7 +69,7 @@ const websiteSchema = {
           { name: 'Depop', href: '/depop-fee-calculator/' },
           { name: 'Etsy', href: '/etsy-fee-calculator/' },
           { name: 'eBay', href: '/ebay-fee-calculator/' },
-          { name: 'Twitch Bits', href: '/twitch-bits-calculator/' },
+          { name: 'Twitch Bits', href: '/twitch-bits-to-usd/' },
         ].map((platform) => (
           <a
             href={platform.href}
