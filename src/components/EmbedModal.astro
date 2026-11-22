@@ -12,7 +12,7 @@ const parentUrl = `https://sellercalchub.com/${cleanSlug}/`;
 const embedCode = `<iframe src="${embedUrl}" width="100%" height="720" frameborder="0" title="${calculatorName} Widget" loading="lazy" style="border: 1px solid #e5e7eb; border-radius: 8px; width: 100%;"></iframe>\n<p style="font-size: 12px; color: #6b7280; margin-top: 6px;">Free calculation tool provided by <a href="${parentUrl}" target="_blank" rel="noopener">${calculatorName} on Seller Calc Hub</a>.</p>`;
 ---
 
-<div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4">
+<div class="rounded-lg border border-hairline bg-canvas p-4 sm:p-6 space-y-4">
   <div class="flex flex-wrap items-center justify-between gap-2">
     <div class="space-y-1">
       <div class="flex items-center gap-1.5">
@@ -39,12 +39,12 @@ const embedCode = `<iframe src="${embedUrl}" width="100%" height="720" framebord
         class="w-full font-mono text-micro bg-canvas-soft border border-hairline rounded-xs p-3 text-muted select-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >{embedCode}</textarea>
     </div>
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
       <span class="text-micro text-muted">Zero ads · Fully responsive · Automatic rate updates</span>
       <button
         type="button"
         id={`copy-embed-btn-${cleanSlug}`}
-        class="px-4 py-2 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-caption rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer flex items-center gap-1.5"
+        class="w-full sm:w-auto px-4 py-2 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-caption rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer flex items-center justify-center gap-1.5"
       >
         <span class="copy-text">Copy Embed Code</span>
       </button>

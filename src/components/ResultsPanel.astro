@@ -99,7 +99,7 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
 
     <!-- Main Headline: 'You keep $X' -->
     <div class="flex items-baseline gap-2">
-      <h3 class="text-display-lg md:text-display-xl font-bold tracking-tight text-white tabular-nums">
+      <h3 class="text-heading-1 sm:text-display-lg md:text-display-xl font-bold tracking-tight text-white tabular-nums break-words">
         <span data-headline-prefix>{headlinePrefix}</span>{" "}
         <span data-out="net-profit">
           {formatMoney(result.netProfit, currencySymbol)}
@@ -108,7 +108,7 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
     </div>
 
     <!-- Key Metrics Subtitle: Margin & ROI -->
-    <div class="flex flex-wrap items-center gap-3 mt-3 text-body-sm text-white/90 font-light">
+    <div class="flex flex-wrap items-center gap-2 sm:gap-3 mt-3 text-caption sm:text-body-sm text-white/90 font-light">
       <span class="inline-flex items-center gap-1 font-medium">
         Margin:{" "}
         <strong

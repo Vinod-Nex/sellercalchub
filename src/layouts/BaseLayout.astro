@@ -15,6 +15,8 @@ export interface Props {
   canonicalPath?: string;
   /** Open Graph preview image URL */
   ogImage?: string;
+  /** Open Graph preview image alt text */
+  ogImageAlt?: string;
   /** Open Graph type ('website' | 'article') */
   ogType?: 'website' | 'article';
   /** Prevent search engines from indexing this page */
@@ -39,6 +41,7 @@ const {
   description,
   canonicalPath,
   ogImage,
+  ogImageAlt,
   ogType,
   noindex,
   structuredData,
@@ -55,6 +58,7 @@ const {
       description={description}
       canonicalPath={canonicalPath}
       ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
       ogType={ogType}
       noindex={noindex}
       structuredData={structuredData}

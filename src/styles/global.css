@@ -273,6 +273,19 @@ html.light {
   --text-micro--line-height: 1.4;
 }
 
+/* Mobile-Responsive Fluid Typography Scale (Phone screens <= 640px) */
+@media (max-width: 640px) {
+  :root {
+    --text-display-xl: 34px;
+    --text-display-lg: 28px;
+    --text-heading-1: 26px;
+    --text-heading-2: 22px;
+    --text-stat-value: 20px;
+    --text-heading-3: 18px;
+    --text-heading-4: 18px;
+  }
+}
+
 body {
   background-color: var(--color-canvas);
   color: var(--color-body);
@@ -301,4 +314,20 @@ html.calc-restoring seller-calculator:not([data-initialized]) {
   border: 0 !important;
   left: 0 !important;
   top: 0 !important;
+}
+
+/* Hide scrollbar utility for responsive horizontal scrolling tab lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Responsive table container */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }

@@ -25,3 +25,19 @@ export function getPageSeo(path: string): PageSeoEntry {
   }
   return entry as PageSeoEntry;
 }
+
+/**
+ * Maps any page path to its corresponding 1200x630 OG image.
+ */
+export function getOgImagePath(path: string): string {
+  const clean = path.replace(/^\//, '').replace(/\/$/, '');
+  if (!clean || clean === 'index') {
+    return '/og/og-home.png';
+  }
+  if (clean.startsWith('guides/')) {
+    const guideSlug = clean.replace('guides/', '');
+    return `/og/og-guide-${guideSlug}.png`;
+  }
+  const ogFilename = `/og/og-${clean}.png`;
+  return ogFilename;
+}

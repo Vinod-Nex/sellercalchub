@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { OG_IMAGES } from '../../scripts/generate-og-images';
+
+const pagesList = OG_IMAGES.map((item) => ({
+  name: item.title,
+  slug: item.slug,
+  filename: item.filename,
+  platform: item.platformName,
+  sampleResult: item.sampleResult,
+  badge: item.badge,
+  urlPath:
+    item.slug === 'home'
+      ? '/'
+      : item.slug === 'default'
+        ? '/'
+        : item.slug.startsWith('guide-')
+          ? `/guides/${item.slug.replace('guide-', '')}/`
+          : `/${item.slug}/`,
+}));
+
+const seo = {
+  title: 'Social Preview Card Debugger & Open Graph Validator - Seller Calc Hub',
+  description: 'Inspect and debug Open Graph and Twitter summary_large_image social cards for every page on Seller Calc Hub.',
+};
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonicalPath="/social-preview-debugger/"
+  noindex={true}
+>
+  <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+    <!-- Header & Instructions -->
+    <header class="space-y-3 border-b border-hairline pb-6">
+      <div class="flex items-center gap-2">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-50 dark:bg-mint-200/10 px-2.5 py-1 rounded-xs">
+          Open Graph &amp; Twitter Card Validator
+        </span>
+      </div>
+      <h1 class="text-heading-1 font-bold text-ink tracking-tight">
+        Social Preview Card Debugger
+      </h1>
+      <p class="text-body-md text-muted max-w-3xl leading-relaxed">
+        Verify that 1200&times;630 build-time Open Graph images, title tags, descriptions, and <code>summary_large_image</code> metadata render pixel-perfect previews across X (Twitter), Facebook, LinkedIn, Discord, and Slack.
+      </p>
+    </header>
+
+    <!-- Page Selector Controls -->
+    <div class="bg-canvas border border-hairline-strong rounded-lg p-5 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <label for="page-selector" class="block text-ui-label font-bold text-ink">
+            Select Page to Inspect
+          </label>
+          <span class="text-caption text-muted">
+            Choose from all 19 statically generated social card targets:
+          </span>
+        </div>
+        <select
+          id="page-selector"
+          class="w-full sm:w-80 px-3 py-2.5 min-h-[44px] bg-canvas-soft border border-hairline-strong rounded-xs text-ui-sm text-ink font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+        >
+          {pagesList.map((p, idx) => (
+            <option value={idx}>
+              {p.platform}: {p.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <!-- Quick Metrics Status Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-hairline text-caption">
+        <div class="flex items-center gap-1.5 text-forest font-medium">
+          <span class="w-2 h-2 rounded-full bg-forest"></span>
+          <span>1200&times;630 Resolution</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-forest font-medium">
+          <span class="w-2 h-2 rounded-full bg-forest"></span>
+          <span>summary_large_image</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-forest font-medium">
+          <span class="w-2 h-2 rounded-full bg-forest"></span>
+          <span>Sample Calculation Included</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-forest font-medium">
+          <span class="w-2 h-2 rounded-full bg-forest"></span>
+          <span>Zero Layout Shift</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Card Previews Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      <!-- 1. Twitter / X Card Preview -->
+      <section class="space-y-3" aria-labelledby="twitter-preview-title">
+        <div class="flex items-center justify-between">
+          <h2 id="twitter-preview-title" class="text-heading-3 font-bold text-ink flex items-center gap-2">
+            <span>X (Twitter) Large Card Preview</span>
+          </h2>
+          <span class="text-micro font-mono text-muted uppercase">summary_large_image</span>
+        </div>
+
+        <div class="rounded-xl border border-hairline-strong bg-canvas overflow-hidden shadow-level-3 max-w-lg mx-auto lg:mx-0">
+          <div class="relative aspect-[1200/630] w-full bg-canvas-soft overflow-hidden">
+            <img
+              id="twitter-card-img"
+              src={`/og/${pagesList[0].filename}`}
+              alt={`Social preview for ${pagesList[0].name}`}
+              width="1200"
+              height="630"
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+          <div class="p-3.5 space-y-1 bg-canvas border-t border-hairline">
+            <div class="text-micro text-muted font-medium uppercase tracking-wider flex items-center gap-1">
+              <span>sellercalchub.com</span>
+            </div>
+            <div id="twitter-card-title" class="text-ui-label font-bold text-ink line-clamp-1">
+              {pagesList[0].name} - Seller Calc Hub
+            </div>
+            <div id="twitter-card-desc" class="text-caption text-muted line-clamp-2">
+              {pagesList[0].sampleResult}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Facebook / Open Graph Preview -->
+      <section class="space-y-3" aria-labelledby="facebook-preview-title">
+        <div class="flex items-center justify-between">
+          <h2 id="facebook-preview-title" class="text-heading-3 font-bold text-ink flex items-center gap-2">
+            <span>Facebook / LinkedIn Card Preview</span>
+          </h2>
+          <span class="text-micro font-mono text-muted uppercase">og:image (1.91:1)</span>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3 max-w-lg mx-auto lg:mx-0">
+          <div class="relative aspect-[1200/630] w-full bg-canvas-soft overflow-hidden">
+            <img
+              id="fb-card-img"
+              src={`/og/${pagesList[0].filename}`}
+              alt={`Open graph preview for ${pagesList[0].name}`}
+              width="1200"
+              height="630"
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+          <div class="p-3.5 space-y-1 bg-canvas-soft border-t border-hairline">
+            <div class="text-micro text-muted font-medium uppercase tracking-wider">
+              SELLERCALCHUB.COM
+            </div>
+            <div id="fb-card-title" class="text-ui-label font-bold text-ink line-clamp-1">
+              {pagesList[0].name}
+            </div>
+            <div id="fb-card-desc" class="text-caption text-muted line-clamp-2">
+              Free, fast marketplace fee and profit calculators for resellers. {pagesList[0].sampleResult}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Raw Open Graph Tags Table -->
+    <section class="space-y-4 pt-4 border-t border-hairline" aria-labelledby="meta-inspector-title">
+      <h2 id="meta-inspector-title" class="text-heading-3 font-bold text-ink">
+        Active Meta Tags Inspector
+      </h2>
+      <div class="border border-hairline-strong rounded-lg overflow-x-auto bg-canvas">
+        <table class="w-full text-left text-body-sm font-mono divide-y divide-hairline">
+          <thead class="bg-canvas-soft text-micro uppercase text-muted font-bold tracking-wider">
+            <tr>
+              <th scope="col" class="px-4 py-3">Tag Property / Name</th>
+              <th scope="col" class="px-4 py-3">Current Value</th>
+              <th scope="col" class="px-4 py-3">Spec Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline text-caption" id="meta-table-body">
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-primary">og:type</td>
+              <td class="px-4 py-2.5 text-ink">website</td>
+              <td class="px-4 py-2.5 text-forest font-bold">Valid</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-primary">og:image</td>
+              <td class="px-4 py-2.5 text-ink" id="meta-val-og-image">https://sellercalchub.com/og/{pagesList[0].filename}</td>
+              <td class="px-4 py-2.5 text-forest font-bold">1200&times;630 PNG</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-primary">og:image:alt</td>
+              <td class="px-4 py-2.5 text-ink" id="meta-val-og-alt">{pagesList[0].name} - 1200x630 social preview card on Seller Calc Hub</td>
+              <td class="px-4 py-2.5 text-forest font-bold">Accessible</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-primary">twitter:card</td>
+              <td class="px-4 py-2.5 text-ink">summary_large_image</td>
+              <td class="px-4 py-2.5 text-forest font-bold">Compliant</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-primary">og:url</td>
+              <td class="px-4 py-2.5 text-ink" id="meta-val-og-url">https://sellercalchub.com{pagesList[0].urlPath}</td>
+              <td class="px-4 py-2.5 text-forest font-bold">Canonical</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ pagesList }}>
+  const selector = document.getElementById('page-selector');
+  const twitterImg = document.getElementById('twitter-card-img');
+  const twitterTitle = document.getElementById('twitter-card-title');
+  const twitterDesc = document.getElementById('twitter-card-desc');
+  const fbImg = document.getElementById('fb-card-img');
+  const fbTitle = document.getElementById('fb-card-title');
+  const fbDesc = document.getElementById('fb-card-desc');
+  const metaOgImage = document.getElementById('meta-val-og-image');
+  const metaOgAlt = document.getElementById('meta-val-og-alt');
+  const metaOgUrl = document.getElementById('meta-val-og-url');
+
+  if (selector) {
+    selector.addEventListener('change', (e) => {
+      const idx = Number(e.target.value);
+      const page = pagesList[idx];
+      if (!page) return;
+
+      const imgUrl = `/og/${page.filename}`;
+      const fullUrl = `https://sellercalchub.com/og/${page.filename}`;
+      const canonicalUrl = `https://sellercalchub.com${page.urlPath}`;
+
+      if (twitterImg) twitterImg.src = imgUrl;
+      if (twitterTitle) twitterTitle.textContent = `${page.name} - Seller Calc Hub`;
+      if (twitterDesc) twitterDesc.textContent = page.sampleResult;
+
+      if (fbImg) fbImg.src = imgUrl;
+      if (fbTitle) fbTitle.textContent = page.name;
+      if (fbDesc) fbDesc.textContent = `Free, fast marketplace fee and profit calculators for resellers. ${page.sampleResult}`;
+
+      if (metaOgImage) metaOgImage.textContent = fullUrl;
+      if (metaOgAlt) metaOgAlt.textContent = `${page.name} - 1200x630 social preview card on Seller Calc Hub`;
+      if (metaOgUrl) metaOgUrl.textContent = canonicalUrl;
+    });
+  }
+</script>

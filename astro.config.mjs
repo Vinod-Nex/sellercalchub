@@ -116,7 +116,7 @@ export default defineConfig({
     sitemap({
       serialize(item) {
         // Exclude demo, internal dev, 404, or non-indexable routes
-        if (/(inputs-demo|design-tokens|404)/.test(item.url)) {
+        if (/(inputs-demo|design-tokens|social-preview-debugger|404)/.test(item.url)) {
           return undefined;
         }
 

@@ -75,7 +75,7 @@ const platformList: { id: PlatformId; label: string }[] = [
   data-currency={config.defaultCurrency}
   data-symbol={currencySymbol}
 >
-  <div class="rounded-lg border border-hairline-strong bg-canvas p-6 md:p-8 shadow-level-3 space-y-8">
+  <div class="rounded-lg border border-hairline-strong bg-canvas p-4 sm:p-6 md:p-8 shadow-level-3 space-y-6 sm:space-y-8">
     <!-- Platform Switcher Tabs (Optional, works without JS via links or with JS via tabs) -->
     {
       showPlatformTabs && (
@@ -83,7 +83,7 @@ const platformList: { id: PlatformId; label: string }[] = [
           <label class="block text-eyebrow font-bold text-muted uppercase tracking-wider mb-2">
             Select Marketplace Platform
           </label>
-          <div class="flex flex-wrap gap-2" role="tablist" aria-label="Marketplace Platforms">
+          <div class="flex flex-nowrap overflow-x-auto sm:flex-wrap gap-2 pb-1 no-scrollbar" role="tablist" aria-label="Marketplace Platforms">
             {platformList.map((p) => {
               const isActive = p.id === platform;
               return (

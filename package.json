@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:prod": "tsx scripts/lint-seo.ts && STRICT_PROD=true astro build && tsx scripts/check-thin-content.ts",
+    "build:prod": "tsx scripts/generate-og-images.ts && tsx scripts/lint-seo.ts && STRICT_PROD=true astro build && tsx scripts/check-thin-content.ts",
+    "generate:og": "tsx scripts/generate-og-images.ts",
     "lint:seo": "tsx scripts/lint-seo.ts",
     "check:thin-content": "tsx scripts/check-thin-content.ts",
     "verify:fees": "STRICT_PROD=true astro sync",
@@ -34,8 +35,10 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",
     "@fontsource-variable/montserrat": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.3.5",
     "astro": "^7.4.13",
+    "satori": "^0.63.2",
     "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
