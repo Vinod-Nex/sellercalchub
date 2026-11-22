@@ -23,6 +23,7 @@
     "test:watch": "vitest",
     "check:links": "tsx scripts/check-links.ts",
     "audit:freshness": "tsx scripts/check-fee-freshness.ts",
+    "audit:onpage": "tsx scripts/generate-seo-audits.ts",
     "lhci": "lhci autorun",
     "audit:perf": "lhci autorun"
   },
