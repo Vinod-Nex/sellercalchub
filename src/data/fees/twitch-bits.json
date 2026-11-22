@@ -3,9 +3,27 @@
   "platform_name": "Twitch Bits",
   "region": "Global",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "revenue_share",
+      "name": "Streamer Payout Rate",
+      "calculation_type": "fixed",
+      "fixed_amount": 0.01,
+      "currency": "USD",
+      "applies_to": "per_unit",
+      "notes": "Creators receive flat $0.01 USD (1 cent) per Bit cheered on eligible Affiliate or Partner channels"
+    },
+    {
+      "fee_kind": "other",
+      "name": "Viewer Purchase Markup (Web)",
+      "calculation_type": "percent",
+      "percentage": 40.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "Twitch takes its cut upfront from viewers; 100 bits cost $1.40 USD on desktop web (higher on iOS/Android due to app store fees)"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://help.twitch.tv/s/article/guide-to-cheering-with-bits",
-  "notes": "Awaiting user to paste official Twitch Bits revenue share terms into chat to populate typed rates."
+  "notes": "Official Twitch Cheering and Bits revenue share policy. Streamers receive a fixed $0.01 USD per bit cheered regardless of viewer bundle discounts."
 }

@@ -8,6 +8,9 @@ export default defineConfig({
   output: "static",
   site: "https://sellercalchub.com",
   trailingSlash: "always",
+  build: {
+    inlineStylesheets: "always",
+  },
   integrations: [sitemap()],
   i18n: {
     defaultLocale: "en",
