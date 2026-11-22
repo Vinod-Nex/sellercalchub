@@ -27,6 +27,10 @@ const resolvedHref = href ?? feeData?.source_url ?? 'https://sellercalchub.com/m
   href={resolvedHref}
   target={target}
   rel={rel}
+  data-analytics-event="fee_report_clicked"
+  data-analytics-platform={platform || 'general'}
+  data-analytics-label={label}
+  data-analytics-href={resolvedHref}
   class={`relative inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${className}`}
 >
   <span>{label}</span>

@@ -464,6 +464,7 @@ const platformList: { id: PlatformId; label: string }[] = [
     type ReverseTargetType,
     type CalculatorUrlState,
   } from '../lib/calc';
+  import { trackEvent } from '../lib/analytics';
 
   class SellerCalculator extends HTMLElement {
     private currentPlatform: PlatformId = 'whatnot';
@@ -471,6 +472,7 @@ const platformList: { id: PlatformId; label: string }[] = [
     private currentSymbol: string = '$';
     private currentMode: 'forward' | 'reverse' = 'forward';
     private currentReverseTargetType: ReverseTargetType = 'profit';
+    private calcAnalyticsTimeout: ReturnType<typeof setTimeout> | null = null;
 
     private form: HTMLFormElement | null = null;
     private outNetProfit: HTMLElement | null = null;
@@ -576,6 +578,13 @@ const platformList: { id: PlatformId; label: string }[] = [
     }
 
     private switchMode(mode: 'forward' | 'reverse', shouldSyncUrl = true) {
+      if (mode !== this.currentMode) {
+        trackEvent('mode_changed', {
+          platform: this.currentPlatform,
+          previousMode: this.currentMode,
+          newMode: mode,
+        });
+      }
       this.currentMode = mode;
 
       const modeBtns = this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]');
@@ -1046,7 +1055,25 @@ const platformList: { id: PlatformId; label: string }[] = [
 
       if (shouldSyncUrl) {
         this.scheduleUrlSync();
+        this.queueAnalyticsCalc(options);
       }
+    }
+
+    private queueAnalyticsCalc(options?: Record<string, unknown>) {
+      if (typeof window === 'undefined') return;
+      if (this.calcAnalyticsTimeout) clearTimeout(this.calcAnalyticsTimeout);
+      this.calcAnalyticsTimeout = setTimeout(() => {
+        const categoryInput = this.querySelector<HTMLSelectElement>('#calc-category');
+        const promotedInput = this.querySelector<HTMLInputElement>('#opt-promoted');
+        const storeInput = this.querySelector<HTMLInputElement>('#opt-store');
+        trackEvent('calculator_used', {
+          platform: this.currentPlatform,
+          mode: this.currentMode,
+          category: typeof options?.category === 'string' ? options.category : (categoryInput ? categoryInput.value : undefined),
+          hasPromoted: typeof options?.promotedListingPercent === 'number' ? options.promotedListingPercent > 0 : (promotedInput ? promotedInput.checked : undefined),
+          hasStore: typeof options?.hasStoreSubscription === 'boolean' ? options.hasStoreSubscription : (storeInput ? storeInput.checked : undefined),
+        });
+      }, 700);
     }
 
     private updateUI(result: CalcResult) {

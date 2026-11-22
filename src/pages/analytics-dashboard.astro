@@ -1,0 +1,441 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Analytics & Events Dashboard' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Cloudflare Web Analytics & Custom Events Dashboard - Seller Calc Hub',
+  url: 'https://sellercalchub.com/analytics-dashboard/',
+  description:
+    'Live test session dashboard for Cloudflare Web Analytics and privacy-preserving custom events: calculator_used, mode_changed, result_copied, share_link_copied, fee_report_clicked.',
+};
+---
+
+<BaseLayout
+  title="Analytics & Custom Events Dashboard - Seller Calc Hub"
+  description="Real-time test session dashboard for Cloudflare Web Analytics and privacy-preserving custom events (calculator_used, mode_changed, result_copied, share_link_copied, fee_report_clicked). 100% cookieless and zero personal data."
+  canonicalPath="/analytics-dashboard/"
+  structuredData={structuredData}
+>
+  <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Hero Header -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Cloudflare Web Analytics · 100% Cookieless · Zero PII</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Analytics &amp; Custom Events Dashboard
+      </h1>
+
+      <p class="text-body-lg text-body max-w-3xl leading-relaxed">
+        Seller Calc Hub operates on a strict privacy-first foundation. We use <strong class="text-ink">Cloudflare Web Analytics</strong> for lightweight, cookieless performance metrics without tracking individuals across the web. For product diagnostics and feature usage, our application dispatches five privacy-friendly custom events (<code class="bg-canvas-soft px-1.5 py-0.5 rounded text-ui-sm font-mono text-ink">calculator_used</code>, <code class="bg-canvas-soft px-1.5 py-0.5 rounded text-ui-sm font-mono text-ink">mode_changed</code>, <code class="bg-canvas-soft px-1.5 py-0.5 rounded text-ui-sm font-mono text-ink">result_copied</code>, <code class="bg-canvas-soft px-1.5 py-0.5 rounded text-ui-sm font-mono text-ink">share_link_copied</code>, and <code class="bg-canvas-soft px-1.5 py-0.5 rounded text-ui-sm font-mono text-ink">fee_report_clicked</code>).
+      </p>
+    </header>
+
+    <!-- Privacy & Compliance Status Cards -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4" aria-label="Privacy Guarantees">
+      <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+            100% Cookieless
+          </span>
+          <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+        </div>
+        <h3 class="text-heading-4 font-bold text-ink">Zero Cookies Active</h3>
+        <p class="text-caption text-body leading-relaxed">
+          Zero cookies are written or stored. Verified live via <code class="text-micro font-mono">document.cookie</code> inspection in this browser session:
+        </p>
+        <div class="pt-1">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-canvas-soft font-mono text-caption text-ink font-bold" id="cookie-status-badge">
+            ✓ document.cookie is empty (0 bytes)
+          </span>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+            Zero Personal Data
+          </span>
+          <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+        </div>
+        <h3 class="text-heading-4 font-bold text-ink">Zero PII Tracked</h3>
+        <p class="text-caption text-body leading-relaxed">
+          Payloads strip all personal identifiers, email addresses, usernames, and IP addresses. Only aggregated platform identifiers and event actions are measured.
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+            Cloudflare RUM
+          </span>
+          <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+        </div>
+        <h3 class="text-heading-4 font-bold text-ink">Cloudflare Web Analytics</h3>
+        <p class="text-caption text-body leading-relaxed">
+          Integrates Cloudflare’s privacy-first Real User Monitoring (RUM) beacon and Cloudflare Zaraz event forwarding for edge analytics without third-party tracking pixels.
+        </p>
+      </div>
+    </section>
+
+    <!-- Interactive Test Session Controls -->
+    <section class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-6 space-y-4 shadow-sm" aria-label="Test Session Controls">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-heading-3 font-bold text-ink">Test Session Event Simulator</h2>
+          <p class="text-caption text-muted">
+            Execute a simulated user journey or interact with any live calculator to see events stream into the dashboard in real-time.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            id="run-simulation-btn"
+            class="px-4 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          >
+            Run Test Session (All 5 Events)
+          </button>
+          <button
+            type="button"
+            id="clear-session-btn"
+            class="px-4 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          >
+            Clear Test Session
+          </button>
+          <button
+            type="button"
+            id="verify-cookies-btn"
+            class="px-4 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          >
+            Verify Zero Cookies
+          </button>
+        </div>
+      </div>
+      <div id="simulation-status" class="text-ui-sm font-bold text-primary min-h-[20px] transition-opacity opacity-0"></div>
+    </section>
+
+    <!-- Event Metrics Grid -->
+    <section class="space-y-4" aria-label="Event Counts Summary">
+      <h2 class="text-heading-2 font-bold text-ink">Test Session Event Totals</h2>
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">Total Events</span>
+          <span class="text-display-lg font-mono font-bold text-ink block tabular-nums" id="metric-total">0</span>
+        </div>
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">calculator_used</span>
+          <span class="text-display-lg font-mono font-bold text-primary block tabular-nums" id="metric-calc">0</span>
+        </div>
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">mode_changed</span>
+          <span class="text-display-lg font-mono font-bold text-blue-600 dark:text-blue-400 block tabular-nums" id="metric-mode">0</span>
+        </div>
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">result_copied</span>
+          <span class="text-display-lg font-mono font-bold text-amber-600 dark:text-amber-400 block tabular-nums" id="metric-copy">0</span>
+        </div>
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">share_link_copied</span>
+          <span class="text-display-lg font-mono font-bold text-purple-600 dark:text-purple-400 block tabular-nums" id="metric-share">0</span>
+        </div>
+        <div class="rounded-lg border border-hairline bg-canvas p-4 text-center space-y-1 shadow-sm">
+          <span class="text-caption text-muted uppercase font-bold tracking-wider block">fee_report_clicked</span>
+          <span class="text-display-lg font-mono font-bold text-emerald-600 dark:text-emerald-400 block tabular-nums" id="metric-report">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-time Event Stream Table -->
+    <section class="space-y-4 border-t border-hairline pt-8" aria-label="Event Stream">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-heading-2 font-bold text-ink">Live Event Stream Log</h2>
+          <p class="text-body-sm text-body leading-relaxed">
+            Events captured during this browser test session in real-time.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 text-ui-sm text-muted">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" aria-hidden="true"></span>
+          <span>Listening for custom events...</span>
+        </div>
+      </div>
+
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="Real-time test session analytics event stream"
+      >
+        <table class="w-full text-body-sm text-left border-collapse" id="events-table">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th scope="col" class="p-3.5">Timestamp</th>
+              <th scope="col" class="p-3.5">Event Name</th>
+              <th scope="col" class="p-3.5">Platform</th>
+              <th scope="col" class="p-3.5">Payload Properties</th>
+            </tr>
+          </thead>
+          <tbody id="events-tbody" class="divide-y divide-hairline">
+            <tr id="events-empty-row">
+              <td colspan="4" class="p-8 text-center text-muted">
+                No events recorded in this test session yet. Click <strong>Run Test Session</strong> above or interact with any calculator to populate events in real time.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Links to Live Interactive Calculators -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Test on Live Calculators</h2>
+      <p class="text-body text-body leading-relaxed">
+        You can also test custom event dispatching on any live calculator. Open one of the links below, change inputs or click "Copy Breakdown", and return to this dashboard to verify the events:
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <a
+          href="/ebay-fee-calculator/"
+          class="p-4 rounded-lg border border-hairline hover:border-primary bg-canvas block transition-colors group"
+        >
+          <span class="text-ui-label font-bold text-ink group-hover:text-primary transition-colors block">
+            eBay US Fee Calculator &rarr;
+          </span>
+          <span class="text-caption text-muted">Tests category commission and store mode events</span>
+        </a>
+        <a
+          href="/whatnot-fee-calculator/"
+          class="p-4 rounded-lg border border-hairline hover:border-primary bg-canvas block transition-colors group"
+        >
+          <span class="text-ui-label font-bold text-ink group-hover:text-primary transition-colors block">
+            Whatnot Fee Calculator &rarr;
+          </span>
+          <span class="text-caption text-muted">Tests forward and reverse mode changes</span>
+        </a>
+        <a
+          href="/marketplace-fee-calculators/"
+          class="p-4 rounded-lg border border-hairline hover:border-primary bg-canvas block transition-colors group"
+        >
+          <span class="text-ui-label font-bold text-ink group-hover:text-primary transition-colors block">
+            Marketplace Comparison Hub &rarr;
+          </span>
+          <span class="text-caption text-muted">Tests synchronized multi-platform calculations</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Fee Disclaimer -->
+    <FeeDisclaimer />
+  </div>
+</BaseLayout>
+
+<script>
+  import {
+    trackEvent,
+    getRecordedEvents,
+    clearRecordedEvents,
+    getEventCounts,
+    verifyZeroCookies,
+  } from '../lib/analytics';
+
+  function initAnalyticsDashboard() {
+    const runBtn = document.getElementById('run-simulation-btn');
+    const clearBtn = document.getElementById('clear-session-btn');
+    const verifyBtn = document.getElementById('verify-cookies-btn');
+    const statusEl = document.getElementById('simulation-status');
+    const tbody = document.getElementById('events-tbody');
+    const cookieBadge = document.getElementById('cookie-status-badge');
+
+    const totalEl = document.getElementById('metric-total');
+    const calcEl = document.getElementById('metric-calc');
+    const modeEl = document.getElementById('metric-mode');
+    const copyEl = document.getElementById('metric-copy');
+    const shareEl = document.getElementById('metric-share');
+    const reportEl = document.getElementById('metric-report');
+
+    function updateMetrics() {
+      const counts = getEventCounts();
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+
+      if (totalEl) totalEl.textContent = total.toString();
+      if (calcEl) calcEl.textContent = counts.calculator_used.toString();
+      if (modeEl) modeEl.textContent = counts.mode_changed.toString();
+      if (copyEl) copyEl.textContent = counts.result_copied.toString();
+      if (shareEl) shareEl.textContent = counts.share_link_copied.toString();
+      if (reportEl) reportEl.textContent = counts.fee_report_clicked.toString();
+    }
+
+    function getBadgeClass(name: string): string {
+      switch (name) {
+        case 'calculator_used':
+          return 'bg-mint-50 dark:bg-mint-200/10 text-primary border-mint-200';
+        case 'mode_changed':
+          return 'bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900';
+        case 'result_copied':
+          return 'bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900';
+        case 'share_link_copied':
+          return 'bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-900';
+        case 'fee_report_clicked':
+          return 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900';
+        default:
+          return 'bg-canvas-soft text-body border-hairline';
+      }
+    }
+
+    function renderTable() {
+      if (!tbody) return;
+      const events = getRecordedEvents();
+
+      if (events.length === 0) {
+        tbody.innerHTML = `
+          <tr id="events-empty-row">
+            <td colspan="4" class="p-8 text-center text-muted">
+              No events recorded in this test session yet. Click <strong>Run Test Session</strong> above or interact with any calculator to populate events in real time.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const rowsHtml = events.map((ev) => {
+        const time = new Date(ev.timestamp).toLocaleTimeString();
+        const badgeClass = getBadgeClass(ev.name);
+        const platform = (ev.payload as { platform?: string }).platform || 'general';
+        const payloadJson = JSON.stringify(ev.payload);
+
+        return `
+          <tr class="hover:bg-canvas-soft/40 transition-colors">
+            <td class="p-3.5 font-mono text-muted text-caption whitespace-nowrap">${time}</td>
+            <td class="p-3.5">
+              <span class="inline-block px-2 py-0.5 rounded-xs border text-micro font-bold uppercase tracking-wider ${badgeClass}">
+                ${ev.name}
+              </span>
+            </td>
+            <td class="p-3.5 font-bold text-ink">${platform}</td>
+            <td class="p-3.5 font-mono text-caption text-body max-w-md truncate" title="${payloadJson.replace(/"/g, '&quot;')}">
+              ${payloadJson}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      tbody.innerHTML = rowsHtml;
+    }
+
+    function refresh() {
+      updateMetrics();
+      renderTable();
+      checkCookies();
+    }
+
+    function checkCookies() {
+      const isZero = verifyZeroCookies();
+      if (cookieBadge) {
+        if (isZero) {
+          cookieBadge.textContent = '✓ document.cookie is empty (0 cookies / 0 bytes)';
+          cookieBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-canvas-soft font-mono text-caption text-primary font-bold';
+        } else {
+          cookieBadge.textContent = `⚠️ Active cookies found: ${document.cookie.length} bytes`;
+          cookieBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-error/10 font-mono text-caption text-error font-bold';
+        }
+      }
+    }
+
+    // Run test simulation
+    runBtn?.addEventListener('click', () => {
+      // Dispatch all 5 events
+      trackEvent('calculator_used', {
+        platform: 'whatnot',
+        mode: 'forward',
+      });
+
+      trackEvent('mode_changed', {
+        platform: 'ebay-us',
+        previousMode: 'forward',
+        newMode: 'reverse',
+      });
+
+      trackEvent('calculator_used', {
+        platform: 'ebay-us',
+        mode: 'reverse',
+        category: 'Musical Instruments & Gear',
+        hasStore: true,
+      });
+
+      trackEvent('result_copied', {
+        platform: 'ebay-us',
+        format: 'breakdown_summary',
+      });
+
+      trackEvent('share_link_copied', {
+        platform: 'ebay-us',
+      });
+
+      trackEvent('fee_report_clicked', {
+        platform: 'whatnot',
+        href: 'https://help.whatnot.com/hc/en-us/articles/360061198592-Seller-Fees',
+        label: 'Official Whatnot Fee Schedule',
+      });
+
+      refresh();
+
+      if (statusEl) {
+        statusEl.textContent = '✓ Test session complete: all 5 custom events dispatched and logged successfully!';
+        statusEl.classList.remove('opacity-0');
+        setTimeout(() => {
+          statusEl.classList.add('opacity-0');
+        }, 4000);
+      }
+    });
+
+    // Clear session
+    clearBtn?.addEventListener('click', () => {
+      clearRecordedEvents();
+      refresh();
+      if (statusEl) {
+        statusEl.textContent = '✓ Test session cleared.';
+        statusEl.classList.remove('opacity-0');
+        setTimeout(() => {
+          statusEl.classList.add('opacity-0');
+        }, 2000);
+      }
+    });
+
+    // Verify cookies
+    verifyBtn?.addEventListener('click', () => {
+      checkCookies();
+      if (statusEl) {
+        statusEl.textContent = verifyZeroCookies()
+          ? '✓ Verified: document.cookie is completely empty.'
+          : '⚠️ Warning: cookies detected.';
+        statusEl.classList.remove('opacity-0');
+        setTimeout(() => {
+          statusEl.classList.add('opacity-0');
+        }, 3000);
+      }
+    });
+
+    // Listen for live events fired elsewhere in the page or document
+    window.addEventListener('sch:analytics', () => {
+      refresh();
+    });
+
+    // Initial render
+    refresh();
+  }
+
+  initAnalyticsDashboard();
+  document.addEventListener('astro:page-load', initAnalyticsDashboard);
+</script>

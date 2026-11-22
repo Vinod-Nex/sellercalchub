@@ -298,6 +298,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
   import { calculateEbayUs } from '../lib/calc/ebay-us';
   import { calculateDepop } from '../lib/calc/depop';
   import { calculateTikTokShop } from '../lib/calc/tiktok-shop';
+  import { trackEvent } from '../lib/analytics';
 
   class MarketplaceComparisonElement extends HTMLElement {
     private form: HTMLFormElement | null = null;
@@ -305,6 +306,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
     private shipInInput: HTMLInputElement | null = null;
     private costInput: HTMLInputElement | null = null;
     private shipOutInput: HTMLInputElement | null = null;
+    private trackCompTimeout: ReturnType<typeof setTimeout> | null = null;
 
     connectedCallback() {
       this.form = this.querySelector<HTMLFormElement>('[data-comp-form]');
@@ -429,6 +431,19 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
           if (beEl) beEl.textContent = `$${item.calc.breakEvenPrice.toFixed(2)}`;
         }
       }
+
+      this.queueAnalytics();
+    }
+
+    private queueAnalytics() {
+      if (typeof window === 'undefined') return;
+      if (this.trackCompTimeout) clearTimeout(this.trackCompTimeout);
+      this.trackCompTimeout = setTimeout(() => {
+        trackEvent('calculator_used', {
+          platform: 'comparison-hub',
+          mode: 'forward',
+        });
+      }, 800);
     }
   }
 

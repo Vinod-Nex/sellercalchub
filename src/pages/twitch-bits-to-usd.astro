@@ -656,12 +656,15 @@ const structuredData = [
 </BaseLayout>
 
 <script>
+  import { trackEvent } from "../lib/analytics";
+
   class TwitchBitsConverter extends HTMLElement {
     private bitsInput: HTMLInputElement | null = null;
     private usdInput: HTMLInputElement | null = null;
     private outStreamerUsd: HTMLElement | null = null;
     private outViewerWeb: HTMLElement | null = null;
     private outTwitchCut: HTMLElement | null = null;
+    private calcTimeout: ReturnType<typeof setTimeout> | null = null;
 
     connectedCallback() {
       if (this.dataset.initialized === "true") return;
@@ -753,6 +756,19 @@ const structuredData = [
       if (this.outTwitchCut) {
         this.outTwitchCut.textContent = `$${twitchCut.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
+
+      this.queueAnalytics();
+    }
+
+    private queueAnalytics() {
+      if (typeof window === "undefined") return;
+      if (this.calcTimeout) clearTimeout(this.calcTimeout);
+      this.calcTimeout = setTimeout(() => {
+        trackEvent("calculator_used", {
+          platform: "twitch-bits",
+          mode: "forward",
+        });
+      }, 800);
     }
   }
 

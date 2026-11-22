@@ -326,6 +326,9 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
       target="_blank"
       rel="noopener noreferrer"
       data-source-link
+      data-analytics-event="fee_report_clicked"
+      data-analytics-platform={platformName}
+      data-analytics-label={`Official ${platformName} Fee Schedule`}
       class="text-link hover:underline font-semibold min-h-[44px] py-2 inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
     >
       Official <span data-platform-name>{platformName}</span> Fee Schedule
@@ -405,6 +408,8 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
 </section>
 
 <script>
+  import { trackEvent } from "../lib/analytics";
+
   function initActionButtons() {
     const copyBtns = document.querySelectorAll<HTMLButtonElement>(
       "button[data-copy-result-btn]",
@@ -458,27 +463,31 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
         const textToCopy = lines.join("\n");
 
         try {
-          await navigator.clipboard.writeText(textToCopy);
-
-          const btnText = btn.querySelector("[data-copy-btn-text]");
-          const statusEl =
-            panel.querySelector<HTMLElement>("[data-copy-status]");
-
-          if (btnText) btnText.textContent = "✓ Copied!";
-          if (statusEl) {
-            statusEl.textContent = "Breakdown copied to clipboard!";
-            statusEl.classList.remove("invisible");
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            await navigator.clipboard.writeText(textToCopy);
           }
-          btn.classList.add("bg-mint-50", "border-primary");
-
-          setTimeout(() => {
-            if (btnText) btnText.textContent = "Copy Breakdown";
-            if (statusEl) statusEl.classList.add("invisible");
-            btn.classList.remove("bg-mint-50", "border-primary");
-          }, 2000);
         } catch (err) {
-          console.error("Failed to copy to clipboard:", err);
+          console.warn("Clipboard write failed:", err);
         }
+
+        trackEvent("result_copied", { platform });
+
+        const btnText = btn.querySelector("[data-copy-btn-text]");
+        const statusEl =
+          panel.querySelector<HTMLElement>("[data-copy-status]");
+
+        if (btnText) btnText.textContent = "✓ Copied!";
+        if (statusEl) {
+          statusEl.textContent = "Breakdown copied to clipboard!";
+          statusEl.classList.remove("invisible");
+        }
+        btn.classList.add("bg-mint-50", "border-primary");
+
+        setTimeout(() => {
+          if (btnText) btnText.textContent = "Copy Breakdown";
+          if (statusEl) statusEl.classList.add("invisible");
+          btn.classList.remove("bg-mint-50", "border-primary");
+        }, 2000);
       });
     });
 
@@ -490,30 +499,38 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
         const panel = btn.closest<HTMLElement>("[data-results-panel]");
         if (!panel) return;
 
+        const platform =
+          panel.querySelector("[data-platform-name]")?.textContent?.trim() ||
+          "Marketplace";
+
         const urlToCopy = window.location.href;
 
         try {
-          await navigator.clipboard.writeText(urlToCopy);
-
-          const btnText = btn.querySelector("[data-share-btn-text]");
-          const statusEl =
-            panel.querySelector<HTMLElement>("[data-copy-status]");
-
-          if (btnText) btnText.textContent = "✓ Copied!";
-          if (statusEl) {
-            statusEl.textContent = "Shareable link copied to clipboard!";
-            statusEl.classList.remove("invisible");
+          if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            await navigator.clipboard.writeText(urlToCopy);
           }
-          btn.classList.add("bg-mint-50", "border-primary");
-
-          setTimeout(() => {
-            if (btnText) btnText.textContent = "Share Link";
-            if (statusEl) statusEl.classList.add("invisible");
-            btn.classList.remove("bg-mint-50", "border-primary");
-          }, 2000);
         } catch (err) {
-          console.error("Failed to copy link to clipboard:", err);
+          console.warn("Clipboard write failed:", err);
         }
+
+        trackEvent("share_link_copied", { platform });
+
+        const btnText = btn.querySelector("[data-share-btn-text]");
+        const statusEl =
+          panel.querySelector<HTMLElement>("[data-copy-status]");
+
+        if (btnText) btnText.textContent = "✓ Copied!";
+        if (statusEl) {
+          statusEl.textContent = "Shareable link copied to clipboard!";
+          statusEl.classList.remove("invisible");
+        }
+        btn.classList.add("bg-mint-50", "border-primary");
+
+        setTimeout(() => {
+          if (btnText) btnText.textContent = "Share Link";
+          if (statusEl) statusEl.classList.add("invisible");
+          btn.classList.remove("bg-mint-50", "border-primary");
+        }, 2000);
       });
     });
   }

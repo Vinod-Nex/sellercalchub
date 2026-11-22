@@ -1,0 +1,101 @@
+---
+/**
+ * Cloudflare Web Analytics & Privacy-Preserving Event Dispatcher.
+ *
+ * Compliance:
+ * - 100% Cookieless: Zero cookies set or read.
+ * - Zero PII: Strictly no personal or identifying information collected.
+ * - Cloudflare Web Analytics: Official beacon script injected when token is configured.
+ * - Cloudflare Zaraz / In-App Event Bus: Bridges custom events (calculator_used, mode_changed,
+ *   result_copied, share_link_copied, fee_report_clicked).
+ */
+
+export interface Props {
+  token?: string;
+}
+
+const { token = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN || '' } = Astro.props;
+const hasToken = Boolean(token && token.trim().length > 0);
+---
+
+{/* 1. Official Cloudflare Web Analytics Beacon (Cookieless RUM) */}
+{hasToken && (
+  <script
+    is:inline
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={JSON.stringify({ token })}
+  />
+)}
+
+{/* 2. Privacy-Friendly Custom Event Client Listener */}
+<script>
+  import {
+    trackEvent,
+    getRecordedEvents,
+    clearRecordedEvents,
+    getEventCounts,
+    verifyZeroCookies,
+    type AnalyticsEventName,
+    type EventPayloadMap,
+  } from '../lib/analytics';
+
+  // Expose global helper for calculator islands and test session inspection
+  if (typeof window !== 'undefined') {
+    (window as unknown as {
+      schAnalytics: {
+        track: <T extends AnalyticsEventName>(name: T, payload: EventPayloadMap[T]) => void;
+        getEvents: typeof getRecordedEvents;
+        clear: typeof clearRecordedEvents;
+        getCounts: typeof getEventCounts;
+        verifyZeroCookies: typeof verifyZeroCookies;
+      };
+    }).schAnalytics = {
+      track: trackEvent,
+      getEvents: getRecordedEvents,
+      clear: clearRecordedEvents,
+      getCounts: getEventCounts,
+      verifyZeroCookies,
+    };
+
+    // Global click delegation for fee report links (fee_report_clicked event)
+    document.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      const link = target.closest('a') as HTMLAnchorElement | null;
+      if (!link) return;
+
+      // Check for explicit data attribute
+      if (link.dataset.analyticsEvent === 'fee_report_clicked') {
+        trackEvent('fee_report_clicked', {
+          platform: link.dataset.analyticsPlatform || 'general',
+          href: link.href,
+          label: link.dataset.analyticsLabel || link.textContent?.trim() || 'Fee Schedule',
+        });
+        return;
+      }
+
+      // Check for official fee documentation links (SourceLink, ResultsPanel source link)
+      const isFeeLink =
+        link.hasAttribute('data-source-link') ||
+        (link.hostname && link.hostname !== window.location.hostname && (
+          link.href.includes('ebay.com') ||
+          link.href.includes('etsy.com') ||
+          link.href.includes('whatnot.com') ||
+          link.href.includes('tiktok.com') ||
+          link.href.includes('depop.com') ||
+          link.href.includes('twitch.tv')
+        ));
+
+      if (isFeeLink) {
+        const platformMatch = link.dataset.platformName || link.dataset.platform || 'marketplace';
+        trackEvent('fee_report_clicked', {
+          platform: platformMatch,
+          href: link.href,
+          label: link.textContent?.trim() || 'Official Policy',
+        });
+      }
+    });
+  }
+</script>
