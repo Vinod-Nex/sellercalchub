@@ -10,3 +10,7 @@ Disallow: /404.html
 # Sitemaps
 Sitemap: https://sellercalchub.com/sitemap-index.xml
 Sitemap: https://sellercalchub.com/sitemap.xml
+
+# LLM & AI Agents Index
+# Clean, factual plain-text reference available at /llms.txt
+

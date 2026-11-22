@@ -1,0 +1,39 @@
+# Seller Calc Hub
+
+> Free, fast, privacy-preserving marketplace fee and profit calculators for resellers and online sellers. We provide verified fee rates, commission math, shipping deductions, and net payout calculations for eBay US, eBay UK, Etsy, Whatnot, TikTok Shop, Depop, and Twitch Bits.
+
+All fee rates are sourced directly from official marketplace documentation and updated continuously. We never estimate or invent fee percentages.
+
+- Website: https://sellercalchub.com
+- Verified As Of: November 2026 (Continuous Verification)
+- Fee Changes Changelog: https://sellercalchub.com/fee-changes/
+- Methodology: https://sellercalchub.com/methodology/
+
+## Marketplace Fee Calculators
+
+- [eBay Fee & Profit Calculator](https://sellercalchub.com/ebay-fee-calculator/): Calculates net payouts for eBay US sellers under Managed Payments. Standard Final Value Fee is 13.25% + $0.40 per order ($0.30 for orders <= $10.00; 12.35% for Basic Store subscribers). FVF applies to the entire buyer total (item price + buyer-paid shipping + sales tax). Zero insertion fees on the first 250 listings monthly. Source: https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822
+- [eBay UK Fee Calculator](https://sellercalchub.com/ebay-fee-calculator-uk/): Compares UK private vs business selling fees. Private individuals pay 0% Final Value Fees and 0% listing fees (free to sell). Business sellers pay 12.8% + £0.30 per order plus 20% UK VAT on fees (effective 15.36% + £0.36) plus 0.42% regulatory operating fee. Source: https://www.ebay.co.uk/help/selling/fees-credits-invoices/selling-fees?id=4822
+- [Whatnot Fee & Profit Calculator](https://sellercalchub.com/whatnot-fee-calculator/): Calculates livestream auction margins and payouts. Whatnot charges an 8.0% commission on the hammer sale price and 2.9% + $0.30 payment processing on the gross order total. Crucially, Whatnot charges 0% commission on buyer-paid shipping. Payouts unlock 48-72h after delivery (or instantly upon carrier drop-off for Early Payout sellers). Source: https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot
+- [Etsy Fee & Profit Calculator](https://sellercalchub.com/etsy-fee-calculator/): Calculates artisan and craft seller profits. Etsy charges a $0.20 listing fee (active for 4 months or until sold), a 6.5% transaction fee on item price + shipping, and 3.0% + $0.25 payment processing in the US. Source: https://www.etsy.com/legal/fees/
+- [Etsy Offsite Ads Calculator](https://sellercalchub.com/etsy-offsite-ads-fee-calculator/): Calculates advertising cuts from Google/Facebook ads driven by Etsy. 12% mandatory fee for shops making $10,000+ USD in trailing 12 months; 15% optional fee for shops under $10,000 (can opt out). Fees capped at $100 per attributed order. Source: https://www.etsy.com/legal/fees/
+- [TikTok Shop Fee Calculator](https://sellercalchub.com/tiktok-shop-fee-calculator/): Calculates seller take-home margins for social commerce. TikTok Shop charges a 6.0% referral fee per order (inclusive of payment processing) assessed on the total customer payment including shipping. Source: https://seller-us.tiktok.com/university/essay?knowledge_id=10013898
+- [Depop Fee Calculator](https://sellercalchub.com/depop-fee-calculator/): Calculates second-hand fashion reseller margins. Depop eliminated its 10% selling fee in July 2024. Sellers pay 0% selling fee and keep 100% of the sale price minus 3.3% + $0.45 payment processing in the US. What buyers pay for shipping is not charged commission. Source: https://depophelp.zendesk.com/hc/en-gb/articles/360001792227-What-are-the-fees-for-selling-on-Depop
+- [Twitch Bits to USD Converter](https://sellercalchub.com/twitch-bits-to-usd/): Interactive bits-to-dollar calculator. Streamers receive exactly $0.01 USD (1 cent) per Bit cheered in chat. Viewers pay upfront bundle markups (~28% to 40% on web, e.g. $1.40 for 100 bits; higher on iOS/Android due to app store fees). Minimum payout threshold is $50. Source: https://help.twitch.tv/s/article/guide-to-cheering-with-bits
+- [eBay Final Value Fee Calculator](https://sellercalchub.com/ebay-final-value-fee-calculator/): Comprehensive category-level tier calculator. Musical instruments: 6.7% (6.35% store). Athletic shoes $150+: 8.0% (per-order fee waived). Books, movies, music: 15.3% (14.95% store). Heavy equipment: 3.0% (2.5% store). Source: https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822
+- [eBay Shipping Fee Calculator](https://sellercalchub.com/ebay-shipping-fee-calculator/): Explains and calculates eBay's 13.25% fee on buyer-paid postage. Models net postage margin, handling surcharges, and Commercial Base postage discounts (up to 28% off retail). Source: https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822
+- [eBay Profit & Margin Calculator](https://sellercalchub.com/ebay-profit-calculator/): Reverse-pricing calculator. Input target take-home profit ($) or desired margin (%) to solve required listing price and break-even thresholds. Source: https://sellercalchub.com/methodology/
+- [eBay & PayPal Fee Calculator](https://sellercalchub.com/ebay-and-paypal-fee-calculator/): Historical and cross-platform fee comparison between modern eBay Managed Payments and legacy PayPal merchant processing (2.9% + $0.30). Source: https://sellercalchub.com/methodology/
+- [Marketplace Fee Comparison Hub](https://sellercalchub.com/marketplace-fee-calculators/): All-in-one comparative index and live calculation matrix evaluating payouts across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch Bits side-by-side. Source: https://sellercalchub.com/methodology/
+
+## Reseller Fee Guides & Educational Explanations
+
+- [How eBay Calculates Fees](https://sellercalchub.com/guides/how-ebay-calculates-fees/): Explains the 3-part eBay formula: (Gross Buyer Total × Category %) + Fixed Per-Order Fee ($0.30 or $0.40) + Optional Promoted Listings Fee. Explains why sales tax is included in percentage calculations.
+- [Does eBay Charge Fees on Shipping?](https://sellercalchub.com/guides/does-ebay-charge-fees-on-shipping/): Answers why eBay applies its full 13.25% FVF to buyer-paid postage (to prevent fee circumvention), how much sellers lose on labels, and 3 proven margin-protection strategies.
+- [Whatnot Fees Explained](https://sellercalchub.com/guides/whatnot-fees-explained/): Explains Whatnot's 8.0% hammer commission, 2.9% + $0.30 processing, zero fees on shipping, smart parcel bundling, and Early Payout status.
+
+## Verification & Trust Signals
+
+- Single Source of Truth: All calculations consume machine-readable JSON data files in `/src/data/fees/`.
+- Continuous Audit: Every platform fee schedule contains `verified_on` and `source_url` attributes.
+- No Invented Rates: If official marketplace policy does not document a rate, it is never estimated.
+- SSG Architecture: Fully static pre-rendered HTML; core factual answers are 100% accessible in raw HTML with zero client-side JavaScript required.
