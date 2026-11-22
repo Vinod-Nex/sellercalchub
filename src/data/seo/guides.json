@@ -1,0 +1,205 @@
+{
+  "$schema": "./schema.json",
+  "title": "Seller Calc Hub - Supporting SEO Guides Strategy",
+  "version": "1.0.0",
+  "generated_on": "2026-11-22",
+  "editorial_policy": "Content strategy first: strictly informational guides answering real seller questions from keyword-plan-ranked.xlsx. Every guide contains verified facts from fee data, links to its primary calculator with descriptive anchor text, and targets an informational query distinct from all calculator pages.",
+  "competitive_check": {
+    "zero_overlap_with_calculators_enforced": true,
+    "competing_keywords_found": []
+  },
+  "guides": [
+    {
+      "id": "how-ebay-calculates-fees",
+      "url": "/guides/how-ebay-calculates-fees/",
+      "title": "How eBay Calculates Fees: 2026 Seller Fee Math Explained",
+      "metaDescription": "Learn how eBay calculates seller fees across final value percentages, fixed per-order charges, and category tiers. Master the math to keep more profit today.",
+      "h1": "How eBay Calculates Seller Fees: The Complete Math Breakdown",
+      "primary_keyword": "how does ebay calculate fees",
+      "search_intent": "Informational",
+      "cluster": "eBay generic fee calculator",
+      "monthly_searches": 20,
+      "target_calculator_url": "/ebay-fee-calculator/",
+      "target_calculator_anchor": "eBay Fee & Profit Calculator",
+      "verified_fee_facts": [
+        "Standard Final Value Fee is 13.25% up to $7,500 and 2.35% thereafter for most categories.",
+        "Store subscribers receive a reduced 12.35% rate.",
+        "Fixed per-order fee is $0.30 for orders $10.00 or under, and $0.40 for orders over $10.00.",
+        "Payment processing is bundled into the Final Value Fee with no separate gateway surcharge."
+      ],
+      "status": "published"
+    },
+    {
+      "id": "does-ebay-charge-fees-on-shipping",
+      "url": "/guides/does-ebay-charge-fees-on-shipping/",
+      "title": "Does eBay Charge Fees on Shipping? The Truth & How to Save",
+      "metaDescription": "Does eBay charge fees on shipping? Yes. Discover why eBay applies fees to postage, how much you lose, and 3 proven strategies to protect your profit margin.",
+      "h1": "Does eBay Charge Fees on Shipping? Why & How to Protect Margins",
+      "primary_keyword": "does ebay charge fees on shipping",
+      "search_intent": "Informational",
+      "cluster": "eBay shipping/handling",
+      "monthly_searches": 40,
+      "target_calculator_url": "/ebay-shipping-fee-calculator/",
+      "target_calculator_anchor": "eBay Shipping Fee Calculator",
+      "verified_fee_facts": [
+        "eBay assesses the full 13.25% (or 12.35% Store) Final Value Fee on buyer-paid shipping.",
+        "On a $10 shipping charge, eBay deducts $1.33 in fees, leaving $8.67 for postage.",
+        "Commercial base postage discounts on eBay Labels offer up to 28% off retail USPS rates."
+      ],
+      "status": "published"
+    },
+    {
+      "id": "whatnot-fees-explained",
+      "url": "/guides/whatnot-fees-explained/",
+      "title": "Whatnot Fees Explained: Live Auction Commission & Payouts",
+      "metaDescription": "Understand Whatnot seller fees: 8% commission, 2.9% + $0.30 processing, and automated shipping. Calculate your exact livestream profit before going live today.",
+      "h1": "Whatnot Seller Fees Explained: Live Auction Commission & Net Take-Home",
+      "primary_keyword": "whatnot fees explained",
+      "search_intent": "Informational",
+      "cluster": "Whatnot fee calculator",
+      "monthly_searches": 50,
+      "target_calculator_url": "/whatnot-fee-calculator/",
+      "target_calculator_anchor": "Whatnot Fee & Profit Calculator",
+      "verified_fee_facts": [
+        "Commission is a flat 8.0% assessed only on the hammer sale price.",
+        "Payment processing is 2.9% + $0.30 on the full transaction amount.",
+        "Whatnot does NOT charge its 8.0% commission on buyer-paid shipping labels."
+      ],
+      "status": "published"
+    },
+    {
+      "id": "etsy-offsite-ads-explained",
+      "url": "/guides/etsy-offsite-ads-explained/",
+      "title": "Etsy Offsite Ads Explained: 12% vs 15% Fees & Opt-Out Rules",
+      "metaDescription": "Complete guide to Etsy Offsite Ads: mandatory 12% vs optional 15% fees, the $10,000 threshold, 30-day attribution, and how to price your items profitably.",
+      "h1": "Etsy Offsite Ads Explained: How Attribution & Surcharges Work",
+      "primary_keyword": "etsy offsite ads explained",
+      "search_intent": "Informational",
+      "cluster": "Etsy offsite ads",
+      "monthly_searches": 70,
+      "target_calculator_url": "/etsy-offsite-ads-fee-calculator/",
+      "target_calculator_anchor": "Etsy Offsite Ads Calculator",
+      "verified_fee_facts": [
+        "12% mandatory fee for shops with trailing 12-month revenue of $10,000+ USD.",
+        "15% optional fee for shops with under $10,000 revenue (can opt out).",
+        "Fees are capped at a maximum of $100 per attributed order.",
+        "Attribution window lasts 30 days from initial buyer ad click."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "tiktok-shop-referral-fees-explained",
+      "url": "/guides/tiktok-shop-referral-fees-explained/",
+      "title": "TikTok Shop Referral Fees Explained: 2026 Commission Rates",
+      "metaDescription": "Everything you need to know about TikTok Shop seller fees: 6.0% referral commission, affiliate creator cuts, and net social commerce payout schedules.",
+      "h1": "TikTok Shop Referral Fees Explained: Real Seller Costs & Margins",
+      "primary_keyword": "tiktok shop referral fees explained",
+      "search_intent": "Informational",
+      "cluster": "TikTok Shop fee calculator",
+      "monthly_searches": 40,
+      "target_calculator_url": "/tiktok-shop-fee-calculator/",
+      "target_calculator_anchor": "TikTok Shop Fee Calculator",
+      "verified_fee_facts": [
+        "Standard referral fee is 6.0% per order across most product categories.",
+        "Referral percentage is assessed on customer total payment including shipping.",
+        "Payment processing is bundled into the referral fee."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "depop-seller-fees-explained",
+      "url": "/guides/depop-seller-fees-explained/",
+      "title": "Depop Seller Fees Explained: 0% Selling Fee & Processing",
+      "metaDescription": "How do Depop seller fees work? Learn how the 0% selling fee policy works, what 3.3% + $0.45 processing costs, and how Depop compares to Poshmark and eBay.",
+      "h1": "Depop Seller Fees Explained: The 0% Selling Commission Guide",
+      "primary_keyword": "depop seller fees explained",
+      "search_intent": "Informational",
+      "cluster": "Depop fee calculator",
+      "monthly_searches": 60,
+      "target_calculator_url": "/depop-fee-calculator/",
+      "target_calculator_anchor": "Depop Fee Calculator",
+      "verified_fee_facts": [
+        "Depop eliminated its 10% selling fee for US sellers in July 2024.",
+        "Sellers pay 0% selling fee, retaining 100% of the item price minus processing.",
+        "Payment processing is 3.3% + $0.45 per transaction in the US."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "ebay-uk-private-vs-business-seller-fees",
+      "url": "/guides/ebay-uk-private-vs-business-seller-fees/",
+      "title": "eBay UK Fees Explained: 0% Private vs Business Seller Rates",
+      "metaDescription": "Understand eBay UK fees: 0% private seller fees, 12.8% + 30p business rates, 20% VAT rules, and regulatory operating charges for UK resellers.",
+      "h1": "eBay UK Seller Fees Explained: Private vs Business Rate Comparison",
+      "primary_keyword": "ebay uk private vs business seller fees",
+      "search_intent": "Informational",
+      "cluster": "eBay UK",
+      "monthly_searches": 30,
+      "target_calculator_url": "/ebay-fee-calculator-uk/",
+      "target_calculator_anchor": "eBay UK Fee Calculator",
+      "verified_fee_facts": [
+        "Private sellers in the UK pay 0% Final Value Fees and £0.00 insertion fees.",
+        "Business sellers pay standard 12.8% + £0.30 plus 20% VAT.",
+        "Regulatory operating fee of 0.42% applies to business transactions."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "how-etsy-calculates-fees",
+      "url": "/guides/how-etsy-calculates-fees/",
+      "title": "How Etsy Calculates Fees: Complete Artisan Seller Fee Guide",
+      "metaDescription": "How does Etsy calculate selling fees? Learn the 6.5% transaction cut, $0.20 listing renewals, 3% + $0.25 payment processing, and hidden craft costs.",
+      "h1": "How Etsy Calculates Seller Fees: Listing, Transaction & Processing Math",
+      "primary_keyword": "how are etsy fees calculated",
+      "search_intent": "Informational",
+      "cluster": "Etsy fee calculator",
+      "monthly_searches": 30,
+      "target_calculator_url": "/etsy-fee-calculator/",
+      "target_calculator_anchor": "Etsy Fee Calculator",
+      "verified_fee_facts": [
+        "Listing fee is $0.20 for 4 months or until sold.",
+        "Transaction fee is 6.5% of total sale price including shipping.",
+        "Etsy Payments processing fee is 3.0% + $0.25 in the United States."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "how-ebay-final-value-fees-work",
+      "url": "/guides/how-ebay-final-value-fees-work/",
+      "title": "How eBay Final Value Fees Work: Category Rates & Thresholds",
+      "metaDescription": "Demystify eBay Final Value Fees: category ladders from 6.7% to 15.3%, the $7,500 threshold, athletic sneaker waivers over $150, and Top Rated discounts.",
+      "h1": "How eBay Final Value Fees Work Across Different Product Categories",
+      "primary_keyword": "how do ebay final value fees work",
+      "search_intent": "Informational",
+      "cluster": "eBay final value fee",
+      "monthly_searches": 20,
+      "target_calculator_url": "/ebay-final-value-fee-calculator/",
+      "target_calculator_anchor": "eBay Final Value Fee Calculator",
+      "verified_fee_facts": [
+        "Guitars and musical instruments qualify for a lower 6.7% rate.",
+        "Athletic shoes sold at $150 or more pay 8.0% (waiving the fixed order fee).",
+        "Books, movies, and music pay 15.3% due to high catalog demand."
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "twitch-bits-payout-guide",
+      "url": "/guides/twitch-bits-payout-guide/",
+      "title": "Twitch Bits Payout Guide: What Creators Keep per 100 & 1,000",
+      "metaDescription": "Learn how Twitch Bits payouts work: exactly $0.01 per bit, how viewer markup works, when Twitch pays out, and how to reach the $50 minimum threshold.",
+      "h1": "Twitch Bits Streamer Payout Guide: Exact Cash Conversion & Rules",
+      "primary_keyword": "twitch bits payout explained",
+      "search_intent": "Informational",
+      "cluster": "Twitch Bits to USD",
+      "monthly_searches": 30,
+      "target_calculator_url": "/twitch-bits-to-usd/",
+      "target_calculator_anchor": "Twitch Bits to USD Converter",
+      "verified_fee_facts": [
+        "Streamers receive exactly $0.01 USD per bit cheered in chat.",
+        "Viewers pay a 30% to 40% markup when purchasing bit bundles.",
+        "Twitch enforces a $50 minimum threshold for payouts on the 15th of each month."
+      ],
+      "status": "planned"
+    }
+  ]
+}

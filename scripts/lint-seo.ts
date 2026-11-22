@@ -178,11 +178,107 @@ export function lintSeoPages(data: SeoPagesData): LintError[] {
   return errors;
 }
 
+export interface SeoGuideEntry {
+  id: string;
+  url: string;
+  title: string;
+  metaDescription: string;
+  h1: string;
+  primary_keyword: string;
+  target_calculator_url: string;
+  target_calculator_anchor: string;
+  status: string;
+}
+
+export interface SeoGuidesData {
+  guides: SeoGuideEntry[];
+}
+
+export function lintSeoGuides(guidesData: SeoGuidesData, pagesData: SeoPagesData): LintError[] {
+  const errors: LintError[] = [];
+
+  if (!guidesData || !Array.isArray(guidesData.guides)) {
+    return errors;
+  }
+
+  const calcKeywords = new Set(pagesData.pages.map((p) => p.primary_keyword.trim().toLowerCase()));
+  const calcUrls = new Set(pagesData.pages.map((p) => p.url));
+  const calcTitles = new Set(pagesData.pages.map((p) => p.title.trim().toLowerCase()));
+
+  for (const guide of guidesData.guides) {
+    const guideUrl = guide.url || '(unknown guide)';
+
+    // Length checks
+    if (guide.title && guide.title.length > 60) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-title-max-length',
+        message: `Guide title exceeds 60 characters (${guide.title.length}): "${guide.title}"`,
+      });
+    }
+    if (guide.metaDescription && guide.metaDescription.length > 160) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-meta-max-length',
+        message: `Guide meta exceeds 160 characters (${guide.metaDescription.length}): "${guide.metaDescription}"`,
+      });
+    }
+    if (guide.h1 && guide.title && guide.h1.trim().toLowerCase() === guide.title.trim().toLowerCase()) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-h1-matches-title',
+        message: `Guide H1 must be distinct from title: "${guide.title}"`,
+      });
+    }
+
+    // Cannibalization check (Phase 42)
+    const normKw = (guide.primary_keyword || '').trim().toLowerCase();
+    if (calcKeywords.has(normKw)) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-keyword-cannibalization',
+        message: `Guide primary keyword "${guide.primary_keyword}" collides with calculator page!`,
+      });
+    }
+    if (normKw.includes('calculator')) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-keyword-owns-calculator-intent',
+        message: `Guide primary keyword "${guide.primary_keyword}" contains "calculator" (calculators must own tool intent)`,
+      });
+    }
+    if (calcUrls.has(guide.url)) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-url-collision',
+        message: `Guide URL "${guide.url}" collides with calculator page URL!`,
+      });
+    }
+    if (calcTitles.has((guide.title || '').trim().toLowerCase())) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-title-collision',
+        message: `Guide title "${guide.title}" collides with calculator title!`,
+      });
+    }
+    if (guide.target_calculator_url && !calcUrls.has(guide.target_calculator_url)) {
+      errors.push({
+        url: guideUrl,
+        rule: 'guide-orphan-target-calculator',
+        message: `Guide target calculator "${guide.target_calculator_url}" does not exist in pages.json`,
+      });
+    }
+  }
+
+  return errors;
+}
+
 // CLI Execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   const filePath = path.resolve('src/data/seo/pages.json');
+  const guidesPath = path.resolve('src/data/seo/guides.json');
   console.log(`\n========================================`);
-  console.log(`SEO METADATA BUILD-TIME LINTER (Phase 32)`);
+  console.log(`SEO METADATA BUILD-TIME LINTER (Phase 32 & 42)`);
   console.log(`Target: ${filePath}`);
   console.log(`========================================\n`);
 
@@ -202,6 +298,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   const errors = lintSeoPages(data);
 
+  if (fs.existsSync(guidesPath)) {
+    try {
+      const guidesData = JSON.parse(fs.readFileSync(guidesPath, 'utf-8'));
+      const guideErrors = lintSeoGuides(guidesData, data);
+      errors.push(...guideErrors);
+    } catch (err) {
+      console.error(`❌ FATAL: JSON parse error in ${guidesPath}:`, err);
+      process.exit(1);
+    }
+  }
+
   if (errors.length > 0) {
     console.error(`❌ LINT FAILED: Found ${errors.length} SEO metadata violation(s):\n`);
     for (const [idx, err] of errors.entries()) {
@@ -210,11 +317,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
     process.exit(1);
   } else {
-    console.log(`✅ LINT PASSED: Verified ${data.pages.length} pages.`);
+    console.log(`✅ LINT PASSED: Verified ${data.pages.length} calculator pages and supporting guides.`);
     console.log(`   - All titles ≤ 60 chars with primary keywords positioned near front.`);
     console.log(`   - All meta descriptions ≤ 160 chars reading like ad copy with soft CTAs.`);
     console.log(`   - All H1s are distinct word-for-word from titles.`);
     console.log(`   - Zero duplicates on titles, meta descriptions, H1s, or primary keywords.`);
+    console.log(`   - Zero cannibalization: no guide competes with any calculator page.`);
     console.log(`   - All Open Graph ogTitles defined.\n`);
     process.exit(0);
   }

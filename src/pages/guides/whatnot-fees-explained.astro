@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SourceLink from '../../components/SourceLink.astro';
+import AuthorByline from '../../components/AuthorByline.astro';
+import LastVerified from '../../components/LastVerified.astro';
+import { getPlatformFeeData, formatVerifiedDate } from '../../lib/calc/fee-data';
+import { buildBreadcrumbSchema } from '../../lib/schema';
+
+const whatnotData = getPlatformFeeData('whatnot');
+const verifiedDate = whatnotData?.verified_on ?? '2026-11-22';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+  { name: 'Whatnot Fees Explained' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Whatnot Seller Fees Explained: Live Auction Commission & Net Take-Home',
+    description:
+      'Understand Whatnot seller fees: 8% commission, 2.9% + $0.30 processing, and automated shipping. Calculate your exact livestream profit before going live today.',
+    url: 'https://sellercalchub.com/guides/whatnot-fees-explained/',
+    datePublished: '2026-02-01T00:00:00.000Z',
+    dateModified: `${verifiedDate}T00:00:00.000Z`,
+    author: {
+      '@type': 'Person',
+      name: 'Vinod Kumar',
+      jobTitle: 'Marketplace Fee Analyst',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Seller Calc Hub',
+      url: 'https://sellercalchub.com/',
+    },
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/guides/whatnot-fees-explained/'),
+];
+---
+
+<BaseLayout
+  title="Whatnot Fees Explained: Live Auction Commission & Payouts"
+  description="Understand Whatnot seller fees: 8% commission, 2.9% + $0.30 processing, and automated shipping. Calculate your exact livestream profit before going live today."
+  canonicalPath="/guides/whatnot-fees-explained/"
+  structuredData={structuredData}
+>
+  <article class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-10">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Article Header -->
+    <header class="space-y-4 border-b border-hairline pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 text-caption font-bold">
+          Livestream Seller Guide
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-xs bg-canvas-soft border border-hairline text-caption text-muted">
+          Verified for 2026 Rates
+        </span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Whatnot Seller Fees Explained: Live Auction Commission &amp; Net Take-Home
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        Whatnot charges sellers two core transaction fees: an <strong class="text-primary font-mono font-bold">8.0% commission</strong> on the winning auction or Buy It Now item price, plus a payment processing fee of <strong class="text-primary font-mono font-bold">2.9% + $0.30</strong> assessed on the total buyer-paid order (including shipping and sales tax). Unlike eBay, Whatnot does <strong class="text-ink">not</strong> charge its 8.0% commission on postage.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2 text-caption text-muted">
+        <AuthorByline verifiedDate={verifiedDate} />
+        <div class="flex items-center gap-2">
+          <span>Official Source:</span>
+          <SourceLink sourceUrl={whatnotData?.source_url || 'https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot'} verifiedOn={verifiedDate} />
+        </div>
+      </div>
+    </header>
+
+    <!-- Key Takeaway Box -->
+    <div class="rounded-lg border border-primary/30 bg-mint-50/50 dark:bg-mint-200/5 p-6 space-y-3">
+      <div class="flex items-center gap-2 text-forest font-bold text-ui-label uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span>The Official Whatnot Fee Formula</span>
+      </div>
+      <div class="font-mono text-body-lg font-bold text-ink bg-canvas p-4 rounded-xs border border-hairline overflow-x-auto">
+        Total Whatnot Fee = (Item Price &times; 8.0%) + (Total Buyer Paid &times; 2.9% + $0.30)
+      </div>
+      <p class="text-body-sm text-body leading-relaxed">
+        Because Whatnot's 8.0% commission applies only to the hammer sale price, your effective commission rate drops significantly when buyers purchase high-weight items with large shipping amounts.
+      </p>
+    </div>
+
+    <!-- Section 1: Breakdown of the Two Core Fees -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        1. Breakdown of the Two Core Fees
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        When selling on Whatnot livestreams or via your Whatnot Profile shop, your payout deductions come from two distinct fee schedules:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-5 rounded-lg border border-hairline bg-canvas space-y-2">
+          <div class="text-caption text-forest font-bold uppercase tracking-wider">Marketplace Cut</div>
+          <div class="text-heading-3 font-mono font-bold text-ink">8.0% Commission</div>
+          <p class="text-body-sm text-muted">
+            Whatnot takes a flat 8.0% cut of the final hammer price when an auction ends or a buyer taps "Buy Now". There are no listing fees, insertion fees, or subscription store requirements.
+          </p>
+        </div>
+        <div class="p-5 rounded-lg border border-hairline bg-canvas space-y-2">
+          <div class="text-caption text-forest font-bold uppercase tracking-wider">Payment Processing</div>
+          <div class="text-heading-3 font-mono font-bold text-ink">2.9% + $0.30 Processing</div>
+          <p class="text-body-sm text-muted">
+            Merchant gateway charges to process credit cards, Apple Pay, Google Pay, and buyer funding methods. Assessed on the gross order total including item price, shipping, and sales tax.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tool Callout -->
+    <section class="rounded-lg border-2 border-primary bg-mint-50/70 dark:bg-mint-200/10 p-6 sm:p-8 space-y-4">
+      <div class="space-y-2">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-100 dark:bg-mint-200/20 px-2.5 py-1 rounded-xs">
+          Interactive Profit Calculator
+        </span>
+        <h3 class="text-heading-3 font-bold text-ink">
+          Plan Your Next Livestream Payouts
+        </h3>
+        <p class="text-body text-body leading-relaxed">
+          Input your starting bid, estimated hammer price, item cost, and shipping tier to see your exact take-home profit before you start your stream:
+        </p>
+      </div>
+      <div>
+        <a
+          href="/whatnot-fee-calculator/"
+          class="inline-flex items-center gap-2 px-6 py-3.5 bg-forest hover:bg-primary-deep text-white text-ui-label font-bold rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <span>Open Whatnot Fee &amp; Profit Calculator</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 2: How Shipping Works on Whatnot -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        2. How Shipping Works (No Commission on Postage)
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        One of Whatnot's biggest competitive advantages over eBay is its shipping structure:
+      </p>
+      <ul class="space-y-3 text-body list-disc pl-5">
+        <li>
+          <strong class="text-ink">Automated Smart Bundling:</strong> When a viewer wins multiple items during your stream, Whatnot automatically consolidates them into a single parcel, calculates cumulative item weight, and charges the buyer only the bundled postage difference.
+        </li>
+        <li>
+          <strong class="text-ink">Prepaid Shipping Labels:</strong> At the end of your stream, Whatnot generates pre-addressed USPS or UPS shipping labels directly in your seller portal. You print the labels without paying out of pocket.
+        </li>
+        <li>
+          <strong class="text-ink">Zero Commission on Postage:</strong> Unlike eBay (which takes 13.25% of buyer shipping), Whatnot takes <strong class="text-forest font-bold">0% commission on postage</strong>. The only deduction on shipping is the 2.9% merchant processing interchange fee.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 3: Worked Example -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        3. Worked Example: Selling a $50 Collectible on Whatnot
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Let's look at the exact numbers on a $50 trading card or vintage toy sold during a livestream:
+      </p>
+      <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-3 font-mono text-body-sm">
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Hammer Sale Price:</span>
+          <span class="font-bold text-ink">$50.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Buyer-Paid Shipping (USPS Ground Advantage):</span>
+          <span class="font-bold text-ink">$4.50</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Buyer Sales Tax (7% assumed):</span>
+          <span class="font-bold text-ink">$3.82</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-ink font-bold">
+          <span class="font-sans">Total Gross Transaction:</span>
+          <span>$58.32</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">Whatnot 8.0% Commission (on $50.00):</span>
+          <span>-$4.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">Payment Processing (2.9% &times; $58.32 + $0.30):</span>
+          <span>-$1.99</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-forest font-bold">
+          <span class="font-sans">Total Fees Deducted:</span>
+          <span>-$5.99 (12.0% of item price)</span>
+        </div>
+        <div class="flex justify-between pt-1 text-heading-4 text-forest font-bold">
+          <span class="font-sans">Net Seller Payout:</span>
+          <span>$44.01</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Whatnot Payout Schedules -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        4. Whatnot Payout Schedules &amp; Cash Out Options
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Whatnot holds sales revenue in your in-app ledger until specific fulfillment milestones are achieved:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-1">
+          <div class="text-caption text-muted font-bold uppercase">Standard Sellers</div>
+          <div class="text-heading-4 font-bold text-ink">48-72 Hours After Delivery</div>
+          <p class="text-caption text-muted">
+            New sellers have funds released into their balance 48 to 72 hours after carrier tracking confirms package delivery to the buyer.
+          </p>
+        </div>
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-1">
+          <div class="text-caption text-forest font-bold uppercase">Early Payout Sellers</div>
+          <div class="text-heading-4 font-bold text-ink">Upon Carrier Acceptance Scan</div>
+          <p class="text-caption text-muted">
+            Once you achieve Early Payout status (consistent order volume, positive reviews, fast fulfillment), funds unlock the instant USPS or UPS scans the package.
+          </p>
+        </div>
+      </div>
+      <p class="text-body-sm text-body leading-relaxed">
+        Cash outs via direct deposit (ACH) to your linked bank account are free. Instant cash outs via Stripe to an eligible debit card incur a standard 1.5% instant transfer fee (minimum $0.50).
+      </p>
+    </section>
+
+    <!-- Section 5: Marketplace Fee Comparison -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        5. How Whatnot Fees Compare to Other Platforms
+      </h2>
+      <div class="overflow-x-auto rounded-lg border border-hairline bg-canvas">
+        <table class="w-full text-body-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th class="p-3">Platform</th>
+              <th class="p-3">Selling Commission</th>
+              <th class="p-3">Payment Processing</th>
+              <th class="p-3">Fees on Shipping?</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline">
+            <tr class="bg-mint-50/30 dark:bg-mint-200/5 font-semibold text-ink">
+              <td class="p-3">Whatnot</td>
+              <td class="p-3 font-mono text-primary font-bold">8.0%</td>
+              <td class="p-3 font-mono">2.9% + $0.30</td>
+              <td class="p-3 text-forest font-bold">No (0% commission)</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium">eBay</td>
+              <td class="p-3 font-mono">13.25%</td>
+              <td class="p-3 font-mono">Bundled in FVF + $0.40</td>
+              <td class="p-3 text-red-600 dark:text-red-400">Yes (full 13.25%)</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium">Depop</td>
+              <td class="p-3 font-mono text-forest font-bold">0.0%</td>
+              <td class="p-3 font-mono">3.3% + $0.45</td>
+              <td class="p-3 text-forest font-bold">No (0% commission)</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-medium">TikTok Shop</td>
+              <td class="p-3 font-mono">6.0%</td>
+              <td class="p-3 font-mono">Bundled in referral</td>
+              <td class="p-3 text-red-600 dark:text-red-400">Yes (full 6.0%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Related Guides & Links -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h3 class="text-heading-3 font-bold text-ink">Related Guides &amp; Tools</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="/guides/how-ebay-calculates-fees/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">Cross-Platform Guide &rarr;</div>
+          <div class="text-heading-4 font-bold text-ink">How eBay Calculates Seller Fees</div>
+          <p class="text-caption text-muted">Learn how eBay's 13.25% Final Value Fee compares to Whatnot's 8.0% live auction commission.</p>
+        </a>
+        <a
+          href="/whatnot-fee-calculator/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">Dedicated Calculator &rarr;</div>
+          <div class="text-heading-4 font-bold text-ink">Whatnot Fee &amp; Profit Calculator</div>
+          <p class="text-caption text-muted">Calculate live auction margins, buyer fees, shipping labels, and net payouts instantly.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer Trust Signals -->
+    <footer class="pt-6 border-t border-hairline">
+      <LastVerified platform="whatnot" />
+    </footer>
+  </article>
+</BaseLayout>

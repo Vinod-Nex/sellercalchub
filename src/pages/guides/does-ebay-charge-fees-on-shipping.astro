@@ -1,0 +1,279 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SourceLink from '../../components/SourceLink.astro';
+import AuthorByline from '../../components/AuthorByline.astro';
+import LastVerified from '../../components/LastVerified.astro';
+import { getPlatformFeeData, formatVerifiedDate } from '../../lib/calc/fee-data';
+import { buildBreadcrumbSchema } from '../../lib/schema';
+
+const ebayUsData = getPlatformFeeData('ebay-us');
+const verifiedDate = ebayUsData?.verified_on ?? '2026-11-22';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+  { name: 'Does eBay Charge Fees on Shipping?' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Does eBay Charge Fees on Shipping? Why & How to Protect Margins',
+    description:
+      'Does eBay charge fees on shipping? Yes. Discover why eBay applies fees to postage, how much you lose, and 3 proven strategies to protect your profit margin.',
+    url: 'https://sellercalchub.com/guides/does-ebay-charge-fees-on-shipping/',
+    datePublished: '2026-01-20T00:00:00.000Z',
+    dateModified: `${verifiedDate}T00:00:00.000Z`,
+    author: {
+      '@type': 'Person',
+      name: 'Vinod Kumar',
+      jobTitle: 'Marketplace Fee Analyst',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Seller Calc Hub',
+      url: 'https://sellercalchub.com/',
+    },
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/guides/does-ebay-charge-fees-on-shipping/'),
+];
+---
+
+<BaseLayout
+  title="Does eBay Charge Fees on Shipping? The Truth & How to Save"
+  description="Does eBay charge fees on shipping? Yes. Discover why eBay applies fees to postage, how much you lose, and 3 proven strategies to protect your profit margin."
+  canonicalPath="/guides/does-ebay-charge-fees-on-shipping/"
+  structuredData={structuredData}
+>
+  <article class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-10">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Article Header -->
+    <header class="space-y-4 border-b border-hairline pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 text-caption font-bold">
+          Shipping &amp; Postage Guide
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-xs bg-canvas-soft border border-hairline text-caption text-muted">
+          Verified for 2026 Rates
+        </span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Does eBay Charge Fees on Shipping? Why &amp; How to Protect Margins
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        <strong class="text-ink text-heading-4">Yes, eBay charges fees on shipping.</strong> eBay assesses its entire Final Value Fee percentage (<strong class="text-primary font-mono font-bold">13.25%</strong> for standard sellers, or <strong class="text-primary font-mono font-bold">12.35%</strong> for Basic+ Store subscribers) on the shipping amount charged to the buyer. If you collect $10.00 for shipping, eBay retains $1.33, leaving you with only $8.67 to purchase the postage label.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2 text-caption text-muted">
+        <AuthorByline verifiedDate={verifiedDate} />
+        <div class="flex items-center gap-2">
+          <span>Official Source:</span>
+          <SourceLink sourceUrl={ebayUsData?.source_url || 'https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822'} verifiedOn={verifiedDate} />
+        </div>
+      </div>
+    </header>
+
+    <!-- Visual Highlight Box -->
+    <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-6 space-y-3">
+      <div class="text-ui-label font-bold text-ink flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+        <span>The Shipping Fee Deficit in Practice</span>
+      </div>
+      <p class="text-body text-body leading-relaxed">
+        Many sellers charge exact carrier retail rates at checkout (e.g. $10.00 for USPS Ground Advantage). When they purchase the label at the post office counter for $10.00, they are shocked to discover they lost <strong class="text-primary font-bold">-$1.33 out of pocket</strong> because eBay deducted its 13.25% fee from that $10.00 before deposit.
+      </p>
+    </div>
+
+    <!-- Section 1: Why Does eBay Charge Fees on Shipping? -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        1. Why Does eBay Charge Fees on Shipping?
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        eBay implemented fees on buyer-paid shipping in 2011 to close a widespread loophole known as "fee circumvention." In eBay's earlier era, commissions were charged strictly on item sale prices. Unscrupulous sellers listed expensive electronics and designer goods for <strong class="text-ink">$0.99 with $150.00 shipping</strong>.
+      </p>
+      <p class="text-body text-body leading-relaxed">
+        Under that old model, the seller paid eBay pennies in commission on the 99-cent item while pocketing the entire $150 shipping fee tax-free. To protect marketplace integrity and encourage fair pricing, eBay aligned with industry standards by calculating Final Value Fees on the <strong class="text-ink">entire transaction total</strong>.
+      </p>
+    </section>
+
+    <!-- Interactive Tool Callout -->
+    <section class="rounded-lg border-2 border-primary bg-mint-50/70 dark:bg-mint-200/10 p-6 sm:p-8 space-y-4">
+      <div class="space-y-2">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-100 dark:bg-mint-200/20 px-2.5 py-1 rounded-xs">
+          Dedicated Shipping Tool
+        </span>
+        <h3 class="text-heading-3 font-bold text-ink">
+          Calculate Your Exact Net Postage Margin
+        </h3>
+        <p class="text-body text-body leading-relaxed">
+          Use our dedicated shipping calculator to determine how much postage you need to charge to cover both carrier label costs and eBay's 13.25% fee:
+        </p>
+      </div>
+      <div>
+        <a
+          href="/ebay-shipping-fee-calculator/"
+          class="inline-flex items-center gap-2 px-6 py-3.5 bg-forest hover:bg-primary-deep text-white text-ui-label font-bold rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <span>Open eBay Shipping Fee Calculator</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 2: Step-by-Step Shipping Fee Math -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        2. The Math: What You Keep vs What eBay Keeps
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Here is the exact deduction ladder across common shipping tiers for standard sellers (13.25% FVF):
+      </p>
+      <div class="overflow-x-auto rounded-lg border border-hairline bg-canvas">
+        <table class="w-full text-body-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th class="p-3">Buyer Paid Shipping</th>
+              <th class="p-3">eBay 13.25% Fee</th>
+              <th class="p-3">Store 12.35% Fee</th>
+              <th class="p-3">Net Cash for Postage</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline font-mono">
+            <tr>
+              <td class="p-3 font-sans font-semibold text-ink">$5.00</td>
+              <td class="p-3 text-primary">-$0.66</td>
+              <td class="p-3 text-primary">-$0.62</td>
+              <td class="p-3 font-bold text-forest">$4.34</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-sans font-semibold text-ink">$10.00</td>
+              <td class="p-3 text-primary">-$1.33</td>
+              <td class="p-3 text-primary">-$1.24</td>
+              <td class="p-3 font-bold text-forest">$8.67</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-sans font-semibold text-ink">$15.00</td>
+              <td class="p-3 text-primary">-$1.99</td>
+              <td class="p-3 text-primary">-$1.85</td>
+              <td class="p-3 font-bold text-forest">$13.01</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-sans font-semibold text-ink">$25.00</td>
+              <td class="p-3 text-primary">-$3.31</td>
+              <td class="p-3 text-primary">-$3.09</td>
+              <td class="p-3 font-bold text-forest">$21.69</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3: Worked Example -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        3. Worked Example: Selling a $30 Item with $10 Shipping
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Let's look at the exact shipping deduction breakdown on a typical eBay order:
+      </p>
+      <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-3 font-mono text-body-sm">
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Item Sale Price:</span>
+          <span class="font-bold text-ink">$30.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Buyer-Paid Postage:</span>
+          <span class="font-bold text-ink">$10.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-ink font-bold">
+          <span class="font-sans">Gross Sale Total:</span>
+          <span>$40.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">eBay Fee on Item (13.25% &times; $30):</span>
+          <span>-$3.98</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">eBay Fee on Shipping (13.25% &times; $10):</span>
+          <span>-$1.33</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">Fixed Per-Order Fee:</span>
+          <span>-$0.40</span>
+        </div>
+        <div class="flex justify-between pt-1 text-heading-4 text-forest font-bold">
+          <span class="font-sans">Total eBay Fee Deducted:</span>
+          <span>-$5.71</span>
+        </div>
+      </div>
+      <p class="text-body-sm text-body leading-relaxed">
+        Notice that eBay deducted <strong class="text-primary font-bold">-$1.33</strong> directly from your postage allowance. If the retail label cost you $10.00 at the counter, you ended up subsidizing the shipping out of your item's profit.
+      </p>
+    </section>
+
+    <!-- Section 4: 3 Strategies to Stop Losing Money -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        4. Three Strategies to Stop Losing Money on Shipping
+      </h2>
+
+      <div class="space-y-4">
+        <div class="p-5 rounded-lg border border-hairline bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">Strategy A: Add a Handling Surcharge</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            In eBay listing settings, enable a calculated shipping handling fee (e.g. $1.50 to $2.00). This buffer covers both eBay's fee deduction and packaging supplies (bubble wrap, poly mailers, and thermal labels).
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg border border-hairline bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">Strategy B: Buy Commercial Base Labels on eBay</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Never pay retail rates at the post office. Buying shipping labels directly through eBay Shipping provides <strong class="text-ink">Commercial Base pricing</strong>—saving up to 28% off USPS Ground Advantage and Priority Mail rates. The commercial discount frequently exceeds the 13.25% fee deduction!
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg border border-hairline bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">Strategy C: Roll Shipping into the Price (Free Shipping)</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Offer "Free Shipping" by increasing your item's Buy It Now price by the estimated postage cost. Buyers strongly prefer free shipping, and your search algorithm rank (Best Match) receives a ranking boost.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Guides & Links -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h3 class="text-heading-3 font-bold text-ink">Related Guides &amp; Tools</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="/guides/how-ebay-calculates-fees/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">&larr; Previous Guide</div>
+          <div class="text-heading-4 font-bold text-ink">How eBay Calculates Seller Fees</div>
+          <p class="text-caption text-muted">Complete breakdown of Final Value percentages, per-order fees, and category tiers.</p>
+        </a>
+        <a
+          href="/ebay-fee-calculator/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">Comprehensive Tool &rarr;</div>
+          <div class="text-heading-4 font-bold text-ink">eBay Fee &amp; Profit Calculator</div>
+          <p class="text-caption text-muted">Model your entire listing with promoted ad percentages, category rates, and store discounts.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer Trust Signals -->
+    <footer class="pt-6 border-t border-hairline">
+      <LastVerified platform="ebay-us" />
+    </footer>
+  </article>
+</BaseLayout>

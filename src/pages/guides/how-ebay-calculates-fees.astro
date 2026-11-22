@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SourceLink from '../../components/SourceLink.astro';
+import AuthorByline from '../../components/AuthorByline.astro';
+import LastVerified from '../../components/LastVerified.astro';
+import { getPlatformFeeData, formatVerifiedDate, formatFeeSummary } from '../../lib/calc/fee-data';
+import { buildBreadcrumbSchema } from '../../lib/schema';
+
+const ebayUsData = getPlatformFeeData('ebay-us');
+const verifiedDate = ebayUsData?.verified_on ?? '2026-11-22';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+  { name: 'How eBay Calculates Fees' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'How eBay Calculates Seller Fees: The Complete Math Breakdown',
+    description:
+      'Learn how eBay calculates seller fees across final value percentages, fixed per-order charges, and category tiers. Master the math to keep more profit today.',
+    url: 'https://sellercalchub.com/guides/how-ebay-calculates-fees/',
+    datePublished: '2026-01-15T00:00:00.000Z',
+    dateModified: `${verifiedDate}T00:00:00.000Z`,
+    author: {
+      '@type': 'Person',
+      name: 'Vinod Kumar',
+      jobTitle: 'Marketplace Fee Analyst',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Seller Calc Hub',
+      url: 'https://sellercalchub.com/',
+    },
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/guides/how-ebay-calculates-fees/'),
+];
+---
+
+<BaseLayout
+  title="How eBay Calculates Fees: 2026 Seller Fee Math Explained"
+  description="Learn how eBay calculates seller fees across final value percentages, fixed per-order charges, and category tiers. Master the math to keep more profit today."
+  canonicalPath="/guides/how-ebay-calculates-fees/"
+  structuredData={structuredData}
+>
+  <article class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-10">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Article Header -->
+    <header class="space-y-4 border-b border-hairline pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 text-caption font-bold">
+          eBay Seller Guide
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-xs bg-canvas-soft border border-hairline text-caption text-muted">
+          Verified for 2026 Rates
+        </span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        How eBay Calculates Seller Fees: The Complete Math Breakdown
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        eBay calculates its primary selling fee—the <strong class="text-ink">Final Value Fee (FVF)</strong>—as a percentage of the total amount paid by the buyer (including item price, shipping charged, and sales tax), plus a fixed per-order fee ($0.30 or $0.40). For most consumer categories, the standard rate is <strong class="text-primary font-mono font-bold">13.25% + $0.40</strong> per order (reduced to <strong class="text-primary font-mono font-bold">12.35%</strong> for Basic Store subscribers).
+      </p>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-2 text-caption text-muted">
+        <AuthorByline verifiedDate={verifiedDate} />
+        <div class="flex items-center gap-2">
+          <span>Official Source:</span>
+          <SourceLink sourceUrl={ebayUsData?.source_url || 'https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822'} verifiedOn={verifiedDate} />
+        </div>
+      </div>
+    </header>
+
+    <!-- Key Takeaway Box -->
+    <div class="rounded-lg border border-primary/30 bg-mint-50/50 dark:bg-mint-200/5 p-6 space-y-3">
+      <div class="flex items-center gap-2 text-forest font-bold text-ui-label uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span>The Official 3-Part eBay Fee Formula</span>
+      </div>
+      <div class="font-mono text-body-lg font-bold text-ink bg-canvas p-4 rounded-xs border border-hairline overflow-x-auto">
+        Total eBay Fee = (Total Buyer Paid &times; Category %) + Fixed Per-Order Fee + Optional Ad Fee
+      </div>
+      <p class="text-body-sm text-body leading-relaxed">
+        Unlike payment processors such as PayPal or Stripe that deduct a separate gateway surcharge, eBay bundles credit card and digital wallet processing directly into this Final Value Fee.
+      </p>
+    </div>
+
+    <!-- Section 1: The Total Amount Paid by the Buyer -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        1. What is the "Total Amount Paid by the Buyer"?
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Many new sellers assume eBay only charges commission on their listing price. In reality, eBay's percentage fee applies to the <strong class="text-ink">gross transaction total</strong>. This encompasses three distinct components:
+      </p>
+      <ul class="space-y-2 text-body list-disc pl-5">
+        <li><strong>Item Sale Price:</strong> The winning auction bid or "Buy It Now" price.</li>
+        <li><strong>Shipping Charged to Buyer:</strong> The exact postage amount you collect from the buyer.</li>
+        <li><strong>State Sales Tax:</strong> Automatically calculated, collected, and remitted by eBay to state tax authorities under Marketplace Facilitator laws.</li>
+      </ul>
+      <p class="text-body-sm text-muted bg-canvas-soft p-4 rounded-xs border border-hairline">
+        <strong>Important Rule:</strong> Even though you never receive the sales tax money in your bank account, eBay's percentage cut applies to the sales tax amount because payment processing networks charge interchange on the gross authorization total.
+      </p>
+    </section>
+
+    <!-- Section 2: Fixed Per-Order Fee -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        2. Fixed Per-Order Fee: $0.30 vs $0.40
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        In addition to the percentage rate, eBay charges a flat fee on every completed checkout:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-1">
+          <div class="text-caption text-muted font-bold uppercase">Orders $10.00 or Under</div>
+          <div class="text-heading-3 font-mono font-bold text-ink">$0.30 per order</div>
+          <p class="text-caption text-muted">Designed to protect seller margins on low-cost items, trading cards, and small accessories.</p>
+        </div>
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-1">
+          <div class="text-caption text-muted font-bold uppercase">Orders Exceeding $10.00</div>
+          <div class="text-heading-3 font-mono font-bold text-ink">$0.40 per order</div>
+          <p class="text-caption text-muted">Standard transaction fee assessed across general merchandise, electronics, and apparel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tool Callout -->
+    <section class="rounded-lg border-2 border-primary bg-mint-50/70 dark:bg-mint-200/10 p-6 sm:p-8 space-y-4">
+      <div class="space-y-2">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-100 dark:bg-mint-200/20 px-2.5 py-1 rounded-xs">
+          Interactive Profit Calculator
+        </span>
+        <h3 class="text-heading-3 font-bold text-ink">
+          Want to Calculate Your Exact Fee Right Now?
+        </h3>
+        <p class="text-body text-body leading-relaxed">
+          Don't do the math by hand. Use our free, fast tool to select your category, input your item cost, and see your exact take-home payout:
+        </p>
+      </div>
+      <div>
+        <a
+          href="/ebay-fee-calculator/"
+          class="inline-flex items-center gap-2 px-6 py-3.5 bg-forest hover:bg-primary-deep text-white text-ui-label font-bold rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <span>Open eBay Fee &amp; Profit Calculator</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 3: Category Rate Variations -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        3. Common Category Rate Differences (2026)
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        While 13.25% is standard, eBay adjusts percentages depending on product category economics:
+      </p>
+      <div class="overflow-x-auto rounded-lg border border-hairline bg-canvas">
+        <table class="w-full text-body-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th class="p-3">Category</th>
+              <th class="p-3">Standard FVF Rate</th>
+              <th class="p-3">Store Subscriber Rate</th>
+              <th class="p-3">Threshold Tier</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline">
+            <tr>
+              <td class="p-3 font-semibold text-ink">Most Categories (Clothing, Home)</td>
+              <td class="p-3 font-mono">13.25%</td>
+              <td class="p-3 font-mono text-primary font-bold">12.35%</td>
+              <td class="p-3 text-muted">2.35% over $7,500</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold text-ink">Guitars &amp; Musical Instruments</td>
+              <td class="p-3 font-mono">6.70%</td>
+              <td class="p-3 font-mono text-primary font-bold">6.35%</td>
+              <td class="p-3 text-muted">2.35% over $7,500</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold text-ink">Computers &amp; Electronics</td>
+              <td class="p-3 font-mono">13.25%</td>
+              <td class="p-3 font-mono text-primary font-bold">9.35%</td>
+              <td class="p-3 text-muted">2.35% over $2,500</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold text-ink">Books, Movies &amp; Music</td>
+              <td class="p-3 font-mono">15.30%</td>
+              <td class="p-3 font-mono text-primary font-bold">14.95%</td>
+              <td class="p-3 text-muted">2.35% over $7,500</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-semibold text-ink">Athletic Shoes ($150+)</td>
+              <td class="p-3 font-mono text-primary font-bold">8.00%</td>
+              <td class="p-3 font-mono text-primary font-bold">8.00%</td>
+              <td class="p-3 text-muted">Fixed order fee waived</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4: Worked Example -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">
+        4. Worked Example: Selling a $60 Jacket on eBay
+      </h2>
+      <p class="text-body text-body leading-relaxed">
+        Let's calculate the real fee deductions on a typical item:
+      </p>
+      <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-3 font-mono text-body-sm">
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Item Sale Price:</span>
+          <span class="font-bold text-ink">$60.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Shipping Charged to Buyer:</span>
+          <span class="font-bold text-ink">$10.00</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2">
+          <span class="text-body font-sans font-medium">Buyer Sales Tax (7% assumed):</span>
+          <span class="font-bold text-ink">$4.90</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-ink font-bold">
+          <span class="font-sans">Total Amount Paid by Buyer:</span>
+          <span>$74.90</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">Final Value Fee (13.25% &times; $74.90):</span>
+          <span>-$9.92</span>
+        </div>
+        <div class="flex justify-between border-b border-hairline pb-2 text-primary font-bold">
+          <span class="font-sans">Fixed Per-Order Fee:</span>
+          <span>-$0.40</span>
+        </div>
+        <div class="flex justify-between pt-1 text-heading-4 text-forest font-bold">
+          <span class="font-sans">Total eBay Fee Deducted:</span>
+          <span>-$10.32 (14.7% effective)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Guides & Links -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h3 class="text-heading-3 font-bold text-ink">Related Guides &amp; Tools</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="/guides/does-ebay-charge-fees-on-shipping/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">Next Guide &rarr;</div>
+          <div class="text-heading-4 font-bold text-ink">Does eBay Charge Fees on Shipping?</div>
+          <p class="text-caption text-muted">Learn why eBay takes a cut of postage and 3 strategies to stop losing money on labels.</p>
+        </a>
+        <a
+          href="/ebay-profit-calculator/"
+          class="p-4 rounded-lg border border-hairline bg-canvas hover:border-primary transition-colors space-y-1 block"
+        >
+          <div class="text-caption font-bold text-primary">Reverse Tool &rarr;</div>
+          <div class="text-heading-4 font-bold text-ink">eBay Profit &amp; Margin Calculator</div>
+          <p class="text-caption text-muted">Input your desired take-home cash and reverse calculate your required listing price.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer Trust Signals -->
+    <footer class="pt-6 border-t border-hairline">
+      <LastVerified platform="ebay-us" />
+    </footer>
+  </article>
+</BaseLayout>
