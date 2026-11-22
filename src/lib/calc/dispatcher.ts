@@ -27,6 +27,8 @@ export interface PlatformConfig {
   defaultShippingCost: number;
   defaultQuantity: number;
   defaultOptions: Record<string, unknown>;
+  verifiedOn: string;
+  sourceUrl: string;
 }
 
 export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
@@ -41,6 +43,9 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
     defaultShippingCost: 0.0,
     defaultQuantity: 1,
     defaultOptions: {},
+    verifiedOn: "2026-11-22",
+    sourceUrl:
+      "https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot",
   },
   "tiktok-shop": {
     id: "tiktok-shop",
@@ -56,6 +61,9 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
       referralFeePercent: 6.0,
       affiliateCommissionPercent: 0.0,
     },
+    verifiedOn: "2026-11-22",
+    sourceUrl:
+      "https://seller-us.tiktok.com/university/essay?knowledge_id=10012248",
   },
   depop: {
     id: "depop",
@@ -68,6 +76,9 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
     defaultShippingCost: 5.0,
     defaultQuantity: 1,
     defaultOptions: { region: "US" },
+    verifiedOn: "2026-11-22",
+    sourceUrl:
+      "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-are-the-fees-for-selling-on-Depop",
   },
   etsy: {
     id: "etsy",
@@ -80,6 +91,8 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
     defaultShippingCost: 4.5,
     defaultQuantity: 1,
     defaultOptions: { hasOffsiteAds: false },
+    verifiedOn: "2026-11-22",
+    sourceUrl: "https://www.etsy.com/legal/fees/",
   },
   "ebay-us": {
     id: "ebay-us",
@@ -96,6 +109,9 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
       hasStoreSubscription: false,
       promotedListingPercent: 0.0,
     },
+    verifiedOn: "2026-11-22",
+    sourceUrl:
+      "https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822",
   },
   "ebay-uk": {
     id: "ebay-uk",
@@ -108,6 +124,9 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
     defaultShippingCost: 4.0,
     defaultQuantity: 1,
     defaultOptions: { sellerType: "private", promotedListingPercent: 0.0 },
+    verifiedOn: "2026-11-22",
+    sourceUrl:
+      "https://www.ebay.co.uk/help/selling/fees-credits-invoices/selling-fees?id=4822",
   },
   "twitch-bits": {
     id: "twitch-bits",
@@ -120,6 +139,8 @@ export const PLATFORM_CONFIGS: Record<PlatformId, PlatformConfig> = {
     defaultShippingCost: 0.0,
     defaultQuantity: 1,
     defaultOptions: {},
+    verifiedOn: "2026-11-22",
+    sourceUrl: "https://help.twitch.tv/s/article/guide-to-cheering-with-bits",
   },
 };
 

@@ -10,6 +10,7 @@ import PercentInput from './inputs/PercentInput.astro';
 import SelectInput from './inputs/SelectInput.astro';
 import ToggleSwitch from './inputs/ToggleSwitch.astro';
 import StepperInput from './inputs/StepperInput.astro';
+import ResultsPanel from './ResultsPanel.astro';
 
 export interface Props {
   platform?: PlatformId;
@@ -56,14 +57,6 @@ const serverResult: CalcResult = runCalculator(
 );
 
 const currencySymbol = config.currencySymbol;
-
-function formatMoney(amount: number, symbol: string): string {
-  const formatted = Math.abs(amount).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  return amount < 0 ? `-${symbol}${formatted}` : `${symbol}${formatted}`;
-}
 
 const platformList: { id: PlatformId; label: string }[] = [
   { id: 'whatnot', label: 'Whatnot' },
@@ -310,137 +303,15 @@ const platformList: { id: PlatformId; label: string }[] = [
         </div>
       </form>
 
-      <!-- Right Column: Results & Breakdown -->
-      <div class="lg:col-span-6 space-y-6" aria-live="polite" data-results-container>
-        <!-- Hero Net Profit Stat Card (NerdWallet stat-block-dark) -->
-        <div class="rounded-lg bg-primary-deep text-on-primary p-6 md:p-8 shadow-level-3 relative overflow-hidden">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-ui-label uppercase font-bold tracking-wider text-lime-panel">
-              Estimated Net Profit
-            </span>
-            <span
-              data-profit-badge
-              class:list={[
-                'text-micro uppercase font-bold px-2 py-0.5 rounded-xs',
-                serverResult.netProfit >= 0 ? 'bg-forest text-lime-hero' : 'bg-error text-white',
-              ]}
-            >
-              {serverResult.netProfit >= 0 ? 'Profitable' : 'Loss'}
-            </span>
-          </div>
-
-          <div class="flex items-baseline gap-2">
-            <span
-              class="text-display-lg md:text-display-xl font-bold tracking-tight text-white tabular-nums"
-              data-out="net-profit"
-            >
-              {formatMoney(serverResult.netProfit, currencySymbol)}
-            </span>
-          </div>
-
-          <p class="text-caption text-mint-100 mt-2 font-light">
-            After all marketplace fees, item cost, and shipping expenses.
-          </p>
-        </div>
-
-        <!-- 4-Stat Metric Grid -->
-        <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
-            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
-              Profit Margin
-            </span>
-            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="profit-margin">
-              {serverResult.profitMargin.toFixed(1)}%
-            </span>
-          </div>
-
-          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
-            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
-              Return on Inv. (ROI)
-            </span>
-            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="roi">
-              {serverResult.roi.toFixed(1)}%
-            </span>
-          </div>
-
-          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
-            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
-              Break-Even Price
-            </span>
-            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="break-even">
-              {formatMoney(serverResult.breakEvenPrice, currencySymbol)}
-            </span>
-          </div>
-
-          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
-            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
-              Total Fees
-            </span>
-            <span class="text-stat-value font-bold text-error tabular-nums" data-out="total-fees">
-              {formatMoney(serverResult.totalFees, currencySymbol)}
-            </span>
-          </div>
-        </div>
-
-        <!-- Summary Bar Breakdown -->
-        <div class="rounded-sm border border-hairline bg-canvas p-4 space-y-2">
-          <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider">
-            Financial Summary
-          </span>
-          <div class="space-y-1.5 text-body-sm">
-            <div class="flex justify-between">
-              <span class="text-body">Gross Revenue:</span>
-              <span class="font-semibold text-ink tabular-nums" data-out="gross-revenue">
-                {formatMoney(serverResult.grossRevenue, currencySymbol)}
-              </span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-body">Total Costs (COGS + Ship):</span>
-              <span class="font-semibold text-ink tabular-nums" data-out="total-costs">
-                {formatMoney(serverResult.totalCosts, currencySymbol)}
-              </span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-body">Platform Fees:</span>
-              <span class="font-semibold text-error tabular-nums" data-out="total-fees-summary">
-                {formatMoney(serverResult.totalFees, currencySymbol)}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Itemized Fee Breakdown Table -->
-        <div class="border border-hairline-strong rounded-sm overflow-hidden">
-          <div class="bg-canvas-soft px-4 py-2.5 border-b border-hairline flex justify-between items-center">
-            <h3 class="text-ui-label font-bold text-ink uppercase tracking-wider">
-              Itemized Fee Breakdown
-            </h3>
-            <span class="text-caption text-muted font-medium">Verified Schedule</span>
-          </div>
-          <table class="w-full text-left text-body-sm" aria-label="Fee Breakdown">
-            <thead>
-              <tr class="border-b border-hairline bg-canvas text-eyebrow text-muted font-bold">
-                <th scope="col" class="py-2 px-4">Fee Item</th>
-                <th scope="col" class="py-2 px-4 text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody data-out="fee-breakdown-body" class="divide-y divide-hairline bg-canvas">
-              {
-                serverResult.fees.map((fee) => (
-                  <tr>
-                    <td class="py-2.5 px-4">
-                      <div class="font-semibold text-ink">{fee.name}</div>
-                      {fee.description && <div class="text-micro text-muted">{fee.description}</div>}
-                    </td>
-                    <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
-                      {formatMoney(fee.amount, currencySymbol)}
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
+      <!-- Right Column: Results Panel (Headline, Margin/ROI, Stacked Bar, Fee Table, Copy Button, Verified Link) -->
+      <div class="lg:col-span-6" aria-live="polite" data-results-container>
+        <ResultsPanel
+          result={serverResult}
+          platformName={config.name}
+          currencySymbol={currencySymbol}
+          verifiedOn={config.verifiedOn}
+          sourceUrl={config.sourceUrl}
+        />
       </div>
     </div>
   </div>
@@ -542,6 +413,29 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (this.platformDisplayName) {
         this.platformDisplayName.textContent = config.name;
       }
+
+      // Update verification metadata
+      const platformNameEl = this.querySelector('[data-platform-name]');
+      if (platformNameEl) platformNameEl.textContent = config.name;
+
+      const verifiedDateEl = this.querySelector('[data-verified-date]');
+      if (verifiedDateEl) {
+        try {
+          const [year, month, day] = config.verifiedOn.split('-').map(Number);
+          const date = new Date(Date.UTC(year, month - 1, day));
+          verifiedDateEl.textContent = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC',
+          });
+        } catch {
+          verifiedDateEl.textContent = config.verifiedOn;
+        }
+      }
+
+      const sourceLinkEl = this.querySelector<HTMLAnchorElement>('[data-source-link]');
+      if (sourceLinkEl) sourceLinkEl.href = config.sourceUrl;
 
       // Update currency prefixes
       const prefixes = this.querySelectorAll('[data-currency-symbol]');
@@ -648,6 +542,19 @@ const platformList: { id: PlatformId; label: string }[] = [
     }
 
     private updateUI(result: CalcResult) {
+      const isProfitable = result.netProfit >= 0;
+
+      // 1. Headline & Card
+      const headlinePrefix = this.querySelector<HTMLElement>('[data-headline-prefix]');
+      if (headlinePrefix) {
+        headlinePrefix.textContent = isProfitable ? 'You keep' : 'You lose';
+      }
+      const netProfitCard = this.querySelector<HTMLElement>('[data-net-profit-card]');
+      if (netProfitCard) {
+        netProfitCard.classList.toggle('bg-primary-deep', isProfitable);
+        netProfitCard.classList.toggle('bg-error', !isProfitable);
+      }
+
       if (this.outNetProfit) {
         this.outNetProfit.textContent = this.formatMoney(result.netProfit);
       }
@@ -663,33 +570,84 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (this.outTotalFees) {
         this.outTotalFees.textContent = this.formatMoney(result.totalFees);
       }
-      if (this.outTotalFeesSummary) {
-        this.outTotalFeesSummary.textContent = this.formatMoney(result.totalFees);
-      }
-      if (this.outGrossRevenue) {
-        this.outGrossRevenue.textContent = this.formatMoney(result.grossRevenue);
-      }
-      if (this.outTotalCosts) {
-        this.outTotalCosts.textContent = this.formatMoney(result.totalCosts);
-      }
 
       if (this.profitBadge) {
-        const isProfitable = result.netProfit >= 0;
         this.profitBadge.textContent = isProfitable ? 'Profitable' : 'Loss';
         this.profitBadge.className = isProfitable
-          ? 'text-micro uppercase font-bold px-2 py-0.5 rounded-xs bg-forest text-lime-hero'
-          : 'text-micro uppercase font-bold px-2 py-0.5 rounded-xs bg-error text-white';
+          ? 'text-micro uppercase font-bold px-2.5 py-0.5 rounded-xs bg-forest text-lime-hero'
+          : 'text-micro uppercase font-bold px-2.5 py-0.5 rounded-xs bg-black/30 text-white';
       }
 
+      // 2. Financial Distribution (Stacked Bar & Legend)
+      const profitAmount = Math.max(0, result.netProfit);
+      const feesAmount = Math.max(0, result.totalFees);
+      const cogsAmount = Math.max(0, result.itemCostTotal);
+      const shipAmount = Math.max(0, result.shippingCostTotal);
+      const totalBasis = profitAmount + feesAmount + cogsAmount + shipAmount || result.grossRevenue || 1;
+
+      const profitPct = Number(((profitAmount / totalBasis) * 100).toFixed(1));
+      const feesPct = Number(((feesAmount / totalBasis) * 100).toFixed(1));
+      const cogsPct = Number(((cogsAmount / totalBasis) * 100).toFixed(1));
+      const shipPct = Number(((shipAmount / totalBasis) * 100).toFixed(1));
+
+      const barProfit = this.querySelector<HTMLElement>('[data-bar-profit]');
+      const barFees = this.querySelector<HTMLElement>('[data-bar-fees]');
+      const barCogs = this.querySelector<HTMLElement>('[data-bar-cogs]');
+      const barShipping = this.querySelector<HTMLElement>('[data-bar-shipping]');
+
+      if (barProfit) {
+        barProfit.style.width = `${profitPct}%`;
+        barProfit.title = `Net Profit: ${profitPct}%`;
+      }
+      if (barFees) {
+        barFees.style.width = `${feesPct}%`;
+        barFees.title = `Platform Fees: ${feesPct}%`;
+      }
+      if (barCogs) {
+        barCogs.style.width = `${cogsPct}%`;
+        barCogs.title = `Product Cost (COGS): ${cogsPct}%`;
+      }
+      if (barShipping) {
+        barShipping.style.width = `${shipPct}%`;
+        barShipping.title = `Shipping Out-of-Pocket: ${shipPct}%`;
+      }
+
+      const barContainer = this.querySelector<HTMLElement>('[data-stacked-bar-container]');
+      if (barContainer) {
+        barContainer.setAttribute(
+          'aria-label',
+          `Financial distribution of sale proceeds: Net profit ${profitPct}%, Marketplace fees ${feesPct}%, Product cost ${cogsPct}%, Shipping cost ${shipPct}%`
+        );
+      }
+
+      const legProfit = this.querySelector('[data-legend-profit]');
+      const legFees = this.querySelector('[data-legend-fees]');
+      const legCogs = this.querySelector('[data-legend-cogs]');
+      const legShip = this.querySelector('[data-legend-shipping]');
+      if (legProfit) legProfit.textContent = `${profitPct}%`;
+      if (legFees) legFees.textContent = `${feesPct}%`;
+      if (legCogs) legCogs.textContent = `${cogsPct}%`;
+      if (legShip) legShip.textContent = `${shipPct}%`;
+
+      const srProfit = this.querySelector('[data-sr-profit]');
+      const srFees = this.querySelector('[data-sr-fees]');
+      const srCogs = this.querySelector('[data-sr-cogs]');
+      const srShip = this.querySelector('[data-sr-shipping]');
+      if (srProfit) srProfit.textContent = `Net Profit: ${this.formatMoney(profitAmount)} (${profitPct}%)`;
+      if (srFees) srFees.textContent = `Marketplace Fees: ${this.formatMoney(feesAmount)} (${feesPct}%)`;
+      if (srCogs) srCogs.textContent = `Product Cost: ${this.formatMoney(cogsAmount)} (${cogsPct}%)`;
+      if (srShip) srShip.textContent = `Shipping Cost: ${this.formatMoney(shipAmount)} (${shipPct}%)`;
+
+      // 3. Fee Breakdown Table
       if (this.outFeeBreakdownBody) {
         this.outFeeBreakdownBody.innerHTML = result.fees
           .map(
             (fee) => `
           <tr>
-            <td class="py-2.5 px-4">
+            <th scope="row" class="py-2.5 px-4 font-normal text-left">
               <div class="font-semibold text-ink">${fee.name}</div>
               ${fee.description ? `<div class="text-micro text-muted">${fee.description}</div>` : ''}
-            </td>
+            </th>
             <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
               ${this.formatMoney(fee.amount)}
             </td>
