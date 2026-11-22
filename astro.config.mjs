@@ -39,6 +39,27 @@ function getFeeDates() {
     }
   }
 
+  // Also check changelog.json to ensure one edit in changelog or fee file updates sitemap lastmod
+  try {
+    const changelogPath = path.join(feesDir, "changelog.json");
+    if (fs.existsSync(changelogPath)) {
+      /** @type {Array<{ date?: string, platform?: string }>} */
+      const changelog = JSON.parse(fs.readFileSync(changelogPath, "utf8"));
+      for (const entry of changelog) {
+        const platform = entry.platform;
+        const entryDate = entry.date;
+        if (entryDate && entryDate > latestDate) {
+          latestDate = entryDate;
+        }
+        if (platform && dates[platform] && entryDate && entryDate > dates[platform]) {
+          dates[platform] = entryDate;
+        }
+      }
+    }
+  } catch {
+    // Fallback
+  }
+
   return { dates, latestDate };
 }
 
@@ -69,6 +90,9 @@ function getUrlLastmod(url) {
   }
   if (/twitch|bits/.test(url)) {
     return feeDates["twitch-bits"] || latestFeeDate;
+  }
+  if (/fee-changes/.test(url)) {
+    return latestFeeDate;
   }
   // Hub, Home, Methodology, and informational pages use latest verified fee date
   return latestFeeDate;
@@ -109,6 +133,9 @@ export default defineConfig({
         } else if (/calculator|bits/.test(item.url)) {
           item.priority = 0.9;
           item.changefreq = ChangeFreqEnum.WEEKLY;
+        } else if (/fee-changes/.test(item.url)) {
+          item.priority = 0.8;
+          item.changefreq = ChangeFreqEnum.DAILY;
         } else {
           item.priority = 0.7;
           item.changefreq = ChangeFreqEnum.MONTHLY;

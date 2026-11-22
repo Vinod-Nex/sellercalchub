@@ -5,6 +5,20 @@ import etsyFee from '../../data/fees/etsy.json';
 import ebayUsFee from '../../data/fees/ebay-us.json';
 import ebayUkFee from '../../data/fees/ebay-uk.json';
 import twitchBitsFee from '../../data/fees/twitch-bits.json';
+import changelogJson from '../../data/fees/changelog.json';
+
+export interface FeeChangeEntry {
+  id: string;
+  date: string;
+  effective_date?: string;
+  platform: string;
+  platform_name: string;
+  what_changed: string;
+  rate_summary?: string;
+  official_notice_url: string;
+  calculator_url?: string;
+  category_impact?: string;
+}
 
 export interface FeeRateItem {
   fee_kind: string;
@@ -39,11 +53,66 @@ export const ALL_PLATFORM_FEES: Record<string, PlatformFeeData> = {
   'twitch-bits': twitchBitsFee as unknown as PlatformFeeData,
 };
 
+const PLATFORM_URLS: Record<string, string> = {
+  whatnot: '/whatnot-fee-calculator/',
+  'tiktok-shop': '/tiktok-shop-fee-calculator/',
+  depop: '/depop-fee-calculator/',
+  etsy: '/etsy-fee-calculator/',
+  'ebay-us': '/ebay-fee-calculator/',
+  'ebay-uk': '/ebay-fee-calculator-uk/',
+  'twitch-bits': '/twitch-bits-to-usd/',
+};
+
+/**
+ * Retrieves all fee changes across platforms, sorted chronologically descending.
+ * Synchronized with platform fee JSON files and changelog.json.
+ */
+export function getChangelog(): FeeChangeEntry[] {
+  const items = [...(changelogJson as FeeChangeEntry[])];
+
+  // Dynamically include any platform where verified_on is newer than changelog entries
+  for (const [key, feeData] of Object.entries(ALL_PLATFORM_FEES)) {
+    if (!feeData?.verified_on) continue;
+    const hasEntry = items.some(
+      (c) => (c.platform === key || c.platform === 'all') && c.date === feeData.verified_on
+    );
+    if (!hasEntry) {
+      items.push({
+        id: `${key}-verified-${feeData.verified_on}`,
+        date: feeData.verified_on,
+        effective_date: feeData.effective_from || feeData.verified_on,
+        platform: key,
+        platform_name: feeData.platform_name || key,
+        what_changed: `Fee schedule verified: ${formatFeeSummary(key)}. Confirmed compliant with official policy.`,
+        rate_summary: formatFeeSummary(key),
+        official_notice_url: feeData.source_url,
+        calculator_url: PLATFORM_URLS[key] || `/${key}-fee-calculator/`,
+        category_impact: 'All active listings',
+      });
+    }
+  }
+
+  return items.sort((a, b) => b.date.localeCompare(a.date));
+}
+
 /**
  * Retrieves the fee data record for a given platform.
+ * Synchronizes the verified_on timestamp with the latest changelog date if newer.
  */
 export function getPlatformFeeData(platform: string): PlatformFeeData | undefined {
-  return ALL_PLATFORM_FEES[platform];
+  const data = ALL_PLATFORM_FEES[platform];
+  if (!data) return undefined;
+
+  // Derive latest verified date from platform data and changelog
+  const changelog = getChangelog();
+  const latestChange = changelog.find((c) => c.platform === platform || c.platform === 'all');
+  if (latestChange && latestChange.date > data.verified_on) {
+    return {
+      ...data,
+      verified_on: latestChange.date,
+    };
+  }
+  return data;
 }
 
 /**

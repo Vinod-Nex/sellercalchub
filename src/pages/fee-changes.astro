@@ -1,0 +1,316 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SourceLink from '../components/SourceLink.astro';
+import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { getChangelog, formatVerifiedDate } from '../lib/calc/fee-data';
+import { buildBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Marketplace Fee Changes' },
+];
+
+const changelog = getChangelog();
+const latestDate = changelog.length > 0 ? changelog[0].date : '2026-11-22';
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Marketplace Fee Changes & Policy Updates (2026)',
+    url: 'https://sellercalchub.com/fee-changes/',
+    description:
+      'Official changelog tracking marketplace fee rate changes, policy updates, and threshold adjustments across eBay, Etsy, Whatnot, TikTok Shop, and Depop.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/fee-changes/'),
+];
+
+// Helper to determine platform badge styling
+function getPlatformBadge(platform: string) {
+  switch (platform) {
+    case 'ebay-us':
+    case 'ebay-uk':
+      return {
+        bg: 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800/40',
+        label: platform === 'ebay-uk' ? 'eBay (UK)' : 'eBay (US)',
+      };
+    case 'etsy':
+      return {
+        bg: 'bg-orange-50 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300 border-orange-200 dark:border-orange-800/40',
+        label: 'Etsy',
+      };
+    case 'whatnot':
+      return {
+        bg: 'bg-yellow-50 dark:bg-yellow-950/30 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800/40',
+        label: 'Whatnot',
+      };
+    case 'depop':
+      return {
+        bg: 'bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800/40',
+        label: 'Depop',
+      };
+    case 'tiktok-shop':
+      return {
+        bg: 'bg-sky-50 dark:bg-sky-950/30 text-sky-800 dark:text-sky-300 border-sky-200 dark:border-sky-800/40',
+        label: 'TikTok Shop',
+      };
+    case 'twitch-bits':
+      return {
+        bg: 'bg-purple-50 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/40',
+        label: 'Twitch Bits',
+      };
+    default:
+      return {
+        bg: 'bg-mint-50 dark:bg-mint-200/10 text-primary border-mint-200',
+        label: 'All Marketplaces',
+      };
+  }
+}
+---
+
+<BaseLayout
+  title="Marketplace Fee Changes: Official Resale Rate Updates"
+  description="Track official marketplace fee changes and seller policy updates across eBay, Etsy, Whatnot, TikTok Shop, and Depop with verified documentation links."
+  canonicalPath="/fee-changes/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Header Section -->
+    <header class="space-y-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+          <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+          Live Freshness Feed · Primary Sources Only
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-xs bg-canvas-soft border border-hairline text-caption text-muted">
+          Latest Audit: {formatVerifiedDate(latestDate)}
+        </span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Marketplace Fee Changes &amp; Official Policy Updates (2026)
+      </h1>
+
+      <p class="text-body-lg text-body max-w-3xl leading-relaxed">
+        Reseller marketplace fee schedules change frequently. Below is the verified chronological changelog of official commission updates, payment processing revisions, and threshold changes across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch Bits.
+      </p>
+    </header>
+
+    <!-- Key Statistics Grid -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 gap-4" aria-label="Freshness System Statistics">
+      <div class="p-4 rounded-lg border border-hairline-strong bg-canvas space-y-1">
+        <div class="text-micro text-muted uppercase font-bold tracking-wider">Confirmed Changes</div>
+        <div class="text-heading-2 font-bold font-mono text-ink" data-stat="total-changes">{changelog.length}</div>
+        <div class="text-micro text-muted">Official policy entries</div>
+      </div>
+      <div class="p-4 rounded-lg border border-hairline-strong bg-canvas space-y-1">
+        <div class="text-micro text-muted uppercase font-bold tracking-wider">Platforms Monitored</div>
+        <div class="text-heading-2 font-bold font-mono text-ink">7</div>
+        <div class="text-micro text-muted">Ebay, Etsy, TikTok &amp; more</div>
+      </div>
+      <div class="p-4 rounded-lg border border-hairline-strong bg-canvas space-y-1">
+        <div class="text-micro text-muted uppercase font-bold tracking-wider">Single Source</div>
+        <div class="text-heading-2 font-bold font-mono text-primary">100%</div>
+        <div class="text-micro text-muted">Stamp + Sitemap + Log</div>
+      </div>
+      <div class="p-4 rounded-lg border border-hairline-strong bg-canvas space-y-1">
+        <div class="text-micro text-muted uppercase font-bold tracking-wider">Verification Standard</div>
+        <div class="text-heading-2 font-bold font-mono text-forest">0 TODO</div>
+        <div class="text-micro text-muted">Strict primary doc rule</div>
+      </div>
+    </section>
+
+    <!-- Interactive Client Filtering Feed -->
+    <section class="space-y-6" id="changelog-feed">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-hairline pb-4">
+        <div>
+          <h2 class="text-heading-2 font-bold text-ink">Chronological Policy Changelog</h2>
+          <p class="text-body-sm text-muted">Filter changes by marketplace platform:</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap items-center gap-1.5" role="toolbar" aria-label="Platform filter">
+          <button
+            type="button"
+            class="filter-btn active px-3 py-1.5 rounded-xs text-caption font-bold border border-primary bg-primary text-on-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="all"
+          >
+            All Platforms
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="ebay-us"
+          >
+            eBay US
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="ebay-uk"
+          >
+            eBay UK
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="etsy"
+          >
+            Etsy
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="depop"
+          >
+            Depop
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="tiktok-shop"
+          >
+            TikTok Shop
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="whatnot"
+          >
+            Whatnot
+          </button>
+          <button
+            type="button"
+            class="filter-btn px-3 py-1.5 rounded-xs text-caption font-semibold border border-hairline bg-canvas text-body hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            data-filter="twitch-bits"
+          >
+            Twitch
+          </button>
+        </div>
+      </div>
+
+      <!-- Feed Container -->
+      <div class="space-y-4" id="feed-items">
+        {changelog.map((entry) => {
+          const badge = getPlatformBadge(entry.platform);
+          return (
+            <article
+              class="changelog-card p-6 rounded-lg border border-hairline-strong bg-canvas space-y-4 hover:border-primary/50 transition-colors shadow-sm"
+              data-platform={entry.platform}
+              id={`change-${entry.id}`}
+            >
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <span class={`inline-block px-2.5 py-0.5 rounded-xs text-caption font-bold border ${badge.bg}`}>
+                    {entry.platform_name || badge.label}
+                  </span>
+                  {entry.category_impact && (
+                    <span class="text-caption text-muted bg-canvas-soft px-2 py-0.5 rounded-xs border border-hairline">
+                      {entry.category_impact}
+                    </span>
+                  )}
+                </div>
+
+                <div class="flex items-center gap-2 text-caption text-muted font-mono">
+                  <span class="inline-block w-2 h-2 rounded-full bg-mint-400" aria-hidden="true"></span>
+                  <time datetime={entry.date}>Effective: {formatVerifiedDate(entry.date)}</time>
+                </div>
+              </div>
+
+              <!-- What Changed -->
+              <div class="space-y-2">
+                <p class="text-body text-ink leading-relaxed">
+                  {entry.what_changed}
+                </p>
+                {entry.rate_summary && (
+                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xs bg-canvas-soft border border-hairline text-caption font-mono text-ink">
+                    <span class="text-muted font-sans font-semibold">Rate Summary:</span>
+                    <strong class="text-primary">{entry.rate_summary}</strong>
+                  </div>
+                )}
+              </div>
+
+              <!-- Official Source & Calculator Links -->
+              <div class="pt-3 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-caption">
+                <div class="flex items-center gap-2">
+                  <span class="text-muted font-medium">Official Documentation:</span>
+                  <SourceLink
+                    sourceUrl={entry.official_notice_url}
+                    verifiedOn={entry.date}
+                    label="Official Notice"
+                  />
+                </div>
+
+                {entry.calculator_url && (
+                  <a
+                    href={entry.calculator_url}
+                    class="font-bold text-primary hover:text-primary-deep hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+                  >
+                    <span>Open Calculator</span>
+                    <span aria-hidden="true">&rarr;</span>
+                  </a>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Verification Architecture & Governance Note -->
+    <section class="rounded-lg border border-hairline-strong bg-canvas-soft p-6 space-y-4">
+      <h2 class="text-heading-3 font-bold text-ink">How Freshness is Guaranteed</h2>
+      <p class="text-body text-body leading-relaxed">
+        Under our strict data governance policy, Seller Calc Hub operates from a single source of truth. When a marketplace announces a fee adjustment or commission schedule change:
+      </p>
+      <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
+        <li><strong>One Source Edit:</strong> Updating a fee rate automatically updates the on-page <code class="font-mono text-micro text-ink bg-canvas px-1.5 py-0.5 rounded-xs">Verified on</code> stamp on the calculator page, the sitemap <code class="font-mono text-micro text-ink bg-canvas px-1.5 py-0.5 rounded-xs">&lt;lastmod&gt;</code> timestamp, and this live changelog.</li>
+        <li><strong>Zero Inventions:</strong> We never estimate or invent fee numbers. Every rate and changelog entry must cite an official primary document URL verified by our research team.</li>
+        <li><strong>Found a Policy Change?</strong> If a platform recently altered its fee schedule and you notice it before our monthly audit, please <a href="/report-fee/" class="text-primary font-bold hover:underline">submit an official notice link</a> to trigger an immediate audit.</li>
+      </ul>
+    </section>
+
+    <!-- General Disclaimer -->
+    <FeeDisclaimer />
+  </div>
+</BaseLayout>
+
+<script>
+  // Simple client-side platform filtering
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.changelog-card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+
+      // Update button styling
+      filterBtns.forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle('bg-primary', isActive);
+        b.classList.toggle('text-on-primary', isActive);
+        b.classList.toggle('border-primary', isActive);
+        b.classList.toggle('font-bold', isActive);
+
+        b.classList.toggle('bg-canvas', !isActive);
+        b.classList.toggle('text-body', !isActive);
+        b.classList.toggle('border-hairline', !isActive);
+        b.classList.toggle('font-semibold', !isActive);
+      });
+
+      // Filter cards
+      cards.forEach((card) => {
+        const cardPlatform = card.dataset.platform;
+        if (filter === 'all' || cardPlatform === filter || cardPlatform === 'all') {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { glob, file } from "astro/loaders";
 import { z } from "astro/zod";
 
 // Production safety check: enforce zero "TODO" values in production builds
@@ -82,9 +82,29 @@ export const platformFeeSchema = z.object({
 
 export type PlatformFee = z.infer<typeof platformFeeSchema>;
 
+export const changelogEntrySchema = z.object({
+  id: z.string(),
+  date: z.string(),
+  effective_date: z.string().optional(),
+  platform: z.string(),
+  platform_name: z.string(),
+  what_changed: z.string(),
+  rate_summary: z.string().optional(),
+  official_notice_url: z.string().url(),
+  calculator_url: z.string().optional(),
+  category_impact: z.string().optional(),
+});
+
+export type ChangelogEntry = z.infer<typeof changelogEntrySchema>;
+
 const fees = defineCollection({
-  loader: glob({ pattern: "**/*.json", base: "./src/data/fees" }),
+  loader: glob({ pattern: ["*.json", "!changelog.json"], base: "./src/data/fees" }),
   schema: platformFeeSchema,
 });
 
-export const collections = { fees };
+const changelog = defineCollection({
+  loader: file("./src/data/fees/changelog.json"),
+  schema: changelogEntrySchema,
+});
+
+export const collections = { fees, changelog };

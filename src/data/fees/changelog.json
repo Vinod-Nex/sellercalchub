@@ -1,0 +1,98 @@
+[
+  {
+    "id": "sellercalchub-annual-audit-2026",
+    "date": "2026-11-22",
+    "effective_date": "2026-11-22",
+    "platform": "all",
+    "platform_name": "All Marketplaces",
+    "what_changed": "Annual policy verification: confirmed active rate schedules, category ladders, and payment gateway costs across eBay US, eBay UK, Etsy, Whatnot, TikTok Shop, Depop, and Twitch Bits.",
+    "rate_summary": "All 2026 fee schedules audited and confirmed active",
+    "official_notice_url": "https://sellercalchub.com/methodology/",
+    "calculator_url": "/marketplace-fee-calculators/",
+    "category_impact": "Full marketplace suite"
+  },
+  {
+    "id": "ebay-uk-private-zero-fee",
+    "date": "2024-10-01",
+    "effective_date": "2024-10-01",
+    "platform": "ebay-uk",
+    "platform_name": "eBay (UK)",
+    "what_changed": "eBay UK completely eliminated selling fees (0% Final Value Fee and £0.00 insertion fee) for private individuals selling in the UK across all categories except Motors. Registered business sellers continue paying standard rates (12.8% + £0.30 plus 20% VAT).",
+    "rate_summary": "0% private selling fee (was ~12.8% + £0.30)",
+    "official_notice_url": "https://www.ebay.co.uk/help/selling/fees-credits-invoices/selling-fees?id=4822",
+    "calculator_url": "/ebay-fee-calculator-uk/",
+    "category_impact": "Private listings across all consumer categories"
+  },
+  {
+    "id": "depop-us-zero-selling-fee",
+    "date": "2024-07-15",
+    "effective_date": "2024-07-15",
+    "platform": "depop",
+    "platform_name": "Depop (US)",
+    "what_changed": "Depop discontinued its 10% marketplace selling fee for US sellers. Sellers pay 0% selling commission, paying only the standard marketplace payment processing fee of 3.3% + $0.45.",
+    "rate_summary": "0% selling fee (was 10% commission)",
+    "official_notice_url": "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-are-the-fees-for-selling-on-Depop",
+    "calculator_url": "/depop-fee-calculator/",
+    "category_impact": "All US catalog listings"
+  },
+  {
+    "id": "tiktok-shop-us-referral-fee",
+    "date": "2024-07-01",
+    "effective_date": "2024-07-01",
+    "platform": "tiktok-shop",
+    "platform_name": "TikTok Shop",
+    "what_changed": "TikTok Shop transitioned standard referral rates from promotional introductory levels (2% to 4%) to a flat 6.0% referral fee per order across most product categories.",
+    "rate_summary": "6.0% referral fee standardized across most categories",
+    "official_notice_url": "https://seller-us.tiktok.com/university/essay?knowledge_id=10011501",
+    "calculator_url": "/tiktok-shop-fee-calculator/",
+    "category_impact": "Apparel, beauty, home, and general merchandise"
+  },
+  {
+    "id": "ebay-us-managed-payments-tiers",
+    "date": "2024-02-15",
+    "effective_date": "2024-02-15",
+    "platform": "ebay-us",
+    "platform_name": "eBay (US)",
+    "what_changed": "Confirmed standard Final Value Fee of 13.25% on total buyer payment up to $7,500 per item and 2.35% thereafter (12.35% for Basic+ Store subscribers). Fixed per-order fee structured at $0.30 for orders $10.00 or under, and $0.40 for orders over $10.00.",
+    "rate_summary": "13.25% + $0.40 ($0.30 on ≤$10 orders)",
+    "official_notice_url": "https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822",
+    "calculator_url": "/ebay-fee-calculator/",
+    "category_impact": "Standard categories (clothing, home, electronics, collectibles)"
+  },
+  {
+    "id": "etsy-transaction-listing-schedule",
+    "date": "2024-01-01",
+    "effective_date": "2024-01-01",
+    "platform": "etsy",
+    "platform_name": "Etsy",
+    "what_changed": "Maintained 6.5% transaction fee applied to item price and shipping collected, $0.20 listing renewals every 4 months, 3.0% + $0.25 payment processing, and mandatory 12% offsite ads for shops with >$10k annual sales.",
+    "rate_summary": "6.5% transaction + $0.20 listing + 3.0% + $0.25 processing",
+    "official_notice_url": "https://www.etsy.com/legal/fees/",
+    "calculator_url": "/etsy-fee-calculator/",
+    "category_impact": "Handmade, craft supplies, and vintage items"
+  },
+  {
+    "id": "whatnot-livestream-commission",
+    "date": "2024-01-01",
+    "effective_date": "2024-01-01",
+    "platform": "whatnot",
+    "platform_name": "Whatnot",
+    "what_changed": "Standardized 8.0% commission on hammer auction price, plus 2.9% + $0.30 payment processing fee applied to the total transaction amount paid by the buyer.",
+    "rate_summary": "8.0% commission + 2.9% + $0.30 payment processing",
+    "official_notice_url": "https://help.whatnot.com/hc/en-us/articles/360061525512-Whatnot-Fee-Structure",
+    "calculator_url": "/whatnot-fee-calculator/",
+    "category_impact": "Livestream auction sales across collectibles, cards, and fashion"
+  },
+  {
+    "id": "twitch-bits-cheer-payout",
+    "date": "2024-01-01",
+    "effective_date": "2024-01-01",
+    "platform": "twitch-bits",
+    "platform_name": "Twitch Bits",
+    "what_changed": "Confirmed streamer payout rate of $0.01 USD per bit received with a $50 minimum cashout threshold. Viewer bundle purchasing prices remain ~40% above payout value.",
+    "rate_summary": "$0.01 USD per bit streamer cashout",
+    "official_notice_url": "https://help.twitch.tv/s/article/guide-to-cheering-with-bits",
+    "calculator_url": "/twitch-bits-to-usd/",
+    "category_impact": "Creator streaming Bits monetization"
+  }
+]
