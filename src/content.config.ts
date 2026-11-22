@@ -76,7 +76,7 @@ export const platformFeeSchema = z.object({
   ]),
   effective_from: z.string().min(1),
   verified_on: z.string().min(1, "verified_on cannot be empty"),
-  source_url: z.string().url("source_url must be a valid official URL"),
+  source_url: z.string().url(),
   notes: z.string().default(""),
 });
 

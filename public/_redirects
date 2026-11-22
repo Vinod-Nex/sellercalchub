@@ -8,7 +8,28 @@ https://www.sellercalchub.com/* https://sellercalchub.com/:splat 301!
 http://www.sellercalchub.com/* https://sellercalchub.com/:splat 301!
 http://sellercalchub.com/* https://sellercalchub.com/:splat 301!
 
-# 2. Page Aliases and Canonicals
+# 2. Sitemap Aliases
+/sitemap.xml /sitemap-index.xml 301
+
+# 3. Trailing Slash Normalization for Clean URLs
+/about /about/ 301
+/methodology /methodology/ 301
+/contact /contact/ 301
+/disclaimer /disclaimer/ 301
+/privacy /privacy/ 301
+/terms /terms/ 301
+/report-fee /report-fee/ 301
+/marketplace-fee-calculators /marketplace-fee-calculators/ 301
+/whatnot-fee-calculator /whatnot-fee-calculator/ 301
+/ebay-fee-calculator /ebay-fee-calculator/ 301
+/ebay-fee-calculator-uk /ebay-fee-calculator-uk/ 301
+/etsy-fee-calculator /etsy-fee-calculator/ 301
+/depop-fee-calculator /depop-fee-calculator/ 301
+/tiktok-shop-fee-calculator /tiktok-shop-fee-calculator/ 301
+/twitch-bits-to-usd /twitch-bits-to-usd/ 301
+/analytics-dashboard /analytics-dashboard/ 301
+
+# 4. Page Aliases and Legacy Routes
 /twitch-bits-calculator/ https://sellercalchub.com/twitch-bits-to-usd/ 301
 /twitch-bits-calculator https://sellercalchub.com/twitch-bits-to-usd/ 301
 /ebay-uk-fee-calculator/ https://sellercalchub.com/ebay-fee-calculator-uk/ 301

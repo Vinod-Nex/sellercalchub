@@ -469,7 +469,6 @@ const platformList: { id: PlatformId; label: string }[] = [
 
   class SellerCalculator extends HTMLElement {
     private currentPlatform: PlatformId = 'whatnot';
-    private currentCurrency: 'USD' | 'GBP' = 'USD';
     private currentSymbol: string = '$';
     private currentMode: 'forward' | 'reverse' = 'forward';
     private currentReverseTargetType: ReverseTargetType = 'profit';
@@ -481,9 +480,6 @@ const platformList: { id: PlatformId; label: string }[] = [
     private outRoi: HTMLElement | null = null;
     private outBreakEven: HTMLElement | null = null;
     private outTotalFees: HTMLElement | null = null;
-    private outTotalFeesSummary: HTMLElement | null = null;
-    private outGrossRevenue: HTMLElement | null = null;
-    private outTotalCosts: HTMLElement | null = null;
     private outFeeBreakdownBody: HTMLElement | null = null;
     private profitBadge: HTMLElement | null = null;
     private platformDisplayName: HTMLElement | null = null;
@@ -493,18 +489,13 @@ const platformList: { id: PlatformId; label: string }[] = [
     connectedCallback() {
       this.currentPlatform = (this.dataset.platform as PlatformId) || 'whatnot';
       const config = PLATFORM_CONFIGS[this.currentPlatform] ?? PLATFORM_CONFIGS.whatnot;
-      this.currentCurrency = config.defaultCurrency;
       this.currentSymbol = config.currencySymbol;
-
       this.form = this.querySelector('[data-calculator-form]');
       this.outNetProfit = this.querySelector('[data-out="net-profit"]');
       this.outProfitMargin = this.querySelector('[data-out="profit-margin"]');
       this.outRoi = this.querySelector('[data-out="roi"]');
       this.outBreakEven = this.querySelector('[data-out="break-even"]');
       this.outTotalFees = this.querySelector('[data-out="total-fees"]');
-      this.outTotalFeesSummary = this.querySelector('[data-out="total-fees-summary"]');
-      this.outGrossRevenue = this.querySelector('[data-out="gross-revenue"]');
-      this.outTotalCosts = this.querySelector('[data-out="total-costs"]');
       this.outFeeBreakdownBody = this.querySelector('[data-out="fee-breakdown-body"]');
       this.profitBadge = this.querySelector('[data-profit-badge]');
       this.platformDisplayName = this.querySelector('[data-platform-display-name]');
@@ -648,7 +639,6 @@ const platformList: { id: PlatformId; label: string }[] = [
     private switchPlatform(newPlatform: PlatformId, shouldSyncUrl = true) {
       this.currentPlatform = newPlatform;
       const config = PLATFORM_CONFIGS[newPlatform];
-      this.currentCurrency = config.defaultCurrency;
       this.currentSymbol = config.currencySymbol;
       this.dataset.platform = newPlatform;
       this.dataset.currency = config.defaultCurrency;

@@ -21,6 +21,7 @@ const company = [
 const legal = [
   { name: 'Privacy Policy', href: '/privacy/' },
   { name: 'Terms of Service', href: '/terms/' },
+  { name: 'Calculation Disclaimer', href: '/disclaimer/' },
   { name: 'Analytics & Events', href: '/analytics-dashboard/' },
   { name: 'Design Tokens', href: '/design-tokens/' },
 ];
@@ -32,7 +33,7 @@ const legal = [
       <!-- Brand & Mission Column -->
       <div class="space-y-4 md:col-span-1">
         <div class="flex items-center gap-2.5">
-          <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime" aria-hidden="true"></span>
+          <img src="/favicon.svg" width="20" height="20" alt="" class="w-5 h-5 rounded-xs shrink-0" aria-hidden="true" />
           <span class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</span>
         </div>
         <p class="text-body-sm font-light text-muted">
@@ -99,7 +100,7 @@ const legal = [
     <!-- Disclaimer & Copyright Bar -->
     <div class="border-t border-hairline pt-6 space-y-3 text-caption text-muted">
       <p>
-        <strong>Disclaimer:</strong> Seller Calc Hub is an independent financial calculations utility and is not affiliated with, sponsored by, or endorsed by eBay Inc., Etsy Inc., Depop Ltd, ByteDance / TikTok, Whatnot Inc., or Twitch Interactive Inc. All registered trademarks and marketplace brand names belong to their respective owners. Fee structures and calculations are provided for estimation purposes and reflect officially published rates verified in 2026.
+        <strong>Disclaimer:</strong> Seller Calc Hub is an independent financial calculations utility and is not affiliated with, sponsored by, or endorsed by eBay Inc., Etsy Inc., Depop Ltd, ByteDance / TikTok, Whatnot Inc., or Twitch Interactive Inc. All registered trademarks and marketplace brand names belong to their respective owners. Fee structures and calculations are provided for estimation purposes and reflect officially published rates verified in 2026. Read our full <a href="/disclaimer/" class="underline hover:text-primary transition-colors">Fee Calculation &amp; Estimates Disclaimer</a>.
       </p>
       <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 text-muted">
         <span>&copy; {currentYear} Seller Calc Hub (SellerCalcHub.com). All rights reserved.</span>

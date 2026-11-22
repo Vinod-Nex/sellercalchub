@@ -45,6 +45,7 @@ const fullOgImageUrl = ogImage.startsWith('http')
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
 
 <!-- Preload Critical Latin Variable Font (Zero CLS) -->
 <link rel="preload" href={montserratWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
@@ -77,9 +78,13 @@ const fullOgImageUrl = ogImage.startsWith('http')
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0c120f" media="(prefers-color-scheme: dark)" />
 
-<!-- Favicon Set -->
+<!-- Favicon & App Icons -->
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="SellerCalcHub" />
+<link rel="manifest" href="/site.webmanifest" />
 
 <!-- Structured Data (JSON-LD) -->
 {structuredData && (

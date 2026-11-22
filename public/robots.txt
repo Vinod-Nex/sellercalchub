@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://sellercalchub.com/sitemap-index.xml
+Sitemap: https://sellercalchub.com/sitemap.xml
+Sitemap: https://sellercalchub.com/sitemap-0.xml

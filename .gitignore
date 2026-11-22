@@ -42,3 +42,5 @@ pnpm-debug.log*
 .crush/
 .qwen/
 .lighthouseci/
+.kilo/
+testsprite_tests/
