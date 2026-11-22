@@ -1,26 +1,26 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { getEntry } from 'astro:content';
-import { PLATFORM_CONFIGS } from '../lib/calc';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { getEntry } from "astro:content";
+import { PLATFORM_CONFIGS } from "../lib/calc";
 
 // Load verified Twitch Bits fee metadata directly from content collection
-const twitchEntry = await getEntry('fees', 'twitch-bits');
+const twitchEntry = await getEntry("fees", "twitch-bits");
 const feeData = twitchEntry?.data;
-const config = PLATFORM_CONFIGS['twitch-bits'];
+const config = PLATFORM_CONFIGS["twitch-bits"];
 
 const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
 const sourceUrl = feeData?.source_url ?? config.sourceUrl;
 
 function formatVerifiedDate(isoDate: string): string {
   try {
-    const [year, month, day] = isoDate.split('-').map(Number);
+    const [year, month, day] = isoDate.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      timeZone: 'UTC',
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
     });
   } catch {
     return isoDate;
@@ -56,7 +56,7 @@ const commonAmounts = [
     viewerMobileUsd: 19.99,
     twitchCutUsd: 4.0,
     creatorSharePct: 71.4,
-    discountBadge: '5% Web Discount available ($12.60)',
+    discountBadge: "5% Web Discount available ($12.60)",
   },
   {
     bits: 1500,
@@ -65,7 +65,7 @@ const commonAmounts = [
     viewerMobileUsd: 28.99,
     twitchCutUsd: 4.95,
     creatorSharePct: 75.2,
-    discountBadge: '5% Discount',
+    discountBadge: "5% Discount",
   },
   {
     bits: 5000,
@@ -74,7 +74,7 @@ const commonAmounts = [
     viewerMobileUsd: 89.99,
     twitchCutUsd: 14.4,
     creatorSharePct: 77.6,
-    discountBadge: '8% Discount',
+    discountBadge: "8% Discount",
   },
   {
     bits: 10000,
@@ -83,7 +83,7 @@ const commonAmounts = [
     viewerMobileUsd: 174.99,
     twitchCutUsd: 26.0,
     creatorSharePct: 79.4,
-    discountBadge: '10% Discount',
+    discountBadge: "10% Discount",
   },
   {
     bits: 25000,
@@ -92,69 +92,71 @@ const commonAmounts = [
     viewerMobileUsd: 429.99,
     twitchCutUsd: 58.0,
     creatorSharePct: 81.2,
-    discountBadge: '12% Discount',
+    discountBadge: "12% Discount",
   },
 ];
 
 // FAQs for Twitch Bits
 const faqs = [
   {
-    question: 'How much is 1 Twitch Bit worth in USD?',
+    question: "How much is 1 Twitch Bit worth in USD?",
     answer:
-      'Each Bit is worth exactly $0.01 USD (1 cent) to the streamer. If a viewer cheers 100 Bits, the streamer receives $1.00 USD. If a viewer cheers 1,000 Bits, the streamer receives $10.00 USD.',
+      "Each Bit is worth exactly $0.01 USD (1 cent) to the streamer. If a viewer cheers 100 Bits, the streamer receives $1.00 USD. If a viewer cheers 1,000 Bits, the streamer receives $10.00 USD.",
   },
   {
-    question: 'Why do viewers pay more than $0.01 per Bit when buying bundles?',
+    question: "Why do viewers pay more than $0.01 per Bit when buying bundles?",
     answer:
-      'Twitch takes its platform revenue share upfront when viewers purchase Bits, rather than deducting fees from the streamer’s payout. For example, 100 Bits cost a viewer $1.40 USD on desktop web. Twitch keeps $0.40 (approx. 28.6% of the purchase), and passes the full $1.00 (71.4%) to the streamer upon cheering.',
+      "Twitch takes its platform revenue share upfront when viewers purchase Bits, rather than deducting fees from the streamer’s payout. For example, 100 Bits cost a viewer $1.40 USD on desktop web. Twitch keeps $0.40 (approx. 28.6% of the purchase), and passes the full $1.00 (71.4%) to the streamer upon cheering.",
   },
   {
-    question: 'Why are Twitch Bits more expensive on iPhone and Android mobile apps?',
+    question:
+      "Why are Twitch Bits more expensive on iPhone and Android mobile apps?",
     answer:
-      'Apple’s App Store and Google Play charge a 30% platform fee on all in-app digital purchases. To offset this, Twitch charges higher prices on mobile (e.g. $1.99 USD for 100 Bits on iOS vs $1.40 USD on web). Regardless of where the viewer buys Bits, the streamer still receives exactly $0.01 USD per Bit.',
+      "Apple’s App Store and Google Play charge a 30% platform fee on all in-app digital purchases. To offset this, Twitch charges higher prices on mobile (e.g. $1.99 USD for 100 Bits on iOS vs $1.40 USD on web). Regardless of where the viewer buys Bits, the streamer still receives exactly $0.01 USD per Bit.",
   },
   {
-    question: 'What is the minimum payout threshold for Twitch Bits?',
+    question: "What is the minimum payout threshold for Twitch Bits?",
     answer:
-      'Twitch has a $50.00 USD minimum payout threshold for Affiliates and Partners (lowered from $100 in 2022) for ACH direct deposit, PayPal, and check. Wire transfers still require a $100.00 USD threshold. That means you need at least 5,000 Bits (or a combination of Bits, subscriptions, and ad revenue totaling $50) to receive a payout.',
+      "Twitch has a $50.00 USD minimum payout threshold for Affiliates and Partners (lowered from $100 in 2022) for ACH direct deposit, PayPal, and check. Wire transfers still require a $100.00 USD threshold. That means you need at least 5,000 Bits (or a combination of Bits, subscriptions, and ad revenue totaling $50) to receive a payout.",
   },
   {
-    question: 'Does Twitch take any fees when transferring Bits money to my bank account?',
+    question:
+      "Does Twitch take any fees when transferring Bits money to my bank account?",
     answer:
-      'Twitch does not take a cut from cheered Bits, but third-party payout processors may charge standard transaction fees. ACH direct deposit is free for US streamers. PayPal costs $0.75 USD (or 2% outside the US), and wire transfers cost $25.00 USD.',
+      "Twitch does not take a cut from cheered Bits, but third-party payout processors may charge standard transaction fees. ACH direct deposit is free for US streamers. PayPal costs $0.75 USD (or 2% outside the US), and wire transfers cost $25.00 USD.",
   },
 ];
 
 // Schema.org Structured Data
 const structuredData = [
   {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'Twitch Bits to USD Converter & Calculator',
-    url: 'https://sellercalchub.com/twitch-bits-to-usd/',
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Twitch Bits to USD Converter & Calculator",
+    url: "https://sellercalchub.com/twitch-bits-to-usd/",
     description:
-      'Fast, verified Twitch Bits to USD converter. Calculate what streamers receive ($0.01/bit) and what viewers pay across all official web bundle tiers.',
+      "Fast, verified Twitch Bits to USD converter. Calculate what streamers receive ($0.01/bit) and what viewers pay across all official web bundle tiers.",
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Twitch Bits to USD Converter',
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'All',
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Twitch Bits to USD Converter",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "All",
     offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
     },
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
-        '@type': 'Answer',
+        "@type": "Answer",
         text: faq.answer,
       },
     })),
@@ -172,9 +174,9 @@ const structuredData = [
     <!-- Breadcrumbs -->
     <Breadcrumbs
       items={[
-        { name: 'Home', href: '/' },
-        { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
-        { name: 'Twitch Bits to USD' },
+        { name: "Home", href: "/" },
+        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+        { name: "Twitch Bits to USD" },
       ]}
     />
 
@@ -191,7 +193,14 @@ const structuredData = [
 
       <!-- 2. One-paragraph answer -->
       <p class="text-body-lg text-body leading-relaxed max-w-3xl">
-        Twitch pays streamers exactly <strong>$0.01 USD (1 cent) per Bit cheered</strong> on eligible Affiliate and Partner channels. Twitch takes its cut upfront from viewers when purchasing Bits bundles (typically $1.40 per 100 Bits on desktop web), meaning streamers experience <strong>0% platform deduction</strong> on cheer revenue. Payouts transfer once your combined channel balance reaches the $50.00 minimum threshold.
+        Twitch pays streamers exactly{" "}
+        <strong>$0.01 USD (1 cent) per Bit cheered</strong> on eligible
+        Affiliate and Partner channels. Twitch takes its cut upfront from
+        viewers when purchasing Bits bundles (typically $1.40 per 100 Bits on
+        desktop web), meaning streamers experience{" "}
+        <strong>0% platform deduction</strong> on cheer revenue. Payouts
+        transfer once your combined channel balance reaches the $50.00 minimum
+        threshold.
       </p>
     </header>
 
@@ -200,8 +209,12 @@ const structuredData = [
       <div class="rounded-lg border border-hairline-strong bg-canvas p-6 md:p-8 shadow-level-3 space-y-6">
         <div class="border-b border-hairline pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 class="text-heading-3 font-bold text-ink">Instant Bits ⇄ USD Converter</h2>
-            <p class="text-caption text-muted">Enter Bits amount or desired dollar value to convert in real time.</p>
+            <h2 class="text-heading-3 font-bold text-ink">
+              Instant Bits ⇄ USD Converter
+            </h2>
+            <p class="text-caption text-muted">
+              Enter Bits amount or desired dollar value to convert in real time.
+            </p>
           </div>
           <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 px-2 py-1 rounded-xxs border border-mint-200 shrink-0">
             1 Bit = $0.01 USD
@@ -213,11 +226,16 @@ const structuredData = [
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
             <!-- Left: Bits Input -->
             <div class="space-y-2">
-              <label for="bits-input" class="block text-ui-label font-bold text-ink">
+              <label
+                for="bits-input"
+                class="block text-ui-label font-bold text-ink"
+              >
                 Bits Amount (Cheered)
               </label>
               <div class="relative flex items-center">
-                <span class="absolute left-3 text-muted font-bold pointer-events-none select-none text-ui-sm">✦</span>
+                <span class="absolute left-3 text-muted font-bold pointer-events-none select-none text-ui-sm">
+                  ✦
+                </span>
                 <input
                   type="text"
                   id="bits-input"
@@ -229,16 +247,23 @@ const structuredData = [
                   aria-label="Bits Amount"
                 />
               </div>
-              <p class="text-caption text-muted">Common: 100, 500, 1,000, 5,000, 10,000</p>
+              <p class="text-caption text-muted">
+                Common: 100, 500, 1,000, 5,000, 10,000
+              </p>
             </div>
 
             <!-- Right: USD Payout Output / Input -->
             <div class="space-y-2">
-              <label for="usd-input" class="block text-ui-label font-bold text-ink">
+              <label
+                for="usd-input"
+                class="block text-ui-label font-bold text-ink"
+              >
                 Streamer Receives (USD)
               </label>
               <div class="relative flex items-center">
-                <span class="absolute left-3 text-muted font-bold pointer-events-none select-none text-ui-sm">$</span>
+                <span class="absolute left-3 text-muted font-bold pointer-events-none select-none text-ui-sm">
+                  $
+                </span>
                 <input
                   type="text"
                   id="usd-input"
@@ -250,13 +275,17 @@ const structuredData = [
                   aria-label="Streamer USD Payout"
                 />
               </div>
-              <p class="text-caption text-muted">What lands in your creator payout balance</p>
+              <p class="text-caption text-muted">
+                What lands in your creator payout balance
+              </p>
             </div>
           </div>
 
           <!-- Quick Preset Buttons -->
           <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-hairline">
-            <span class="text-caption font-bold text-muted uppercase tracking-wider mr-2">Quick Presets:</span>
+            <span class="text-caption font-bold text-muted uppercase tracking-wider mr-2">
+              Quick Presets:
+            </span>
             {[100, 500, 1000, 2500, 5000, 10000, 25000].map((amount) => (
               <button
                 type="button"
@@ -271,21 +300,48 @@ const structuredData = [
           <!-- Converter Live Result Banner -->
           <div class="rounded-lg bg-mint-50 dark:bg-mint-200/10 border border-mint-200 p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center sm:text-left">
             <div>
-              <span class="block text-caption font-bold uppercase tracking-wider text-primary">Streamer Payout</span>
-              <span class="text-display-lg font-bold text-ink font-mono tabular-nums" data-out-streamer-usd>$10.00</span>
-              <span class="block text-micro text-muted">100% of $0.01 per bit rate</span>
+              <span class="block text-caption font-bold uppercase tracking-wider text-primary">
+                Streamer Payout
+              </span>
+              <span
+                class="text-display-lg font-bold text-ink font-mono tabular-nums"
+                data-out-streamer-usd
+              >
+                $10.00
+              </span>
+              <span class="block text-micro text-muted">
+                100% of $0.01 per bit rate
+              </span>
             </div>
 
             <div>
-              <span class="block text-caption font-bold uppercase tracking-wider text-muted">Viewer Paid (Desktop Web)</span>
-              <span class="text-heading-2 font-bold text-ink font-mono tabular-nums" data-out-viewer-web>$14.00</span>
-              <span class="block text-micro text-muted">Estimated at standard bundle rate</span>
+              <span class="block text-caption font-bold uppercase tracking-wider text-muted">
+                Viewer Paid (Desktop Web)
+              </span>
+              <span
+                class="text-heading-2 font-bold text-ink font-mono tabular-nums"
+                data-out-viewer-web
+              >
+                $14.00
+              </span>
+              <span class="block text-micro text-muted">
+                Estimated at standard bundle rate
+              </span>
             </div>
 
             <div>
-              <span class="block text-caption font-bold uppercase tracking-wider text-muted">Twitch Platform Cut</span>
-              <span class="text-heading-2 font-bold text-muted font-mono tabular-nums" data-out-twitch-cut>$4.00</span>
-              <span class="block text-micro text-muted">Collected upfront from buyer</span>
+              <span class="block text-caption font-bold uppercase tracking-wider text-muted">
+                Twitch Platform Cut
+              </span>
+              <span
+                class="text-heading-2 font-bold text-muted font-mono tabular-nums"
+                data-out-twitch-cut
+              >
+                $4.00
+              </span>
+              <span class="block text-micro text-muted">
+                Collected upfront from buyer
+              </span>
             </div>
           </div>
         </twitch-bits-converter>
@@ -295,30 +351,51 @@ const structuredData = [
     <!-- 4. Common Amounts Table (Streamer Payout vs Viewer Cost by Bundle) -->
     <section class="space-y-6 pt-6 border-t border-hairline">
       <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">Twitch Bits to USD Conversion Table</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          Twitch Bits to USD Conversion Table
+        </h2>
         <p class="text-body-md text-muted max-w-2xl">
-          Full breakdown of what the streamer receives versus what the viewer pays across official Twitch desktop and mobile purchase bundles.
+          Full breakdown of what the streamer receives versus what the viewer
+          pays across official Twitch desktop and mobile purchase bundles.
         </p>
       </div>
 
       <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3">
         <div class="overflow-x-auto">
           <table class="w-full text-ui-sm text-left">
-            <caption class="sr-only">Table of Twitch Bits conversions showing streamer earnings and viewer bundle costs</caption>
+            <caption class="sr-only">
+              Table of Twitch Bits conversions showing streamer earnings and
+              viewer bundle costs
+            </caption>
             <thead class="bg-canvas-soft text-caption text-muted uppercase font-bold border-b border-hairline">
               <tr>
-                <th scope="col" class="py-3.5 px-4">Bits Cheered</th>
-                <th scope="col" class="py-3.5 px-4 text-right">Streamer Receives</th>
-                <th scope="col" class="py-3.5 px-4 text-right">Viewer Web Cost</th>
-                <th scope="col" class="py-3.5 px-4 text-right">Twitch Markup</th>
-                <th scope="col" class="py-3.5 px-4 text-right">Creator Cut %</th>
-                <th scope="col" class="py-3.5 px-4">Bundle Discount Notes</th>
+                <th scope="col" class="py-3.5 px-4">
+                  Bits Cheered
+                </th>
+                <th scope="col" class="py-3.5 px-4 text-right">
+                  Streamer Receives
+                </th>
+                <th scope="col" class="py-3.5 px-4 text-right">
+                  Viewer Web Cost
+                </th>
+                <th scope="col" class="py-3.5 px-4 text-right">
+                  Twitch Markup
+                </th>
+                <th scope="col" class="py-3.5 px-4 text-right">
+                  Creator Cut %
+                </th>
+                <th scope="col" class="py-3.5 px-4">
+                  Bundle Discount Notes
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-hairline">
               {commonAmounts.map((row) => (
                 <tr class="hover:bg-canvas-soft/40 transition-colors">
-                  <th scope="row" class="py-3.5 px-4 font-bold text-ink font-mono tabular-nums">
+                  <th
+                    scope="row"
+                    class="py-3.5 px-4 font-bold text-ink font-mono tabular-nums"
+                  >
                     ✦ {row.bits.toLocaleString()} Bits
                   </th>
                   <td class="py-3.5 px-4 text-right font-bold text-primary font-mono tabular-nums text-ui-label">
@@ -339,7 +416,7 @@ const structuredData = [
                         {row.discountBadge}
                       </span>
                     ) : (
-                      'Standard $0.014/bit rate'
+                      "Standard $0.014/bit rate"
                     )}
                   </td>
                 </tr>
@@ -348,7 +425,10 @@ const structuredData = [
             <tfoot class="bg-canvas-soft border-t-2 border-hairline-strong font-bold text-caption text-muted">
               <tr>
                 <td colspan="6" class="py-3 px-4">
-                  * Note: Mobile app purchases (iOS App Store & Google Play) cost approximately 30% more due to mobile platform store fees (e.g. $1.99 for 100 bits). Streamer payout remains fixed at $0.01 USD per bit.
+                  * Note: Mobile app purchases (iOS App Store & Google Play)
+                  cost approximately 30% more due to mobile platform store fees
+                  (e.g. $1.99 for 100 bits). Streamer payout remains fixed at
+                  $0.01 USD per bit.
                 </td>
               </tr>
             </tfoot>
@@ -360,9 +440,12 @@ const structuredData = [
     <!-- 5. How Twitch Bits Economics Work (No Filler) -->
     <section class="space-y-6 pt-6 border-t border-hairline">
       <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">How Twitch Bits Economics Work</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          How Twitch Bits Economics Work
+        </h2>
         <p class="text-body-md text-muted max-w-2xl">
-          Unlike subscriptions which take a 50/50 revenue split on payout, Bits revenue is paid out in full to the creator.
+          Unlike subscriptions which take a 50/50 revenue split on payout, Bits
+          revenue is paid out in full to the creator.
         </p>
       </div>
 
@@ -375,7 +458,8 @@ const structuredData = [
             $0.01 per Bit Flat
           </p>
           <p class="text-caption text-muted">
-            Whether a viewer cheers 1 bit or 100,000 bits, you receive exactly one penny per bit with no backend Twitch cut.
+            Whether a viewer cheers 1 bit or 100,000 bits, you receive exactly
+            one penny per bit with no backend Twitch cut.
           </p>
         </div>
 
@@ -387,7 +471,8 @@ const structuredData = [
             ~28% to 40% Viewer Markup
           </p>
           <p class="text-caption text-muted">
-            Twitch charges the viewer a markup when buying the bundle to cover credit card processing, infrastructure, and margin.
+            Twitch charges the viewer a markup when buying the bundle to cover
+            credit card processing, infrastructure, and margin.
           </p>
         </div>
 
@@ -399,7 +484,8 @@ const structuredData = [
             5,000 Bits Minimum
           </p>
           <p class="text-caption text-muted">
-            Bits pool together with subscription revenue and ad earnings toward the standard $50 threshold for monthly payouts.
+            Bits pool together with subscription revenue and ad earnings toward
+            the standard $50 threshold for monthly payouts.
           </p>
         </div>
       </div>
@@ -408,9 +494,12 @@ const structuredData = [
     <!-- 6. FAQ Section -->
     <section class="space-y-6 pt-6 border-t border-hairline">
       <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions About Twitch Bits</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          Frequently Asked Questions About Twitch Bits
+        </h2>
         <p class="text-body-md text-muted max-w-2xl">
-          Common questions on cheering conversions, payout schedules, and bank transfer fees.
+          Common questions on cheering conversions, payout schedules, and bank
+          transfer fees.
         </p>
       </div>
 
@@ -421,11 +510,17 @@ const structuredData = [
               <span>{faq.question}</span>
               <svg
                 class="w-4 h-4 text-muted group-open:rotate-180 transition-transform duration-150 shrink-0 ml-2"
+                width="16"
+                height="16"
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
               >
-                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
               </svg>
             </summary>
             <div class="mt-3 text-body text-body-sm leading-relaxed border-t border-hairline pt-3">
@@ -439,57 +534,64 @@ const structuredData = [
     <!-- 7. Related Calculators Grid -->
     <section class="space-y-6 pt-6 border-t border-hairline">
       <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">More Creator & Seller Fee Calculators</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          More Creator & Seller Fee Calculators
+        </h2>
         <p class="text-body-md text-muted max-w-2xl">
-          Monetizing across multiple live or e-commerce platforms? Calculate your exact net payout.
+          Monetizing across multiple live or e-commerce platforms? Calculate
+          your exact net payout.
         </p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
           {
-            name: 'Whatnot Fee Calculator',
-            rate: '8.0% + 2.9% + $0.30',
-            desc: 'Calculate live auction fees, card processing, and net payouts for livestream sellers.',
-            href: '/whatnot-fee-calculator/',
+            name: "Whatnot Fee Calculator",
+            rate: "8.0% + 2.9% + $0.30",
+            desc: "Calculate live auction fees, card processing, and net payouts for livestream sellers.",
+            href: "/whatnot-fee-calculator/",
           },
           {
-            name: 'TikTok Shop Fee Calculator',
-            rate: '6.0% + $0.30',
-            desc: 'Calculate live-shopping referral fees, affiliate creator commissions, and margins.',
-            href: '/tiktok-shop-fee-calculator/',
+            name: "TikTok Shop Fee Calculator",
+            rate: "6.0% + $0.30",
+            desc: "Calculate live-shopping referral fees, affiliate creator commissions, and margins.",
+            href: "/tiktok-shop-fee-calculator/",
           },
           {
-            name: 'Etsy Fee Calculator',
-            rate: '6.5% + $0.20 + 3% + $0.25',
-            desc: 'Calculate handmade marketplace fees, listing fees, and processing costs.',
-            href: '/etsy-fee-calculator/',
+            name: "Etsy Fee Calculator",
+            rate: "6.5% + $0.20 + 3% + $0.25",
+            desc: "Calculate handmade marketplace fees, listing fees, and processing costs.",
+            href: "/etsy-fee-calculator/",
           },
           {
-            name: 'Depop Fee Calculator',
-            rate: '0% selling + 3.3% + $0.45',
-            desc: 'Calculate marketplace processing fees for vintage apparel and second-hand fashion.',
-            href: '/depop-fee-calculator/',
+            name: "Depop Fee Calculator",
+            rate: "0% selling + 3.3% + $0.45",
+            desc: "Calculate marketplace processing fees for vintage apparel and second-hand fashion.",
+            href: "/depop-fee-calculator/",
           },
           {
-            name: 'eBay US Fee Calculator',
-            rate: '13.25% + $0.40',
-            desc: 'Calculate final value fees, store subscription discounts, and promoted listing rates.',
-            href: '/ebay-fee-calculator/',
+            name: "eBay US Fee Calculator",
+            rate: "13.25% + $0.40",
+            desc: "Calculate final value fees, store subscription discounts, and promoted listing rates.",
+            href: "/ebay-fee-calculator/",
           },
           {
-            name: 'Etsy Offsite Ads Calculator',
-            rate: '15% / 12% ($100 cap)',
-            desc: 'Model the impact of Etsy external advertising deductions on your net margins.',
-            href: '/etsy-offsite-ads-fee-calculator/',
+            name: "Etsy Offsite Ads Calculator",
+            rate: "15% / 12% ($100 cap)",
+            desc: "Model the impact of Etsy external advertising deductions on your net margins.",
+            href: "/etsy-offsite-ads-fee-calculator/",
           },
         ].map((item) => (
           <a
             href={item.href}
             class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
           >
-            <span class="text-caption font-bold text-primary block mb-1">{item.rate}</span>
-            <span class="text-heading-4 font-bold text-ink block mb-2">{item.name}</span>
+            <span class="text-caption font-bold text-primary block mb-1">
+              {item.rate}
+            </span>
+            <span class="text-heading-4 font-bold text-ink block mb-2">
+              {item.name}
+            </span>
             <span class="text-caption text-muted block">{item.desc}</span>
           </a>
         ))}
@@ -501,13 +603,18 @@ const structuredData = [
       <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="space-y-1">
           <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span
+              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
+              aria-hidden="true"
+            ></span>
             <span class="text-ui-label font-bold text-ink">
               Official Rate Verification
             </span>
           </div>
           <p class="text-caption text-muted">
-            Twitch Bits terms and payout schedule officially verified on <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced directly from Twitch’s Guide to Cheering with Bits.
+            Twitch Bits terms and payout schedule officially verified on{" "}
+            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
+            directly from Twitch’s Guide to Cheering with Bits.
           </p>
         </div>
 
@@ -518,9 +625,24 @@ const structuredData = [
           class="inline-flex items-center gap-1.5 px-4 py-2 bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Official Twitch Guide</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
-            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z" clip-rule="evenodd" />
+          <svg
+            class="w-3.5 h-3.5"
+            width="14"
+            height="14"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+              clip-rule="evenodd"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z"
+              clip-rule="evenodd"
+            />
           </svg>
         </a>
       </div>
@@ -537,24 +659,31 @@ const structuredData = [
     private outTwitchCut: HTMLElement | null = null;
 
     connectedCallback() {
-      if (this.dataset.initialized === 'true') return;
-      this.dataset.initialized = 'true';
+      if (this.dataset.initialized === "true") return;
+      this.dataset.initialized = "true";
 
-      this.bitsInput = this.querySelector<HTMLInputElement>('#bits-input');
-      this.usdInput = this.querySelector<HTMLInputElement>('#usd-input');
-      this.outStreamerUsd = this.querySelector<HTMLElement>('[data-out-streamer-usd]');
-      this.outViewerWeb = this.querySelector<HTMLElement>('[data-out-viewer-web]');
-      this.outTwitchCut = this.querySelector<HTMLElement>('[data-out-twitch-cut]');
+      this.bitsInput = this.querySelector<HTMLInputElement>("#bits-input");
+      this.usdInput = this.querySelector<HTMLInputElement>("#usd-input");
+      this.outStreamerUsd = this.querySelector<HTMLElement>(
+        "[data-out-streamer-usd]",
+      );
+      this.outViewerWeb = this.querySelector<HTMLElement>(
+        "[data-out-viewer-web]",
+      );
+      this.outTwitchCut = this.querySelector<HTMLElement>(
+        "[data-out-twitch-cut]",
+      );
 
       // Input listeners
-      this.bitsInput?.addEventListener('input', () => this.handleBitsInput());
-      this.usdInput?.addEventListener('input', () => this.handleUsdInput());
+      this.bitsInput?.addEventListener("input", () => this.handleBitsInput());
+      this.usdInput?.addEventListener("input", () => this.handleUsdInput());
 
       // Quick preset buttons
-      const presetButtons = this.querySelectorAll<HTMLButtonElement>('[data-preset-bits]');
+      const presetButtons =
+        this.querySelectorAll<HTMLButtonElement>("[data-preset-bits]");
       presetButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const bits = parseInt(btn.dataset.presetBits || '0', 10);
+        btn.addEventListener("click", () => {
+          const bits = parseInt(btn.dataset.presetBits || "0", 10);
           if (bits > 0 && this.bitsInput) {
             this.bitsInput.value = bits.toLocaleString();
             this.updateFromBits(bits);
@@ -564,7 +693,7 @@ const structuredData = [
     }
 
     private parseNumber(val: string): number {
-      const clean = val.replace(/[^0-9.]/g, '');
+      const clean = val.replace(/[^0-9.]/g, "");
       const parsed = parseFloat(clean);
       return isNaN(parsed) ? 0 : parsed;
     }
@@ -611,18 +740,18 @@ const structuredData = [
       const twitchCut = Math.max(0, viewerCost - dollars);
 
       if (this.outStreamerUsd) {
-        this.outStreamerUsd.textContent = `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        this.outStreamerUsd.textContent = `$${dollars.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
       if (this.outViewerWeb) {
-        this.outViewerWeb.textContent = `$${viewerCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        this.outViewerWeb.textContent = `$${viewerCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
       if (this.outTwitchCut) {
-        this.outTwitchCut.textContent = `$${twitchCut.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        this.outTwitchCut.textContent = `$${twitchCut.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
     }
   }
 
-  if (!customElements.get('twitch-bits-converter')) {
-    customElements.define('twitch-bits-converter', TwitchBitsConverter);
+  if (!customElements.get("twitch-bits-converter")) {
+    customElements.define("twitch-bits-converter", TwitchBitsConverter);
   }
 </script>

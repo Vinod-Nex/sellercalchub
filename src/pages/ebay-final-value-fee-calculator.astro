@@ -1,28 +1,28 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CalculatorIsland from '../components/CalculatorIsland.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { getEntry } from 'astro:content';
-import { PLATFORM_CONFIGS } from '../lib/calc';
-import { EBAY_US_CATEGORIES } from '../lib/calc/ebay-us';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CalculatorIsland from "../components/CalculatorIsland.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { getEntry } from "astro:content";
+import { PLATFORM_CONFIGS } from "../lib/calc";
+import { EBAY_US_CATEGORIES } from "../lib/calc/ebay-us";
 
 // Load eBay US fee metadata from content collection
-const ebayEntry = await getEntry('fees', 'ebay-us');
+const ebayEntry = await getEntry("fees", "ebay-us");
 const feeData = ebayEntry?.data;
-const config = PLATFORM_CONFIGS['ebay-us'];
+const config = PLATFORM_CONFIGS["ebay-us"];
 
 const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
 const sourceUrl = feeData?.source_url ?? config.sourceUrl;
 
 function formatVerifiedDate(isoDate: string): string {
   try {
-    const [year, month, day] = isoDate.split('-').map(Number);
+    const [year, month, day] = isoDate.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      timeZone: 'UTC',
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
     });
   } catch {
     return isoDate;
@@ -49,12 +49,14 @@ const faqs = [
       "Top Rated Sellers who offer same-day or 1-business-day handling and 30-day or longer free returns on their listings receive a 10% discount on the percentage portion of the Final Value Fee. For example, a 13.25% fee is reduced to 11.92%. The discount applies strictly to the percentage fee, not to the fixed $0.30/$0.40 per-order fee.",
   },
   {
-    question: "Are sneakers and athletic shoes subject to a different Final Value Fee?",
+    question:
+      "Are sneakers and athletic shoes subject to a different Final Value Fee?",
     answer:
       "Yes. For Men's and Women's Athletic Shoes sold for $150 or more, eBay charges a reduced flat Final Value Fee of 8.0%, and the standard fixed per-order fee ($0.40) is completely waived. Athletic shoes sold under $150 are subject to standard footwear/clothing category rates.",
   },
   {
-    question: "Does eBay charge the Final Value Fee on sales tax collected from the buyer?",
+    question:
+      "Does eBay charge the Final Value Fee on sales tax collected from the buyer?",
     answer:
       "Yes. Because eBay processes the entire financial transaction through its managed payments system, the percentage Final Value Fee applies to the total amount paid by the buyer at checkout, which includes applicable state sales tax and shipping fees.",
   },
@@ -63,33 +65,33 @@ const faqs = [
 // Structured Data
 const structuredData = [
   {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'eBay Final Value Fee Calculator',
-    url: 'https://sellercalchub.com/ebay-final-value-fee-calculator/',
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "eBay Final Value Fee Calculator",
+    url: "https://sellercalchub.com/ebay-final-value-fee-calculator/",
     description:
-      'Calculate your exact eBay Final Value Fee. See standard category rates (13.25%), Store discounts (12.35%), $0.30 vs $0.40 per-order fees, and high-value threshold discounts.',
+      "Calculate your exact eBay Final Value Fee. See standard category rates (13.25%), Store discounts (12.35%), $0.30 vs $0.40 per-order fees, and high-value threshold discounts.",
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'eBay Final Value Fee Calculator',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'All',
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "eBay Final Value Fee Calculator",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "All",
     offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
     },
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
-        '@type': 'Answer',
+        "@type": "Answer",
         text: faq.answer,
       },
     })),
@@ -107,17 +109,19 @@ const structuredData = [
     <!-- Breadcrumbs -->
     <Breadcrumbs
       items={[
-        { name: 'Home', href: '/' },
-        { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
-        { name: 'eBay Fee Calculator', href: '/ebay-fee-calculator/' },
-        { name: 'Final Value Fee Calculator' },
+        { name: "Home", href: "/" },
+        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+        { name: "eBay Fee Calculator", href: "/ebay-fee-calculator/" },
+        { name: "Final Value Fee Calculator" },
       ]}
     />
 
     <!-- Header & Direct Answer -->
     <header class="space-y-4">
       <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>FVF Isolated: 13.25% Standard · 12.35% Store · $0.30 / $0.40 Per Order</span>
+        <span>
+          FVF Isolated: 13.25% Standard · 12.35% Store · $0.30 / $0.40 Per Order
+        </span>
       </div>
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
@@ -125,7 +129,17 @@ const structuredData = [
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        eBay’s Final Value Fee (FVF) is the primary commission fee deducted when an item sells. For most categories, eBay charges <strong class="text-ink">13.25% for standard sellers</strong> or <strong class="text-ink">12.35% for Basic+ Store subscribers</strong> on the total amount paid by the buyer up to $7,500 (2.35% on the portion over $7,500), plus a fixed per-order fee of <strong class="text-ink">$0.30 (for sales &le; $10.00) or $0.40 (for sales &gt; $10.00)</strong>. Use this calculator to isolate your platform deductions before factoring in inventory or postage expenses.
+        eBay’s Final Value Fee (FVF) is the primary commission fee deducted when
+        an item sells. For most categories, eBay charges{" "}
+        <strong class="text-ink">13.25% for standard sellers</strong> or{" "}
+        <strong class="text-ink">12.35% for Basic+ Store subscribers</strong> on
+        the total amount paid by the buyer up to $7,500 (2.35% on the portion
+        over $7,500), plus a fixed per-order fee of{" "}
+        <strong class="text-ink">
+          $0.30 (for sales &le; $10.00) or $0.40 (for sales &gt; $10.00)
+        </strong>
+        . Use this calculator to isolate your platform deductions before
+        factoring in inventory or postage expenses.
       </p>
 
       <!-- Reciprocal Link to Pillar -->
@@ -134,10 +148,24 @@ const structuredData = [
           href="/ebay-fee-calculator/"
           class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
-          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          <svg
+            class="w-4 h-4"
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+              clip-rule="evenodd"
+            />
           </svg>
-          <span>Need full net profit, postage costs, and COGS? Go to the main eBay Fee & Profit Calculator</span>
+          <span>
+            Need full net profit, postage costs, and COGS? Go to the main eBay
+            Fee & Profit Calculator
+          </span>
         </a>
       </div>
     </header>
@@ -149,28 +177,39 @@ const structuredData = [
 
     <!-- FVF Math Breakdown -->
     <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">How eBay Final Value Fees Are Calculated</h2>
+      <h2 class="text-heading-2 font-bold text-ink">
+        How eBay Final Value Fees Are Calculated
+      </h2>
       <p class="text-body text-body leading-relaxed">
-        Unlike platforms that charge separate payment gateway fees (like Stripe or PayPal), eBay incorporates payment processing directly into its Final Value Fee. The fee breaks down into:
+        Unlike platforms that charge separate payment gateway fees (like Stripe
+        or PayPal), eBay incorporates payment processing directly into its Final
+        Value Fee. The fee breaks down into:
       </p>
 
       <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink">
-        <div class="text-primary font-bold">1. Percentage Component (Tiered by Category & Threshold)</div>
+        <div class="text-primary font-bold">
+          1. Percentage Component (Tiered by Category & Threshold)
+        </div>
         <div class="pl-4 text-muted">
-          Portion up to Threshold ($7,500) = Sale Amount &times; Category Rate % (e.g. 13.25%)
+          Portion up to Threshold ($7,500) = Sale Amount &times; Category Rate %
+          (e.g. 13.25%)
         </div>
         <div class="pl-4 text-muted">
           Portion above Threshold ($7,500) = Excess Amount &times; 2.35%
         </div>
 
-        <div class="text-primary font-bold">2. Top Rated Plus Discount (If Applicable)</div>
+        <div class="text-primary font-bold">
+          2. Top Rated Plus Discount (If Applicable)
+        </div>
         <div class="pl-4 text-muted">
-          Discounted Percentage Fee = Percentage Component &times; 0.90 (10% savings)
+          Discounted Percentage Fee = Percentage Component &times; 0.90 (10%
+          savings)
         </div>
 
         <div class="text-primary font-bold">3. Fixed Per-Order Fee</div>
         <div class="pl-4 text-muted">
-          +$0.30 if Total Buyer Payment &le; $10.00 | +$0.40 if Total Buyer Payment &gt; $10.00
+          +$0.30 if Total Buyer Payment &le; $10.00 | +$0.40 if Total Buyer
+          Payment &gt; $10.00
         </div>
         <div class="pl-4 text-muted">
           (Waived for Men's & Women's Athletic Shoes sold at $150 or more)
@@ -185,9 +224,15 @@ const structuredData = [
 
     <!-- Worked Example -->
     <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">Worked Example: FVF on a $120 Sale</h2>
+      <h2 class="text-heading-2 font-bold text-ink">
+        Worked Example: FVF on a $120 Sale
+      </h2>
       <p class="text-body text-body leading-relaxed">
-        A seller lists a collectible toy for <strong class="text-ink">$110.00</strong> with <strong class="text-ink">$10.00</strong> shipping charged to the buyer ($120.00 gross buyer payment). The seller does not have an eBay Store and is in <strong class="text-ink">Most Categories (13.25%)</strong>:
+        A seller lists a collectible toy for{" "}
+        <strong class="text-ink">$110.00</strong> with{" "}
+        <strong class="text-ink">$10.00</strong> shipping charged to the buyer
+        ($120.00 gross buyer payment). The seller does not have an eBay Store
+        and is in <strong class="text-ink">Most Categories (13.25%)</strong>:
       </p>
 
       <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
@@ -202,11 +247,17 @@ const structuredData = [
           <tbody class="divide-y divide-hairline">
             <tr>
               <td class="p-3.5 text-ink font-medium">Gross Buyer Payment</td>
-              <td class="p-3.5 text-right text-muted">$110.00 item + $10.00 shipping</td>
-              <td class="p-3.5 text-right font-mono font-bold text-ink">$120.00</td>
+              <td class="p-3.5 text-right text-muted">
+                $110.00 item + $10.00 shipping
+              </td>
+              <td class="p-3.5 text-right font-mono font-bold text-ink">
+                $120.00
+              </td>
             </tr>
             <tr>
-              <td class="p-3.5 text-ink">Percentage Final Value Fee (13.25%)</td>
+              <td class="p-3.5 text-ink">
+                Percentage Final Value Fee (13.25%)
+              </td>
               <td class="p-3.5 text-right text-muted">13.25% of $120.00</td>
               <td class="p-3.5 text-right font-mono text-negative">-$15.90</td>
             </tr>
@@ -218,12 +269,20 @@ const structuredData = [
             <tr class="bg-primary/10 font-bold text-ink">
               <td class="p-3.5 text-primary">Total eBay Final Value Fee</td>
               <td class="p-3.5 text-right text-muted">$15.90 + $0.40</td>
-              <td class="p-3.5 text-right font-mono text-negative text-body-md">-$16.30</td>
+              <td class="p-3.5 text-right font-mono text-negative text-body-md">
+                -$16.30
+              </td>
             </tr>
             <tr class="bg-canvas-soft/60 font-semibold">
-              <td class="p-3.5 text-ink">Net Seller Payout (Before COGS & Postage)</td>
-              <td class="p-3.5 text-right text-muted">$120.00 &minus; $16.30</td>
-              <td class="p-3.5 text-right font-mono text-primary font-bold">$103.70</td>
+              <td class="p-3.5 text-ink">
+                Net Seller Payout (Before COGS & Postage)
+              </td>
+              <td class="p-3.5 text-right text-muted">
+                $120.00 &minus; $16.30
+              </td>
+              <td class="p-3.5 text-right font-mono text-primary font-bold">
+                $103.70
+              </td>
             </tr>
           </tbody>
         </table>
@@ -231,23 +290,37 @@ const structuredData = [
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
         <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">Effective FVF Rate</span>
-          <span class="text-heading-3 font-mono font-bold text-ink">13.58%</span>
+          <span class="text-micro uppercase text-muted font-bold block mb-1">
+            Effective FVF Rate
+          </span>
+          <span class="text-heading-3 font-mono font-bold text-ink">
+            13.58%
+          </span>
         </div>
         <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">Store Subscriber Savings</span>
-          <span class="text-heading-3 font-mono font-bold text-primary">$1.08 / order</span>
+          <span class="text-micro uppercase text-muted font-bold block mb-1">
+            Store Subscriber Savings
+          </span>
+          <span class="text-heading-3 font-mono font-bold text-primary">
+            $1.08 / order
+          </span>
         </div>
         <div class="rounded-lg border border-hairline p-4 bg-canvas text-center">
-          <span class="text-micro uppercase text-muted font-bold block mb-1">Top Rated Plus Savings</span>
-          <span class="text-heading-3 font-mono font-bold text-primary">$1.59 / order</span>
+          <span class="text-micro uppercase text-muted font-bold block mb-1">
+            Top Rated Plus Savings
+          </span>
+          <span class="text-heading-3 font-mono font-bold text-primary">
+            $1.59 / order
+          </span>
         </div>
       </div>
     </section>
 
     <!-- Category Rate Table -->
     <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">Category FVF Rate Comparison</h2>
+      <h2 class="text-heading-2 font-bold text-ink">
+        Category FVF Rate Comparison
+      </h2>
       <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
@@ -262,14 +335,18 @@ const structuredData = [
             {EBAY_US_CATEGORIES.map((cat) => (
               <tr class="hover:bg-canvas-soft/40 transition-colors">
                 <td class="p-3.5 font-medium text-ink">{cat.name}</td>
-                <td class="p-3.5 text-center font-mono font-bold text-ink">{cat.rateStandard}%</td>
-                <td class="p-3.5 text-center font-mono font-bold text-primary">{cat.rateStore}%</td>
+                <td class="p-3.5 text-center font-mono font-bold text-ink">
+                  {cat.rateStandard}%
+                </td>
+                <td class="p-3.5 text-center font-mono font-bold text-primary">
+                  {cat.rateStore}%
+                </td>
                 <td class="p-3.5 text-caption text-muted">
                   {cat.threshold
                     ? `${cat.rateAboveThreshold}% over $${cat.threshold.toLocaleString()}`
-                    : cat.id === 'athletic_shoes_150'
-                      ? '$0 per-order fee for $150+'
-                      : 'Flat tier'}
+                    : cat.id === "athletic_shoes_150"
+                      ? "$0 per-order fee for $150+"
+                      : "Flat tier"}
                 </td>
               </tr>
             ))}
@@ -281,9 +358,12 @@ const structuredData = [
     <!-- FAQs -->
     <section class="space-y-6 border-t border-hairline pt-8">
       <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          Frequently Asked Questions
+        </h2>
         <p class="text-body text-body leading-relaxed">
-          Common questions about eBay Final Value Fee deductions, percentages, and seller exemptions.
+          Common questions about eBay Final Value Fee deductions, percentages,
+          and seller exemptions.
         </p>
       </div>
 
@@ -306,31 +386,54 @@ const structuredData = [
 
     <!-- Related Calculators -->
     <section class="space-y-4 border-t border-hairline pt-8">
-      <h2 class="text-heading-2 font-bold text-ink">Related eBay Calculators</h2>
+      <h2 class="text-heading-2 font-bold text-ink">
+        Related eBay Calculators
+      </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <a
           href="/ebay-fee-calculator/"
           class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
         >
-          <span class="text-caption font-bold text-primary block mb-1">Pillar Calculator</span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Fee Calculator</span>
-          <span class="text-caption text-muted block">The full all-in-one calculator with store subscriptions and promoted listings.</span>
+          <span class="text-caption font-bold text-primary block mb-1">
+            Pillar Calculator
+          </span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">
+            eBay Fee Calculator
+          </span>
+          <span class="text-caption text-muted block">
+            The full all-in-one calculator with store subscriptions and promoted
+            listings.
+          </span>
         </a>
         <a
           href="/ebay-profit-calculator/"
           class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
         >
-          <span class="text-caption font-bold text-primary block mb-1">Profit & Loss</span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Profit Calculator</span>
-          <span class="text-caption text-muted block">Calculate net cash profit, margins, ROI, and break-even listing price.</span>
+          <span class="text-caption font-bold text-primary block mb-1">
+            Profit & Loss
+          </span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">
+            eBay Profit Calculator
+          </span>
+          <span class="text-caption text-muted block">
+            Calculate net cash profit, margins, ROI, and break-even listing
+            price.
+          </span>
         </a>
         <a
           href="/ebay-shipping-fee-calculator/"
           class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
         >
-          <span class="text-caption font-bold text-primary block mb-1">Postage Analysis</span>
-          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Shipping Fee Calculator</span>
-          <span class="text-caption text-muted block">Understand eBay fees on shipping charged and avoid losing money on postage.</span>
+          <span class="text-caption font-bold text-primary block mb-1">
+            Postage Analysis
+          </span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">
+            eBay Shipping Fee Calculator
+          </span>
+          <span class="text-caption text-muted block">
+            Understand eBay fees on shipping charged and avoid losing money on
+            postage.
+          </span>
         </a>
       </div>
     </section>
@@ -340,13 +443,18 @@ const structuredData = [
       <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="space-y-1">
           <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span
+              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
+              aria-hidden="true"
+            ></span>
             <span class="text-ui-label font-bold text-ink">
               Official Rate Verification
             </span>
           </div>
           <p class="text-caption text-muted">
-            eBay US Final Value Fee rates officially verified on <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced directly from eBay’s official Selling Fees policy.
+            eBay US Final Value Fee rates officially verified on{" "}
+            <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced
+            directly from eBay’s official Selling Fees policy.
           </p>
         </div>
 
@@ -357,9 +465,24 @@ const structuredData = [
           class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
         >
           <span>View Official eBay Selling Fees</span>
-          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
-            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+          <svg
+            class="w-4 h-4"
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+              clip-rule="evenodd"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
+              clip-rule="evenodd"
+            />
           </svg>
         </a>
       </div>
