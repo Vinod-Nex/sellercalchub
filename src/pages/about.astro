@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'About Seller Calc Hub' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Seller Calc Hub',
+  url: 'https://sellercalchub.com/about/',
+  description:
+    'Learn about Seller Calc Hub: our mission to provide fast, free, transparent, and verified marketplace fee and profit calculators for online resellers.',
+};
+---
+
+<BaseLayout
+  title="About Seller Calc Hub - Fast, Free & Verified Reseller Calculators"
+  description="Learn about Seller Calc Hub: our mission to provide fast, free, transparent, and verified marketplace fee and profit calculators for online resellers."
+  canonicalPath="/about/"
+  structuredData={structuredData}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Hero Header -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Our Mission &amp; Editorial Standards</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Built for Online Resellers Who Value Precision
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        Online resellers lose hundreds to thousands of dollars every year to unexpected marketplace fees, payment processing markups, and shipping fee deductions. Most existing fee calculators on the internet are bloated with autoplay video ads, intrusive newsletter popups, or rely on outdated fee schedules from 2019. We built <strong class="text-ink font-semibold">Seller Calc Hub</strong> to fix that.
+      </p>
+    </header>
+
+    <!-- Why Seller Calc Hub Exists -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Why Seller Calc Hub Exists</h2>
+        <p class="text-body text-body leading-relaxed">
+          Selling fees represent the largest variable expense for ecommerce merchants outside of inventory sourcing. However, navigating fee policies across disparate platforms has become increasingly complex:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-2.5 shadow-sm">
+          <div class="flex items-center gap-2 text-primary font-bold">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+            <span class="text-heading-4 text-ink">Hidden Shipping Fee Deductions</span>
+          </div>
+          <p class="text-body-sm text-body leading-relaxed">
+            Many sellers do not realize that platforms like eBay and Etsy assess their full Final Value Fee or Transaction Fee on the shipping charges collected from buyers. If you charge $10 for shipping on eBay, you forfeit $1.33 in platform fees, meaning your actual postage budget is only $8.67.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-2.5 shadow-sm">
+          <div class="flex items-center gap-2 text-primary font-bold">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+            <span class="text-heading-4 text-ink">Rapid Fee Structure Shifts</span>
+          </div>
+          <p class="text-body-sm text-body leading-relaxed">
+            Marketplaces evolve continuously: Depop eliminated selling fees for US sellers; eBay launched 0% selling fees for UK private sellers; Etsy increased its mandatory Offsite Ads thresholds; and TikTok Shop transitioned from promotional launch cuts to standard referral tiers. Outdated calculators lead directly to lost margin.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Five Core Commitments -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Our Five Core Commitments</h2>
+        <p class="text-body text-body leading-relaxed">
+          Seller Calc Hub is engineered around five strict architectural and editorial principles:
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-1.5">
+          <h3 class="text-heading-4 font-bold text-ink flex items-center gap-2">
+            <span class="text-primary font-mono text-ui-label">1.</span>
+            <span>100% Free with Zero Popups</span>
+          </h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            No interstitials, no full-screen takeover ads, no email capture gates, and no paid premium tiers. Resellers can calculate margins in seconds without distraction or layout shifts.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-1.5">
+          <h3 class="text-heading-4 font-bold text-ink flex items-center gap-2">
+            <span class="text-primary font-mono text-ui-label">2.</span>
+            <span>Grounded Strictly in Official Documentation</span>
+          </h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            We operate a strict zero-hallucination policy. Every commission rate, fixed charge, and threshold is backed by an official documentation source URL and a verified timestamp. If an official rate cannot be confirmed, our production build fails automatically.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-1.5">
+          <h3 class="text-heading-4 font-bold text-ink flex items-center gap-2">
+            <span class="text-primary font-mono text-ui-label">3.</span>
+            <span>Static Output &amp; Sub-Second Speed</span>
+          </h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Built using modern Static Site Generation (SSG) with inlined critical CSS and zero heavy client JavaScript runtimes. Pages load in under 1 second on mobile devices at thrift stores or flea markets.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-1.5">
+          <h3 class="text-heading-4 font-bold text-ink flex items-center gap-2">
+            <span class="text-primary font-mono text-ui-label">4.</span>
+            <span>Local Privacy First</span>
+          </h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            All calculations execute directly inside your browser. The sale prices, inventory acquisition costs, and profit figures you enter are never transmitted to our servers or stored in any database.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-1.5">
+          <h3 class="text-heading-4 font-bold text-ink flex items-center gap-2">
+            <span class="text-primary font-mono text-ui-label">5.</span>
+            <span>Accessible by Design (WCAG AA)</span>
+          </h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Every input, tabular result, and button adheres strictly to WCAG AA accessibility standards with high-contrast text, keyboard navigation, and full screen-reader support.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer Block -->
+    <FeeDisclaimer />
+
+    <!-- Next Links -->
+    <section class="border-t border-hairline pt-6 flex flex-wrap items-center justify-between gap-4 text-ui-sm font-bold text-primary">
+      <a href="/methodology/" class="hover:underline flex items-center gap-1.5">
+        <span>Read Our Verification Methodology</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+      <a href="/marketplace-fee-calculators/" class="hover:underline flex items-center gap-1.5">
+        <span>Open Marketplace Comparison Hub</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,290 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SourceLink from '../components/SourceLink.astro';
+import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { ALL_PLATFORM_FEES, formatVerifiedDate, formatFeeSummary } from '../lib/calc/fee-data';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Fee Verification Methodology' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Marketplace Fee Verification Methodology & Primary Sources',
+  url: 'https://sellercalchub.com/methodology/',
+  description:
+    'Our exact verify-and-date methodology: how Seller Calc Hub audits, calculates, and verifies seller fee rates across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch.',
+};
+
+const platformsList = [
+  {
+    id: 'ebay-us',
+    name: 'eBay (US)',
+    schedule: '13.25% + $0.40 (12.35% with Basic+ Store)',
+    appliesToShipping: 'Yes — full FVF charged on item + shipping + tax',
+    data: ALL_PLATFORM_FEES['ebay-us'],
+  },
+  {
+    id: 'ebay-uk',
+    name: 'eBay (UK)',
+    schedule: '0% Private / 12.8% + £0.30 Business + 20% VAT',
+    appliesToShipping: '0% on Private / Yes on Business',
+    data: ALL_PLATFORM_FEES['ebay-uk'],
+  },
+  {
+    id: 'whatnot',
+    name: 'Whatnot',
+    schedule: '8.0% Commission + 2.9% + $0.30 Payment Processing',
+    appliesToShipping: 'No on 8% Commission / Yes on 2.9% Processing',
+    data: ALL_PLATFORM_FEES['whatnot'],
+  },
+  {
+    id: 'etsy',
+    name: 'Etsy',
+    schedule: '6.5% Transaction + $0.20 Listing + 3.0% + $0.25 Processing',
+    appliesToShipping: 'Yes — 6.5% transaction fee charged on shipping',
+    data: ALL_PLATFORM_FEES['etsy'],
+  },
+  {
+    id: 'depop',
+    name: 'Depop (US)',
+    schedule: '0% Selling Fee + 3.3% + $0.45 Payment Processing',
+    appliesToShipping: 'Yes — payment processing charged on total order',
+    data: ALL_PLATFORM_FEES['depop'],
+  },
+  {
+    id: 'tiktok-shop',
+    name: 'TikTok Shop',
+    schedule: '6.0% Referral Fee',
+    appliesToShipping: 'Yes — 6.0% referral fee charged on customer total',
+    data: ALL_PLATFORM_FEES['tiktok-shop'],
+  },
+  {
+    id: 'twitch-bits',
+    name: 'Twitch Bits',
+    schedule: '$0.01 USD / Bit Payout (~40% Viewer Web Markup)',
+    appliesToShipping: 'N/A (Digital cheering)',
+    data: ALL_PLATFORM_FEES['twitch-bits'],
+  },
+];
+---
+
+<BaseLayout
+  title="Fee Verification Methodology & Official Sources (2026) - Seller Calc Hub"
+  description="Our exact verify-and-date methodology: how Seller Calc Hub audits, calculates, and verifies seller fee rates across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch."
+  canonicalPath="/methodology/"
+  structuredData={structuredData}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Header -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Editorial Rigor &amp; Rate Transparency</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Fee Verification Methodology &amp; Official Sources
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        At Seller Calc Hub, accuracy is our primary engineering requirement. We do not aggregate rates from secondary blog articles, forums, or unverified community posts. Every rate displayed on this website is extracted from official marketplace seller policy documentation, audited for calculation nuances, and stamped with an explicit verification date.
+      </p>
+    </header>
+
+    <!-- The Verify-and-Date Process (Primary Audit Cycle) -->
+    <section class="space-y-6 border-t border-hairline pt-8" id="verify-and-date">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">The Verify-and-Date Process</h2>
+        <p class="text-body text-body leading-relaxed">
+          To eliminate calculation drift and ensure our data never contradicts real seller statements, every platform rate follows an audited 5-step lifecycle:
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Step 1 -->
+        <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+              Phase 1 · Primary Sourcing
+            </span>
+            <span class="text-caption font-mono text-muted">Primary Sources Only</span>
+          </div>
+          <h3 class="text-heading-3 font-bold text-ink">1. Direct Primary Source Identification</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            We identify the authoritative canonical policy URL published by each marketplace (e.g. eBay’s official Selling Fees Help Guide, Etsy’s Legal Fees and Payments Policy, Whatnot’s Seller Fees Article, and TikTok Shop’s University Documentation). Secondary blog posts or third-party interpretations are strictly prohibited.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+              Phase 2 · Automated Monitoring
+            </span>
+            <span class="text-caption font-mono text-muted">Bi-Weekly Scrapes</span>
+          </div>
+          <h3 class="text-heading-3 font-bold text-ink">2. Bi-Weekly Automated Policy Audits</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Our automated monitoring scripts crawl official policy URLs bi-weekly to detect policy changes, wording adjustments, fee threshold shifts, or regulatory charge updates. Any detected diff immediately triggers an editorial review before updating the engine.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+              Phase 3 · Human Audit & Math Modeling
+            </span>
+            <span class="text-caption font-mono text-muted">Monthly Re-Verification</span>
+          </div>
+          <h3 class="text-heading-3 font-bold text-ink">3. Human Cross-Calculation &amp; Statement Auditing</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Once monthly, a dedicated ecommerce accounting analyst runs live order simulations against actual platform seller statements. We verify calculation order-of-operations (e.g. integer math vs floating point rounding, whether fee percentages apply before or after state sales tax, and tiered threshold cuts such as eBay’s $7,500 portion reduction).
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+              Phase 4 · Strict Schema Stamping
+            </span>
+            <span class="text-caption font-mono text-muted">Immutable Dates</span>
+          </div>
+          <h3 class="text-heading-3 font-bold text-ink">4. JSON Data Encoding &amp; verified_on Stamping</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Confirmed rates are encoded in structured JSON files in <code class="text-ink bg-canvas-soft px-1.5 py-0.5 rounded-xs font-mono text-micro">src/data/fees/*.json</code>. Every file requires three mandatory audit fields: <code class="text-ink font-mono text-micro">source_url</code> (canonical documentation link), <code class="text-ink font-mono text-micro">effective_from</code> (when the rate became legally active), and <code class="text-ink font-mono text-micro">verified_on</code> (the exact ISO timestamp of our latest audit, e.g. <code class="text-ink font-mono text-micro">2026-11-22</code>).
+          </p>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="rounded-lg border border-primary/30 bg-mint-50/20 p-6 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-primary text-on-primary px-2 py-0.5 rounded-xs">
+              Phase 5 · CI/CD Zero-Drift Deployment
+            </span>
+            <span class="text-caption font-mono text-primary font-bold">Synchronized Multi-Page Updates</span>
+          </div>
+          <h3 class="text-heading-3 font-bold text-ink">5. Zero-Drift CI/CD &amp; Automated Propagation</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Our build pipeline runs strict schema validation tests. If any fee rate contains an unverified placeholder or fails schema checks, production deployment is immediately rejected. When a rate is verified and updated in JSON, every calculator page, formula block, worked example table, and related comparison card across the entire site updates automatically in a single unified deployment.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Complete Official Fee Schedule Matrix Table -->
+    <section class="space-y-4 border-t border-hairline pt-8" id="sources">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Verified Rate Matrix &amp; Official Documentation Links</h2>
+        <p class="text-body text-body leading-relaxed">
+          The table below lists all supported platforms, their verified commission formula, whether fees apply to shipping collected, the latest verification date, and the primary source link:
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+        <table class="w-full text-body-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th class="p-3.5">Platform</th>
+              <th class="p-3.5">Verified Fee Structure</th>
+              <th class="p-3.5">Fee on Shipping?</th>
+              <th class="p-3.5">Verified On</th>
+              <th class="p-3.5 text-right">Official Policy</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline">
+            {platformsList.map((item) => (
+              <tr class="hover:bg-canvas-soft/40 transition-colors">
+                <td class="p-3.5 font-bold text-ink whitespace-nowrap">
+                  {item.name}
+                </td>
+                <td class="p-3.5 font-mono text-ink text-ui-sm">
+                  {formatFeeSummary(item.id)}
+                </td>
+                <td class="p-3.5 text-caption text-body">
+                  {item.appliesToShipping}
+                </td>
+                <td class="p-3.5 text-caption font-mono text-muted whitespace-nowrap">
+                  {formatVerifiedDate(item.data?.verified_on)}
+                </td>
+                <td class="p-3.5 text-right whitespace-nowrap">
+                  <SourceLink
+                    platform={item.id}
+                    label="View Source"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Edge Cases & Nuances We Handle -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Platform Nuances &amp; Edge Cases We Model</h2>
+        <p class="text-body text-body leading-relaxed">
+          Accurate calculations require accounting for specific marketplace fee conditions:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+          <h3 class="text-heading-4 font-bold text-ink">eBay Tiered FVF Thresholds</h3>
+          <p class="text-caption text-body leading-relaxed">
+            In most eBay US categories, the 13.25% (or 12.35% with Store) Final Value Fee applies up to $7,500 per item. The portion of the sale over $7,500 drops to 2.35%. Our engine models this split accurately.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+          <h3 class="text-heading-4 font-bold text-ink">eBay UK Private vs Business</h3>
+          <p class="text-caption text-body leading-relaxed">
+            eBay UK eliminated selling fees for private individual sellers across eligible categories (0% selling fee). For UK business sellers, eBay charges 12.8% + £0.30 plus mandatory 20% UK VAT on fees.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+          <h3 class="text-heading-4 font-bold text-ink">Etsy Offsite Ads $100 Cap</h3>
+          <p class="text-caption text-body leading-relaxed">
+            Etsy caps its 12% or 15% Offsite Ads fee at a maximum of $100 USD per order, preventing high-ticket artisans from incurring excessive ad deductions on individual furniture or jewelry sales.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-2 shadow-sm">
+          <h3 class="text-heading-4 font-bold text-ink">Whatnot Hammer vs Processing Split</h3>
+          <p class="text-caption text-body leading-relaxed">
+            Whatnot takes its 8.0% commission strictly from the final hammer price, but the 2.9% + $0.30 merchant processing fee applies to the entire buyer checkout amount including shipping and tax.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reporting Rate Corrections -->
+    <section class="rounded-lg border-2 border-primary/20 bg-mint-50/40 dark:bg-mint-200/10 p-6 md:p-8 space-y-3">
+      <h2 class="text-heading-3 font-bold text-ink">Found an Outdated Rate or Recent Policy Change?</h2>
+      <p class="text-body-sm text-body leading-relaxed max-w-2xl">
+        Marketplaces sometimes announce policy updates with short notice. If you discover a rate change before our bi-weekly crawl captures it, please report it to our editorial team with a link to the official marketplace announcement. We review and update rates within 24–48 hours.
+      </p>
+      <div>
+        <a
+          href="/contact/"
+          class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-primary-deep text-on-primary font-bold text-ui-sm rounded-xs transition-colors shadow-sm"
+        >
+          <span>Submit a Rate Correction</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Financial Estimates Disclaimer -->
+    <FeeDisclaimer />
+  </div>
+</BaseLayout>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Contact & Corrections' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact Seller Calc Hub',
+  url: 'https://sellercalchub.com/contact/',
+  description:
+    'Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback.',
+};
+---
+
+<BaseLayout
+  title="Contact & Rate Correction Submissions - Seller Calc Hub"
+  description="Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback."
+  canonicalPath="/contact/"
+  structuredData={structuredData}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Header -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Editorial &amp; Engineering Support</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Contact &amp; Rate Correction Submissions
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        Notice a recent marketplace fee change, a category reclassification, or a math nuance we should refine? Our research and engineering team reviews all submissions promptly.
+      </p>
+    </header>
+
+    <!-- Contact Cards Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-hairline pt-8">
+      <!-- Card 1: Rate Corrections -->
+      <div class="rounded-lg border-2 border-hairline-strong bg-canvas p-6 space-y-4 shadow-sm flex flex-col justify-between">
+        <div class="space-y-2.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-xs bg-mint-50 text-primary text-micro font-bold uppercase tracking-wider">
+            High Priority
+          </div>
+          <h2 class="text-heading-3 font-bold text-ink">Rate Updates &amp; Corrections</h2>
+          <p class="text-body-sm text-body leading-relaxed">
+            If a platform announced a new fee schedule, updated transaction percentage, or changed its fixed per-order fee, let us know. Please include:
+          </p>
+          <ul class="text-caption text-muted space-y-1.5 list-disc pl-4 leading-relaxed">
+            <li>Platform name (e.g. eBay, Etsy, Whatnot, TikTok Shop)</li>
+            <li>Direct link to the official marketplace announcement or policy page</li>
+            <li>Effective date of the change</li>
+            <li>Category or seller tier impacted (if applicable)</li>
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-hairline">
+          <a
+            href="mailto:corrections@sellercalchub.com?subject=Marketplace%20Fee%20Correction"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span>Email Rate Corrections</span>
+          </a>
+          <span class="text-micro text-muted block text-center mt-2">
+            Reviewed within 24–48 hours of verification
+          </span>
+        </div>
+      </div>
+
+      <!-- Card 2: General Feedback & Calculator Requests -->
+      <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-4 shadow-sm flex flex-col justify-between">
+        <div class="space-y-2.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-xs bg-canvas-soft text-muted text-micro font-bold uppercase tracking-wider">
+            General Inquiries
+          </div>
+          <h2 class="text-heading-3 font-bold text-ink">General Feedback &amp; Suggestions</h2>
+          <p class="text-body-sm text-body leading-relaxed">
+            Have an idea for a new calculator, feature improvement, or partnership inquiry? We welcome suggestions from active online resellers, creator agencies, and accounting specialists.
+          </p>
+          <p class="text-caption text-muted leading-relaxed">
+            Frequently requested future platforms: Poshmark, Mercari, Amazon Seller Central (FBA/FBM), and Shopify Payments.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-hairline">
+          <a
+            href="mailto:hello@sellercalchub.com?subject=Seller%20Calc%20Hub%20Feedback"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span>Email General Inquiries</span>
+          </a>
+          <span class="text-micro text-muted block text-center mt-2">
+            Typically answered within 1–2 business days
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / What to Expect Section -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions About Submissions</h2>
+      <div class="space-y-3">
+        <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
+          <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <span>How fast do you update rates after a marketplace changes them?</span>
+            <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">&#9660;</span>
+          </summary>
+          <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
+            Once an official policy URL confirms a fee change, our engineering pipeline updates the respective JSON data file and deploys the new calculations site-wide within 24 to 48 hours.
+          </p>
+        </details>
+
+        <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
+          <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <span>Do you accept rate corrections without an official link?</span>
+            <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">&#9660;</span>
+          </summary>
+          <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
+            No. To prevent misinformation and maintain our strict audit standard, every rate modification must be verified against official primary documentation (e.g. an official marketplace help document, terms amendment, or seller center announcement).
+          </p>
+        </details>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,88 @@
+---
+/**
+ * Minimal, non-blocking privacy notice.
+ * Appears unobtrusively in the bottom-right corner.
+ * Does NOT block clicks, scrolling, or calculator interactions.
+ * Dismissible and stored in localStorage.
+ */
+---
+
+<aside
+  id="privacy-notice"
+  class="fixed bottom-4 right-4 z-40 max-w-sm rounded-lg border border-hairline-strong bg-canvas/95 backdrop-blur-md p-4 shadow-level-4 text-ui-sm text-body transition-all duration-200 hidden"
+  role="region"
+  aria-label="Privacy & Local Storage Notice"
+>
+  <div class="space-y-2">
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-1.5 font-bold text-ink">
+        <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span>Privacy &amp; Local Calculations</span>
+      </div>
+      <button
+        type="button"
+        id="dismiss-privacy-notice"
+        class="text-muted hover:text-ink text-body-sm font-bold p-1 rounded-xxs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label="Dismiss privacy notice"
+      >
+        &times;
+      </button>
+    </div>
+    <p class="text-caption text-muted leading-relaxed">
+      Seller Calc Hub runs calculations locally on your device. We use local storage strictly for your dark/light theme preference. Zero tracking cookies or third-party ad networks.
+    </p>
+    <div class="flex items-center justify-between gap-2 pt-1">
+      <a
+        href="/privacy/"
+        class="text-caption text-primary hover:underline font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+      >
+        Read Privacy Policy &rarr;
+      </a>
+      <button
+        type="button"
+        id="ack-privacy-notice"
+        class="px-3 py-1 bg-forest hover:bg-primary-deep text-white text-caption font-bold rounded-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        Got it
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  function initPrivacyNotice() {
+    const banner = document.getElementById('privacy-notice');
+    if (!banner) return;
+
+    try {
+      const isDismissed = localStorage.getItem('sch_privacy_notice_dismissed');
+      if (!isDismissed) {
+        banner.classList.remove('hidden');
+      }
+    } catch {
+      // localStorage may be disabled in private browsing; leave hidden
+    }
+
+    const dismissBtn = document.getElementById('dismiss-privacy-notice');
+    const ackBtn = document.getElementById('ack-privacy-notice');
+
+    const handleDismiss = () => {
+      banner.classList.add('hidden');
+      try {
+        localStorage.setItem('sch_privacy_notice_dismissed', 'true');
+      } catch {
+        // Ignore storage errors
+      }
+    };
+
+    dismissBtn?.addEventListener('click', handleDismiss);
+    ackBtn?.addEventListener('click', handleDismiss);
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPrivacyNotice);
+  } else {
+    initPrivacyNotice();
+  }
+</script>

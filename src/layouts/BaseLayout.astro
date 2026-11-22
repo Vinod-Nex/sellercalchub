@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Head from '../components/Head.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 
 export interface Props {
   /** Page title - required per page (no default hard-coded in layout) */
@@ -81,5 +82,8 @@ const {
     <slot name="footer">
       <Footer />
     </slot>
+
+    <!-- Non-blocking Privacy / Consent Banner -->
+    <ConsentBanner />
   </body>
 </html>
