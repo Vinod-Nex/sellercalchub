@@ -1,0 +1,169 @@
+---
+export interface Props {
+  id: string;
+  name: string;
+  label: string;
+  value?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  required?: boolean;
+  helpText?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name,
+  label,
+  value = 1,
+  min = 1,
+  max = 9999,
+  step = 1,
+  required = false,
+  helpText,
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['space-y-1', className]}>
+  <label for={id} class="block text-caption font-bold text-ink tracking-tight">
+    {label}
+    {required && <span class="text-error" aria-hidden="true">*</span>}
+  </label>
+
+  <div class="flex items-center rounded-xs border border-hairline-strong bg-canvas focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors overflow-hidden">
+    <button
+      type="button"
+      data-stepper-btn="decrement"
+      aria-label={`Decrease ${label}`}
+      disabled={disabled}
+      class="w-10 h-11 flex items-center justify-center text-ink hover:bg-canvas-soft active:bg-mint-100 disabled:opacity-40 disabled:cursor-not-allowed border-r border-hairline transition-colors select-none text-heading-4 font-semibold"
+    >
+      −
+    </button>
+
+    <input
+      id={id}
+      name={name}
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      value={value}
+      min={min}
+      max={max}
+      step={step}
+      required={required}
+      disabled={disabled}
+      data-stepper-field
+      data-min={min}
+      data-max={max}
+      data-step={step}
+      aria-describedby={helpText ? `${id}-help ${id}-error` : `${id}-error`}
+      class="w-full text-center py-2.5 bg-transparent text-ink text-body-md font-medium focus:outline-none tabular-nums disabled:opacity-50 disabled:cursor-not-allowed"
+    />
+
+    <button
+      type="button"
+      data-stepper-btn="increment"
+      aria-label={`Increase ${label}`}
+      disabled={disabled}
+      class="w-10 h-11 flex items-center justify-center text-ink hover:bg-canvas-soft active:bg-mint-100 disabled:opacity-40 disabled:cursor-not-allowed border-l border-hairline transition-colors select-none text-heading-4 font-semibold"
+    >
+      +
+    </button>
+  </div>
+
+  <!-- Zero Layout Shift Help & Error Container -->
+  <div class="flex flex-col justify-start">
+    {helpText && (
+      <span id={`${id}-help`} class="text-micro text-muted">
+        {helpText}
+      </span>
+    )}
+    <div
+      id={`${id}-error`}
+      role="alert"
+      aria-live="polite"
+      class="h-4 text-micro text-error font-medium invisible transition-opacity"
+    >
+    </div>
+  </div>
+</div>
+
+<script>
+  import { validateNumber } from './input-utils';
+
+  function initSteppers() {
+    const stepperInputs = document.querySelectorAll<HTMLInputElement>('input[data-stepper-field]');
+
+    stepperInputs.forEach((input) => {
+      if (input.dataset.initialized === 'true') return;
+      input.dataset.initialized = 'true';
+
+      const container = input.closest('div.flex');
+      if (!container) return;
+
+      const decBtn = container.querySelector<HTMLButtonElement>('button[data-stepper-btn="decrement"]');
+      const incBtn = container.querySelector<HTMLButtonElement>('button[data-stepper-btn="increment"]');
+      const errorEl = document.getElementById(`${input.id}-error`);
+
+      const min = input.dataset.min ? parseInt(input.dataset.min, 10) : 1;
+      const max = input.dataset.max ? parseInt(input.dataset.max, 10) : 9999;
+      const step = input.dataset.step ? parseInt(input.dataset.step, 10) : 1;
+
+      const validate = () => {
+        const res = validateNumber(input.value, { min, max, required: true });
+        if (!res.valid) {
+          input.setAttribute('aria-invalid', 'true');
+          if (errorEl) {
+            errorEl.textContent = res.error;
+            errorEl.classList.remove('invisible');
+          }
+        } else {
+          input.removeAttribute('aria-invalid');
+          if (errorEl) {
+            errorEl.textContent = '';
+            errorEl.classList.add('invisible');
+          }
+        }
+      };
+
+      const updateValue = (delta: number) => {
+        let current = parseInt(input.value, 10);
+        if (isNaN(current)) current = min;
+        const next = Math.min(max, Math.max(min, current + delta));
+        input.value = String(next);
+        validate();
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      };
+
+      decBtn?.addEventListener('click', () => updateValue(-step));
+      incBtn?.addEventListener('click', () => updateValue(step));
+
+      input.addEventListener('input', () => {
+        // Strip non-digits on paste or typing
+        input.value = input.value.replace(/[^0-9]/g, '');
+        validate();
+      });
+
+      input.addEventListener('paste', (e: ClipboardEvent) => {
+        const pasteData = e.clipboardData?.getData('text') || '';
+        if (/[^0-9]/.test(pasteData)) {
+          e.preventDefault();
+          const clean = pasteData.replace(/[^0-9]/g, '');
+          input.value = clean;
+          validate();
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    });
+  }
+
+  initSteppers();
+  document.addEventListener('astro:page-load', initSteppers);
+</script>

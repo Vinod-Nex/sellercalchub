@@ -5,6 +5,11 @@ import {
   type PlatformId,
   type CalcResult,
 } from '../lib/calc';
+import MoneyInput from './inputs/MoneyInput.astro';
+import PercentInput from './inputs/PercentInput.astro';
+import SelectInput from './inputs/SelectInput.astro';
+import ToggleSwitch from './inputs/ToggleSwitch.astro';
+import StepperInput from './inputs/StepperInput.astro';
 
 export interface Props {
   platform?: PlatformId;
@@ -132,124 +137,64 @@ const platformList: { id: PlatformId; label: string }[] = [
         <!-- Price & Quantity Row -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div class="sm:col-span-2">
-            <label for="calc-price" class="block text-caption font-bold text-ink mb-1.5">
-              <span data-label-price>{platform === 'twitch-bits' ? 'Bits Amount' : 'Sold Item Price'}</span>
-            </label>
-            <div class="relative">
-              <span
-                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
-                data-currency-prefix
-              >
-                {platform === 'twitch-bits' ? '✦' : currencySymbol}
-              </span>
-              <input
-                id="calc-price"
-                name="price"
-                type="number"
-                min="0"
-                step={platform === 'twitch-bits' ? '1' : '0.01'}
-                value={price.toFixed(platform === 'twitch-bits' ? 0 : 2)}
-                required
-                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
-                aria-describedby="price-help"
-              />
-            </div>
-            <span id="price-help" class="text-micro text-muted mt-1 block">
-              {platform === 'twitch-bits' ? 'Number of Bits cheered' : 'Final sale price excluding shipping'}
-            </span>
+            <MoneyInput
+              id="calc-price"
+              name="price"
+              label={platform === 'twitch-bits' ? 'Bits Amount' : 'Sold Item Price'}
+              value={price}
+              currencySymbol={platform === 'twitch-bits' ? '✦' : currencySymbol}
+              helpText={platform === 'twitch-bits' ? 'Number of Bits cheered' : 'Final sale price excluding shipping'}
+              required={true}
+            />
           </div>
 
           <div>
-            <label for="calc-quantity" class="block text-caption font-bold text-ink mb-1.5">
-              Quantity
-            </label>
-            <input
+            <StepperInput
               id="calc-quantity"
               name="quantity"
-              type="number"
-              min="1"
-              step="1"
+              label="Quantity"
               value={quantity}
-              class="w-full px-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+              min={1}
+              helpText="Units sold"
             />
-            <span class="text-micro text-muted mt-1 block">Units sold</span>
           </div>
         </div>
 
         <!-- Shipping Charged & Shipping Cost (Hidden for Twitch Bits) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-shipping-section>
           <div>
-            <label for="calc-shipping-charged" class="block text-caption font-bold text-ink mb-1.5">
-              Buyer Paid Shipping
-            </label>
-            <div class="relative">
-              <span
-                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
-                data-currency-prefix
-              >
-                {currencySymbol}
-              </span>
-              <input
-                id="calc-shipping-charged"
-                name="shippingCharged"
-                type="number"
-                min="0"
-                step="0.01"
-                value={shippingCharged.toFixed(2)}
-                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
-              />
-            </div>
-            <span class="text-micro text-muted mt-1 block">Shipping charged to the buyer</span>
+            <MoneyInput
+              id="calc-shipping-charged"
+              name="shippingCharged"
+              label="Buyer Paid Shipping"
+              value={shippingCharged}
+              currencySymbol={currencySymbol}
+              helpText="Shipping charged to the buyer"
+            />
           </div>
 
           <div>
-            <label for="calc-shipping-cost" class="block text-caption font-bold text-ink mb-1.5">
-              Your Shipping Cost
-            </label>
-            <div class="relative">
-              <span
-                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
-                data-currency-prefix
-              >
-                {currencySymbol}
-              </span>
-              <input
-                id="calc-shipping-cost"
-                name="shippingCost"
-                type="number"
-                min="0"
-                step="0.01"
-                value={shippingCost.toFixed(2)}
-                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
-              />
-            </div>
-            <span class="text-micro text-muted mt-1 block">Actual postage & packaging cost</span>
+            <MoneyInput
+              id="calc-shipping-cost"
+              name="shippingCost"
+              label="Your Shipping Cost"
+              value={shippingCost}
+              currencySymbol={currencySymbol}
+              helpText="Actual postage & packaging cost"
+            />
           </div>
         </div>
 
         <!-- Item Cost (COGS) -->
         <div data-cogs-section>
-          <label for="calc-item-cost" class="block text-caption font-bold text-ink mb-1.5">
-            Item Cost (COGS)
-          </label>
-          <div class="relative">
-            <span
-              class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
-              data-currency-prefix
-            >
-              {currencySymbol}
-            </span>
-            <input
-              id="calc-item-cost"
-              name="itemCost"
-              type="number"
-              min="0"
-              step="0.01"
-              value={itemCost.toFixed(2)}
-              class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
-            />
-          </div>
-          <span class="text-micro text-muted mt-1 block">What you paid for the inventory per unit</span>
+          <MoneyInput
+            id="calc-item-cost"
+            name="itemCost"
+            label="Item Cost (COGS)"
+            value={itemCost}
+            currencySymbol={currencySymbol}
+            helpText="What you paid for the inventory per unit"
+          />
         </div>
 
         <!-- Platform-Specific Options Panels -->
@@ -260,39 +205,27 @@ const platformList: { id: PlatformId; label: string }[] = [
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">eBay US Options</span>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
-              <input
-                type="checkbox"
-                name="isTopRatedSeller"
-                class="rounded-xs text-primary focus:ring-primary"
-                checked={options.isTopRatedSeller}
-              />
-              <span>Top Rated Plus Seller (10% discount on Final Value Fee)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
-              <input
-                type="checkbox"
-                name="hasStoreSubscription"
-                class="rounded-xs text-primary focus:ring-primary"
-                checked={options.hasStoreSubscription}
-              />
-              <span>eBay Store Subscriber (Lower 12.35% base category rate)</span>
-            </label>
-            <div>
-              <label for="opt-promoted-us" class="block text-caption font-medium text-body mb-1">
-                Promoted Listings Ad Rate (%)
-              </label>
-              <input
-                id="opt-promoted-us"
-                name="promotedListingPercent"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                value={options.promotedListingPercent ?? 0}
-                class="w-32 px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
-              />
-            </div>
+            <ToggleSwitch
+              id="opt-top-rated-us"
+              name="isTopRatedSeller"
+              label="Top Rated Plus Seller"
+              description="10% discount on Final Value Fee portion"
+              checked={Boolean(options.isTopRatedSeller)}
+            />
+            <ToggleSwitch
+              id="opt-store-us"
+              name="hasStoreSubscription"
+              label="eBay Store Subscriber"
+              description="Lower 12.35% base category rate"
+              checked={Boolean(options.hasStoreSubscription)}
+            />
+            <PercentInput
+              id="opt-promoted-us"
+              name="promotedListingPercent"
+              label="Promoted Listings Ad Rate"
+              value={Number(options.promotedListingPercent ?? 0)}
+              helpText="Optional promoted listing percentage"
+            />
           </div>
         </div>
 
@@ -303,34 +236,24 @@ const platformList: { id: PlatformId; label: string }[] = [
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">eBay UK Options</span>
           <div class="space-y-3">
-            <div>
-              <label for="opt-seller-type-uk" class="block text-caption font-medium text-body mb-1">
-                Seller Type
-              </label>
-              <select
-                id="opt-seller-type-uk"
-                name="sellerType"
-                class="px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm"
-              >
-                <option value="private" selected={options.sellerType === 'private'}>Private Seller (0% Selling Fee)</option>
-                <option value="business" selected={options.sellerType === 'business'}>Business Seller (12.8% + £0.30)</option>
-              </select>
-            </div>
-            <div>
-              <label for="opt-promoted-uk" class="block text-caption font-medium text-body mb-1">
-                Promoted Listings Ad Rate (%)
-              </label>
-              <input
-                id="opt-promoted-uk"
-                name="promotedListingPercentUk"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                value={options.promotedListingPercent ?? 0}
-                class="w-32 px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
-              />
-            </div>
+            <SelectInput
+              id="opt-seller-type-uk"
+              name="sellerType"
+              label="Seller Type"
+              value={String(options.sellerType ?? 'private')}
+              options={[
+                { value: 'private', label: 'Private Seller (0% Selling Fee)' },
+                { value: 'business', label: 'Business Seller (12.8% + £0.30)' },
+              ]}
+              helpText="UK private sellers enjoy 0% selling fees on eBay"
+            />
+            <PercentInput
+              id="opt-promoted-uk"
+              name="promotedListingPercentUk"
+              label="Promoted Listings Ad Rate"
+              value={Number(options.promotedListingPercent ?? 0)}
+              helpText="Optional promoted listing percentage"
+            />
           </div>
         </div>
 
@@ -341,36 +264,20 @@ const platformList: { id: PlatformId; label: string }[] = [
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">TikTok Shop Options</span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label for="opt-referral-fee" class="block text-caption font-medium text-body mb-1">
-                Referral Fee Rate (%)
-              </label>
-              <input
-                id="opt-referral-fee"
-                name="referralFeePercent"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                value={options.referralFeePercent ?? 6.0}
-                class="w-full px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
-              />
-            </div>
-            <div>
-              <label for="opt-affiliate-fee" class="block text-caption font-medium text-body mb-1">
-                Creator Affiliate Rate (%)
-              </label>
-              <input
-                id="opt-affiliate-fee"
-                name="affiliateCommissionPercent"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                value={options.affiliateCommissionPercent ?? 0.0}
-                class="w-full px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
-              />
-            </div>
+            <PercentInput
+              id="opt-referral-fee"
+              name="referralFeePercent"
+              label="Referral Fee Rate"
+              value={Number(options.referralFeePercent ?? 6.0)}
+              helpText="Platform referral percentage"
+            />
+            <PercentInput
+              id="opt-affiliate-fee"
+              name="affiliateCommissionPercent"
+              label="Creator Affiliate Rate"
+              value={Number(options.affiliateCommissionPercent ?? 0.0)}
+              helpText="Optional affiliate creator rate"
+            />
           </div>
         </div>
 
@@ -381,15 +288,13 @@ const platformList: { id: PlatformId; label: string }[] = [
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">Etsy Options</span>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
-              <input
-                type="checkbox"
-                name="hasOffsiteAds"
-                class="rounded-xs text-primary focus:ring-primary"
-                checked={options.hasOffsiteAds}
-              />
-              <span>Offsite Ads Attributed (15% standard ad fee)</span>
-            </label>
+            <ToggleSwitch
+              id="opt-offsite-ads"
+              name="hasOffsiteAds"
+              label="Offsite Ads Attributed"
+              description="15% standard ad fee on orders from Etsy offsite ads"
+              checked={Boolean(options.hasOffsiteAds)}
+            />
           </div>
         </div>
 
@@ -639,7 +544,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       }
 
       // Update currency prefixes
-      const prefixes = this.querySelectorAll('[data-currency-prefix]');
+      const prefixes = this.querySelectorAll('[data-currency-symbol]');
       prefixes.forEach((el) => {
         el.textContent = newPlatform === 'twitch-bits' ? '✦' : config.currencySymbol;
       });
@@ -655,7 +560,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       const isTwitch = newPlatform === 'twitch-bits';
       const shippingSection = this.querySelector<HTMLElement>('[data-shipping-section]');
       const cogsSection = this.querySelector<HTMLElement>('[data-cogs-section]');
-      const labelPrice = this.querySelector<HTMLElement>('[data-label-price]');
+      const labelPrice = this.querySelector<HTMLLabelElement>('label[for="calc-price"]');
       const priceInput = this.querySelector<HTMLInputElement>('#calc-price');
 
       if (shippingSection) shippingSection.classList.toggle('hidden', isTwitch);

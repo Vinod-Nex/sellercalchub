@@ -1,0 +1,74 @@
+---
+export interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export interface Props {
+  id: string;
+  name: string;
+  label: string;
+  value?: string;
+  options: SelectOption[];
+  helpText?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name,
+  label,
+  value,
+  options,
+  helpText,
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['space-y-1', className]}>
+  <label for={id} class="block text-caption font-bold text-ink tracking-tight">
+    {label}
+  </label>
+
+  <div class="relative rounded-xs border border-hairline-strong bg-canvas focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors">
+    <select
+      id={id}
+      name={name}
+      disabled={disabled}
+      aria-describedby={helpText ? `${id}-help` : undefined}
+      class="w-full pl-3 pr-10 py-2.5 bg-transparent text-ink text-body-md font-medium appearance-none focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {options.map((opt) => (
+        <option
+          value={opt.value}
+          selected={value !== undefined ? opt.value === value : undefined}
+          disabled={opt.disabled}
+          class="bg-canvas text-ink py-1"
+        >
+          {opt.label}
+        </option>
+      ))}
+    </select>
+    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-muted" aria-hidden="true">
+      <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Zero Layout Shift Help Container -->
+  <div class="h-4 flex items-center">
+    {helpText ? (
+      <span id={`${id}-help`} class="text-micro text-muted">
+        {helpText}
+      </span>
+    ) : null}
+  </div>
+</div>

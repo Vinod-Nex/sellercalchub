@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MoneyInput from '../components/inputs/MoneyInput.astro';
+import PercentInput from '../components/inputs/PercentInput.astro';
+import SelectInput from '../components/inputs/SelectInput.astro';
+import ToggleSwitch from '../components/inputs/ToggleSwitch.astro';
+import StepperInput from '../components/inputs/StepperInput.astro';
+---
+
+<BaseLayout
+  title="Shared Input Components - Seller Calc Hub"
+  description="Showcase and mobile keyboard verification for shared input components: MoneyInput, PercentInput, SelectInput, ToggleSwitch, and StepperInput."
+  canonicalPath="/inputs-demo/"
+>
+  <div class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+    <div class="border-b border-hairline pb-4">
+      <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-100 px-2.5 py-1 rounded-xs">
+        Phase 9 · Design System Inputs
+      </span>
+      <h1 class="text-heading-1 font-bold text-ink mt-3">
+        Shared Input Components
+      </h1>
+      <p class="text-body-md text-muted mt-2">
+        Accessible, zero-layout-shift input controls configured with <code>inputmode="decimal"</code> and <code>inputmode="numeric"</code> to trigger native mobile keypads on iOS and Android.
+      </p>
+    </div>
+
+    <!-- Verification Checklist Callout -->
+    <section class="rounded-lg border border-hairline-strong bg-mint-50/50 p-6 space-y-3">
+      <h2 class="text-heading-3 font-bold text-ink">Keypad & Validation Checklist</h2>
+      <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
+        <li><strong>iOS & Android Keypad:</strong> <code>inputmode="decimal"</code> triggers the numeric keypad with decimal dot on Money & Percent inputs. <code>inputmode="numeric"</code> triggers the 10-key numeric keypad on the Stepper.</li>
+        <li><strong>Zero Layout Shift (CLS = 0):</strong> Error containers have a reserved height (<code>h-4</code> with <code>invisible</code> toggle) so validation messages appear without moving adjacent elements.</li>
+        <li><strong>Paste Support:</strong> Pasting strings with currency signs (<code>$1,450.50</code>, <code>£99.95</code>) or commas strips illegal characters immediately.</li>
+        <li><strong>Accessibility (WCAG AA):</strong> Every input has an explicitly bound <code>&lt;label for="..."&gt;</code>, <code>aria-live="polite"</code> error slots, and high-contrast spruce-green focus rings.</li>
+      </ul>
+    </section>
+
+    <!-- Interactive Components Demo Form -->
+    <form class="rounded-lg border border-hairline-strong bg-canvas p-6 md:p-8 shadow-level-3 space-y-8" onsubmit="return false;">
+      <h2 class="text-heading-3 font-bold text-ink border-b border-hairline pb-3">Interactive Form Inputs</h2>
+
+      <!-- 1. Money Inputs (USD & GBP) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <MoneyInput
+          id="demo-money-usd"
+          name="priceUsd"
+          label="Sale Price (USD)"
+          value={49.99}
+          currencySymbol="$"
+          min={0}
+          helpText="Try pasting '$1,250.00' or entering invalid text"
+        />
+
+        <MoneyInput
+          id="demo-money-gbp"
+          name="priceGbp"
+          label="Item Price (GBP)"
+          value={35.00}
+          currencySymbol="£"
+          min={0}
+          helpText="Configured with British Pound (£) symbol"
+        />
+      </div>
+
+      <!-- 2. Percent Input & Stepper -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <PercentInput
+          id="demo-percent"
+          name="feePercent"
+          label="Platform Commission Rate"
+          value={12.5}
+          min={0}
+          max={100}
+          helpText="Range 0% to 100%, strips pasted '%' signs"
+        />
+
+        <StepperInput
+          id="demo-stepper"
+          name="quantity"
+          label="Item Quantity"
+          value={1}
+          min={1}
+          max={100}
+          helpText="Click − / + or type directly into numeric field"
+        />
+      </div>
+
+      <!-- 3. Select Dropdown -->
+      <div>
+        <SelectInput
+          id="demo-select"
+          name="sellerTier"
+          label="Seller Account Tier"
+          value="standard"
+          options={[
+            { value: 'standard', label: 'Standard Free Tier (13.25% FVF)' },
+            { value: 'store', label: 'Store Subscriber (12.35% FVF)' },
+            { value: 'enterprise', label: 'Enterprise / Top Rated Plus (10% Discount)' },
+          ]}
+          helpText="Styled with accessible focus ring and custom chevron"
+        />
+      </div>
+
+      <!-- 4. Toggle Switches -->
+      <div class="space-y-4 pt-2 border-t border-hairline">
+        <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">Feature Toggles</span>
+        <ToggleSwitch
+          id="demo-toggle-1"
+          name="topRated"
+          label="Top Rated Seller Badge"
+          description="Qualifies for 10% discount on final value fees"
+          checked={true}
+        />
+        <ToggleSwitch
+          id="demo-toggle-2"
+          name="offsiteAds"
+          label="Participate in Offsite Ads"
+          description="Etsy or TikTok promoted search ad network"
+          checked={false}
+        />
+      </div>
+    </form>
+  </div>
+</BaseLayout>

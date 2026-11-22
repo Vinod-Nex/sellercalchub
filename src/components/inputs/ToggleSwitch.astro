@@ -1,0 +1,76 @@
+---
+export interface Props {
+  id: string;
+  name: string;
+  label: string;
+  checked?: boolean;
+  description?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name,
+  label,
+  checked = false,
+  description,
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['flex items-start justify-between gap-4 py-2 select-none', className]}>
+  <div class="space-y-0.5">
+    <label for={id} class="text-caption font-bold text-ink cursor-pointer block">
+      {label}
+    </label>
+    {description && (
+      <p id={`${id}-desc`} class="text-micro text-muted">
+        {description}
+      </p>
+    )}
+  </div>
+
+  <div class="relative inline-flex items-center shrink-0">
+    <input
+      id={id}
+      name={name}
+      type="checkbox"
+      role="switch"
+      checked={checked}
+      disabled={disabled}
+      aria-checked={checked ? 'true' : 'false'}
+      aria-describedby={description ? `${id}-desc` : undefined}
+      class="peer sr-only"
+      data-toggle-switch
+    />
+    <label
+      for={id}
+      class="w-11 h-6 bg-hairline-strong peer-checked:bg-primary rounded-full cursor-pointer transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed block relative"
+      aria-hidden="true"
+    >
+      <span
+        class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 peer-checked:translate-x-5 transition-transform duration-200 shadow-sm"
+      >
+      </span>
+    </label>
+  </div>
+</div>
+
+<script>
+  function initToggleSwitches() {
+    const switches = document.querySelectorAll<HTMLInputElement>('input[data-toggle-switch]');
+    switches.forEach((el) => {
+      if (el.dataset.initialized === 'true') return;
+      el.dataset.initialized = 'true';
+
+      el.addEventListener('change', () => {
+        el.setAttribute('aria-checked', el.checked ? 'true' : 'false');
+      });
+    });
+  }
+
+  initToggleSwitches();
+  document.addEventListener('astro:page-load', initToggleSwitches);
+</script>

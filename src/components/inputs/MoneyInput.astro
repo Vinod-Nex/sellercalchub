@@ -1,0 +1,116 @@
+---
+export interface Props {
+  id: string;
+  name: string;
+  label: string;
+  value?: number | string;
+  currencySymbol?: string;
+  min?: number;
+  max?: number;
+  step?: string;
+  required?: boolean;
+  helpText?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name,
+  label,
+  value = '',
+  currencySymbol = '$',
+  min = 0,
+  max,
+  step = '0.01',
+  required = false,
+  helpText,
+  placeholder = '0.00',
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+
+const initialFormattedValue =
+  typeof value === 'number'
+    ? value.toFixed(2)
+    : value
+      ? String(value)
+      : '';
+---
+
+<div class:list={['space-y-1', className]}>
+  <label for={id} class="block text-caption font-bold text-ink tracking-tight">
+    {label}
+    {required && <span class="text-error" aria-hidden="true">*</span>}
+  </label>
+
+  <div class="relative rounded-xs border border-hairline-strong bg-canvas focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-colors">
+    <span
+      class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted font-bold text-body-md select-none"
+      aria-hidden="true"
+      data-currency-symbol
+    >
+      {currencySymbol}
+    </span>
+    <input
+      id={id}
+      name={name}
+      type="text"
+      inputmode="decimal"
+      pattern="[0-9]*[.]?[0-9]*"
+      value={initialFormattedValue}
+      min={min}
+      max={max}
+      step={step}
+      required={required}
+      disabled={disabled}
+      placeholder={placeholder}
+      data-money-field
+      data-min={min}
+      data-max={max}
+      aria-describedby={helpText ? `${id}-help ${id}-error` : `${id}-error`}
+      class="w-full pl-8 pr-3 py-2.5 bg-transparent text-ink text-body-md font-medium focus:outline-none tabular-nums disabled:opacity-50 disabled:cursor-not-allowed"
+    />
+  </div>
+
+  <!-- Zero Layout Shift Help & Error Container -->
+  <div class="flex flex-col justify-start">
+    {helpText && (
+      <span id={`${id}-help`} class="text-micro text-muted">
+        {helpText}
+      </span>
+    )}
+    <div
+      id={`${id}-error`}
+      role="alert"
+      aria-live="polite"
+      class="h-4 text-micro text-error font-medium invisible transition-opacity"
+    >
+    </div>
+  </div>
+</div>
+
+<script>
+  import { attachInputEnhancements } from './input-utils';
+
+  function initMoneyFields() {
+    const fields = document.querySelectorAll<HTMLInputElement>('input[data-money-field]');
+    fields.forEach((input) => {
+      // Avoid duplicate initialization
+      if (input.dataset.initialized === 'true') return;
+      input.dataset.initialized = 'true';
+
+      const errorEl = document.getElementById(`${input.id}-error`);
+      const min = input.dataset.min ? parseFloat(input.dataset.min) : undefined;
+      const max = input.dataset.max ? parseFloat(input.dataset.max) : undefined;
+      const required = input.required;
+
+      attachInputEnhancements(input, errorEl, { min, max, required });
+    });
+  }
+
+  // Initialize on load and on Astro view transition / hydration
+  initMoneyFields();
+  document.addEventListener('astro:page-load', initMoneyFields);
+</script>
