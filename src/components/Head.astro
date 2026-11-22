@@ -1,4 +1,6 @@
 ---
+import montserratWoff2 from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
+
 interface Props {
   title: string;
   description: string;
@@ -43,6 +45,9 @@ const fullOgImageUrl = ogImage.startsWith('http')
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
+
+<!-- Preload Critical Latin Variable Font (Zero CLS) -->
+<link rel="preload" href={montserratWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
 
 <!-- Robots / Indexing: Query-parameter URLs carry noindex, follow; clean pages carry index, follow -->
 {hasQueryParams ? (
