@@ -1,5 +1,6 @@
 ---
 import montserratWoff2 from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
+import { getHreflangTags } from '../i18n';
 
 interface Props {
   title: string;
@@ -34,6 +35,9 @@ const hasQueryParams = Boolean(Astro.url.search && Astro.url.search.length > 1);
 const fullOgImageUrl = ogImage.startsWith('http')
   ? ogImage
   : new URL(ogImage, siteUrl).toString();
+
+// Generate reciprocal hreflang links (including x-default)
+const hreflangTags = getHreflangTags(normalizedPath, { siteUrl });
 ---
 
 <meta charset="utf-8" />
@@ -45,6 +49,9 @@ const fullOgImageUrl = ogImage.startsWith('http')
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
+{hreflangTags.map((tag) => (
+  <link rel="alternate" hreflang={tag.hreflang} href={tag.href} />
+))}
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
 
 <!-- Preload Critical Latin Variable Font (Zero CLS) -->

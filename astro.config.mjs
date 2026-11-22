@@ -65,6 +65,8 @@ function getFeeDates() {
 
 const { dates: feeDates, latestDate: latestFeeDate } = getFeeDates();
 
+const enableI18n = process.env.ENABLE_I18N === "true" || process.env.PUBLIC_ENABLE_I18N === "true";
+
 /**
  * Maps a canonical URL to its verified fee data date.
  * @param {string} url
@@ -162,7 +164,7 @@ export default defineConfig({
   ],
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: enableI18n ? ["en", "pt", "es", "fr"] : ["en"],
     routing: {
       prefixDefaultLocale: false,
     },
