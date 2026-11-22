@@ -26,6 +26,7 @@
     "audit:freshness": "tsx scripts/check-fee-freshness.ts",
     "audit:onpage": "tsx scripts/generate-seo-audits.ts",
     "indexnow:ping": "tsx scripts/ping-indexnow.ts",
+    "verify:launch": "tsx scripts/verify-launch-week.ts",
     "lhci": "lhci autorun",
     "audit:perf": "lhci autorun"
   },
