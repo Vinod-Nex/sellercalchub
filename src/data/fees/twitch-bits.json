@@ -1,0 +1,11 @@
+{
+  "platform": "twitch-bits",
+  "platform_name": "Twitch Bits",
+  "region": "Global",
+  "currency": "USD",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://help.twitch.tv/s/article/guide-to-cheering-with-bits",
+  "notes": "Awaiting user to paste official Twitch Bits revenue share terms into chat to populate typed rates."
+}

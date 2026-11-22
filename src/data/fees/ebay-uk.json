@@ -1,0 +1,11 @@
+{
+  "platform": "ebay-uk",
+  "platform_name": "eBay (UK)",
+  "region": "UK",
+  "currency": "GBP",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://www.ebay.co.uk/help/selling/fees-credits-invoices/selling-fees?id=4822",
+  "notes": "Awaiting user to paste official eBay UK fee schedule into chat to populate typed rates."
+}

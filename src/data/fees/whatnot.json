@@ -1,0 +1,11 @@
+{
+  "platform": "whatnot",
+  "platform_name": "Whatnot",
+  "region": "US",
+  "currency": "USD",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot",
+  "notes": "Awaiting user to paste official Whatnot fee schedule into chat to populate typed rates."
+}

@@ -1,0 +1,11 @@
+{
+  "platform": "etsy",
+  "platform_name": "Etsy",
+  "region": "US",
+  "currency": "USD",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://www.etsy.com/legal/fees/",
+  "notes": "Awaiting user to paste official Etsy fee schedule into chat to populate typed rates."
+}

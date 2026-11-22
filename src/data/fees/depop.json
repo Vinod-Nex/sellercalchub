@@ -1,0 +1,11 @@
+{
+  "platform": "depop",
+  "platform_name": "Depop",
+  "region": "US",
+  "currency": "USD",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-are-the-fees-for-selling-on-Depop",
+  "notes": "Awaiting user to paste official Depop fee schedule into chat to populate typed rates."
+}

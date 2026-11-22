@@ -1,0 +1,11 @@
+{
+  "platform": "ebay-us",
+  "platform_name": "eBay (US)",
+  "region": "US",
+  "currency": "USD",
+  "rates": "TODO",
+  "effective_from": "2026-01-01",
+  "verified_on": "2026-11-22",
+  "source_url": "https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822",
+  "notes": "Awaiting user to paste official eBay US fee schedule into chat to populate typed rates."
+}

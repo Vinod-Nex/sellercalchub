@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:prod": "STRICT_PROD=true astro build",
+    "verify:fees": "STRICT_PROD=true astro sync",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
