@@ -1,0 +1,802 @@
+---
+import {
+  runCalculator,
+  PLATFORM_CONFIGS,
+  type PlatformId,
+  type CalcResult,
+} from '../lib/calc';
+
+export interface Props {
+  platform?: PlatformId;
+  showPlatformTabs?: boolean;
+  initialPrice?: number;
+  initialShippingCharged?: number;
+  initialItemCost?: number;
+  initialShippingCost?: number;
+  initialQuantity?: number;
+  initialOptions?: Record<string, unknown>;
+}
+
+const {
+  platform = 'whatnot',
+  showPlatformTabs = true,
+  initialPrice,
+  initialShippingCharged,
+  initialItemCost,
+  initialShippingCost,
+  initialQuantity,
+  initialOptions,
+} = Astro.props;
+
+const config = PLATFORM_CONFIGS[platform] ?? PLATFORM_CONFIGS.whatnot;
+
+const price = initialPrice ?? config.defaultPrice;
+const shippingCharged = initialShippingCharged ?? config.defaultShippingCharged;
+const itemCost = initialItemCost ?? config.defaultItemCost;
+const shippingCost = initialShippingCost ?? config.defaultShippingCost;
+const quantity = initialQuantity ?? config.defaultQuantity;
+const options = initialOptions ?? config.defaultOptions;
+
+// Pre-render the default calculation completely on the server
+const serverResult: CalcResult = runCalculator(
+  platform,
+  {
+    price,
+    shippingCharged,
+    itemCost,
+    shippingCost,
+    quantity,
+  },
+  options
+);
+
+const currencySymbol = config.currencySymbol;
+
+function formatMoney(amount: number, symbol: string): string {
+  const formatted = Math.abs(amount).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return amount < 0 ? `-${symbol}${formatted}` : `${symbol}${formatted}`;
+}
+
+const platformList: { id: PlatformId; label: string }[] = [
+  { id: 'whatnot', label: 'Whatnot' },
+  { id: 'tiktok-shop', label: 'TikTok Shop' },
+  { id: 'depop', label: 'Depop' },
+  { id: 'etsy', label: 'Etsy' },
+  { id: 'ebay-us', label: 'eBay US' },
+  { id: 'ebay-uk', label: 'eBay UK' },
+  { id: 'twitch-bits', label: 'Twitch Bits' },
+];
+---
+
+<seller-calculator
+  class="block w-full"
+  data-platform={platform}
+  data-currency={config.defaultCurrency}
+  data-symbol={currencySymbol}
+>
+  <div class="rounded-lg border border-hairline-strong bg-canvas p-6 md:p-8 shadow-level-3 space-y-8">
+    <!-- Platform Switcher Tabs (Optional, works without JS via links or with JS via tabs) -->
+    {
+      showPlatformTabs && (
+        <div class="border-b border-hairline pb-4">
+          <label class="block text-eyebrow font-bold text-muted uppercase tracking-wider mb-2">
+            Select Marketplace Platform
+          </label>
+          <div class="flex flex-wrap gap-2" role="tablist" aria-label="Marketplace Platforms">
+            {platformList.map((p) => {
+              const isActive = p.id === platform;
+              return (
+                <button
+                  type="button"
+                  role="tab"
+                  data-platform-tab={p.id}
+                  aria-selected={isActive ? 'true' : 'false'}
+                  class:list={[
+                    'px-4 py-2 text-ui-sm font-semibold rounded-xs border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    isActive
+                      ? 'bg-primary text-on-primary border-primary'
+                      : 'bg-canvas-soft text-body border-hairline-strong hover:border-primary hover:text-ink',
+                  ]}
+                >
+                  {p.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Fallback Notice for Non-JS Browsers -->
+    <noscript>
+      <div class="p-3 bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-body text-caption rounded-sm">
+        <strong>JavaScript is disabled.</strong> Showing default worked calculation results for {config.name}. Enable JavaScript for instant real-time calculation as you type.
+      </div>
+    </noscript>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Inputs Form -->
+      <form class="lg:col-span-6 space-y-5" data-calculator-form onsubmit="return false;">
+        <div class="border-b border-hairline pb-3">
+          <h2 class="text-heading-3 font-bold text-ink">
+            <span data-platform-display-name>{config.name}</span> Calculator Inputs
+          </h2>
+          <p class="text-caption text-muted">
+            Enter your sale details below. Results calculate automatically.
+          </p>
+        </div>
+
+        <!-- Price & Quantity Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2">
+            <label for="calc-price" class="block text-caption font-bold text-ink mb-1.5">
+              <span data-label-price>{platform === 'twitch-bits' ? 'Bits Amount' : 'Sold Item Price'}</span>
+            </label>
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
+                data-currency-prefix
+              >
+                {platform === 'twitch-bits' ? '✦' : currencySymbol}
+              </span>
+              <input
+                id="calc-price"
+                name="price"
+                type="number"
+                min="0"
+                step={platform === 'twitch-bits' ? '1' : '0.01'}
+                value={price.toFixed(platform === 'twitch-bits' ? 0 : 2)}
+                required
+                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+                aria-describedby="price-help"
+              />
+            </div>
+            <span id="price-help" class="text-micro text-muted mt-1 block">
+              {platform === 'twitch-bits' ? 'Number of Bits cheered' : 'Final sale price excluding shipping'}
+            </span>
+          </div>
+
+          <div>
+            <label for="calc-quantity" class="block text-caption font-bold text-ink mb-1.5">
+              Quantity
+            </label>
+            <input
+              id="calc-quantity"
+              name="quantity"
+              type="number"
+              min="1"
+              step="1"
+              value={quantity}
+              class="w-full px-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+            />
+            <span class="text-micro text-muted mt-1 block">Units sold</span>
+          </div>
+        </div>
+
+        <!-- Shipping Charged & Shipping Cost (Hidden for Twitch Bits) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" data-shipping-section>
+          <div>
+            <label for="calc-shipping-charged" class="block text-caption font-bold text-ink mb-1.5">
+              Buyer Paid Shipping
+            </label>
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
+                data-currency-prefix
+              >
+                {currencySymbol}
+              </span>
+              <input
+                id="calc-shipping-charged"
+                name="shippingCharged"
+                type="number"
+                min="0"
+                step="0.01"
+                value={shippingCharged.toFixed(2)}
+                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+              />
+            </div>
+            <span class="text-micro text-muted mt-1 block">Shipping charged to the buyer</span>
+          </div>
+
+          <div>
+            <label for="calc-shipping-cost" class="block text-caption font-bold text-ink mb-1.5">
+              Your Shipping Cost
+            </label>
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
+                data-currency-prefix
+              >
+                {currencySymbol}
+              </span>
+              <input
+                id="calc-shipping-cost"
+                name="shippingCost"
+                type="number"
+                min="0"
+                step="0.01"
+                value={shippingCost.toFixed(2)}
+                class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+              />
+            </div>
+            <span class="text-micro text-muted mt-1 block">Actual postage & packaging cost</span>
+          </div>
+        </div>
+
+        <!-- Item Cost (COGS) -->
+        <div data-cogs-section>
+          <label for="calc-item-cost" class="block text-caption font-bold text-ink mb-1.5">
+            Item Cost (COGS)
+          </label>
+          <div class="relative">
+            <span
+              class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted font-bold"
+              data-currency-prefix
+            >
+              {currencySymbol}
+            </span>
+            <input
+              id="calc-item-cost"
+              name="itemCost"
+              type="number"
+              min="0"
+              step="0.01"
+              value={itemCost.toFixed(2)}
+              class="w-full pl-8 pr-3 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-md font-medium focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors tabular-nums"
+            />
+          </div>
+          <span class="text-micro text-muted mt-1 block">What you paid for the inventory per unit</span>
+        </div>
+
+        <!-- Platform-Specific Options Panels -->
+        <!-- eBay US Options -->
+        <div
+          class:list={['space-y-3 pt-3 border-t border-hairline', platform === 'ebay-us' ? 'block' : 'hidden']}
+          data-options-panel="ebay-us"
+        >
+          <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">eBay US Options</span>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
+              <input
+                type="checkbox"
+                name="isTopRatedSeller"
+                class="rounded-xs text-primary focus:ring-primary"
+                checked={options.isTopRatedSeller}
+              />
+              <span>Top Rated Plus Seller (10% discount on Final Value Fee)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
+              <input
+                type="checkbox"
+                name="hasStoreSubscription"
+                class="rounded-xs text-primary focus:ring-primary"
+                checked={options.hasStoreSubscription}
+              />
+              <span>eBay Store Subscriber (Lower 12.35% base category rate)</span>
+            </label>
+            <div>
+              <label for="opt-promoted-us" class="block text-caption font-medium text-body mb-1">
+                Promoted Listings Ad Rate (%)
+              </label>
+              <input
+                id="opt-promoted-us"
+                name="promotedListingPercent"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={options.promotedListingPercent ?? 0}
+                class="w-32 px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- eBay UK Options -->
+        <div
+          class:list={['space-y-3 pt-3 border-t border-hairline', platform === 'ebay-uk' ? 'block' : 'hidden']}
+          data-options-panel="ebay-uk"
+        >
+          <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">eBay UK Options</span>
+          <div class="space-y-3">
+            <div>
+              <label for="opt-seller-type-uk" class="block text-caption font-medium text-body mb-1">
+                Seller Type
+              </label>
+              <select
+                id="opt-seller-type-uk"
+                name="sellerType"
+                class="px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm"
+              >
+                <option value="private" selected={options.sellerType === 'private'}>Private Seller (0% Selling Fee)</option>
+                <option value="business" selected={options.sellerType === 'business'}>Business Seller (12.8% + £0.30)</option>
+              </select>
+            </div>
+            <div>
+              <label for="opt-promoted-uk" class="block text-caption font-medium text-body mb-1">
+                Promoted Listings Ad Rate (%)
+              </label>
+              <input
+                id="opt-promoted-uk"
+                name="promotedListingPercentUk"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={options.promotedListingPercent ?? 0}
+                class="w-32 px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- TikTok Shop Options -->
+        <div
+          class:list={['space-y-3 pt-3 border-t border-hairline', platform === 'tiktok-shop' ? 'block' : 'hidden']}
+          data-options-panel="tiktok-shop"
+        >
+          <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">TikTok Shop Options</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="opt-referral-fee" class="block text-caption font-medium text-body mb-1">
+                Referral Fee Rate (%)
+              </label>
+              <input
+                id="opt-referral-fee"
+                name="referralFeePercent"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={options.referralFeePercent ?? 6.0}
+                class="w-full px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
+              />
+            </div>
+            <div>
+              <label for="opt-affiliate-fee" class="block text-caption font-medium text-body mb-1">
+                Creator Affiliate Rate (%)
+              </label>
+              <input
+                id="opt-affiliate-fee"
+                name="affiliateCommissionPercent"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={options.affiliateCommissionPercent ?? 0.0}
+                class="w-full px-3 py-1.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm tabular-nums"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Etsy Options -->
+        <div
+          class:list={['space-y-3 pt-3 border-t border-hairline', platform === 'etsy' ? 'block' : 'hidden']}
+          data-options-panel="etsy"
+        >
+          <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">Etsy Options</span>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer text-body-sm text-body">
+              <input
+                type="checkbox"
+                name="hasOffsiteAds"
+                class="rounded-xs text-primary focus:ring-primary"
+                checked={options.hasOffsiteAds}
+              />
+              <span>Offsite Ads Attributed (15% standard ad fee)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="pt-2 flex items-center justify-between">
+          <button
+            type="button"
+            data-reset-btn
+            class="text-ui-sm text-muted hover:text-ink underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+          >
+            Reset to defaults
+          </button>
+        </div>
+      </form>
+
+      <!-- Right Column: Results & Breakdown -->
+      <div class="lg:col-span-6 space-y-6" aria-live="polite" data-results-container>
+        <!-- Hero Net Profit Stat Card (NerdWallet stat-block-dark) -->
+        <div class="rounded-lg bg-primary-deep text-on-primary p-6 md:p-8 shadow-level-3 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-ui-label uppercase font-bold tracking-wider text-lime-panel">
+              Estimated Net Profit
+            </span>
+            <span
+              data-profit-badge
+              class:list={[
+                'text-micro uppercase font-bold px-2 py-0.5 rounded-xs',
+                serverResult.netProfit >= 0 ? 'bg-forest text-lime-hero' : 'bg-error text-white',
+              ]}
+            >
+              {serverResult.netProfit >= 0 ? 'Profitable' : 'Loss'}
+            </span>
+          </div>
+
+          <div class="flex items-baseline gap-2">
+            <span
+              class="text-display-lg md:text-display-xl font-bold tracking-tight text-white tabular-nums"
+              data-out="net-profit"
+            >
+              {formatMoney(serverResult.netProfit, currencySymbol)}
+            </span>
+          </div>
+
+          <p class="text-caption text-mint-100 mt-2 font-light">
+            After all marketplace fees, item cost, and shipping expenses.
+          </p>
+        </div>
+
+        <!-- 4-Stat Metric Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
+            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
+              Profit Margin
+            </span>
+            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="profit-margin">
+              {serverResult.profitMargin.toFixed(1)}%
+            </span>
+          </div>
+
+          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
+            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
+              Return on Inv. (ROI)
+            </span>
+            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="roi">
+              {serverResult.roi.toFixed(1)}%
+            </span>
+          </div>
+
+          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
+            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
+              Break-Even Price
+            </span>
+            <span class="text-stat-value font-bold text-ink tabular-nums" data-out="break-even">
+              {formatMoney(serverResult.breakEvenPrice, currencySymbol)}
+            </span>
+          </div>
+
+          <div class="rounded-sm border border-hairline bg-canvas-soft p-3.5">
+            <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider mb-1">
+              Total Fees
+            </span>
+            <span class="text-stat-value font-bold text-error tabular-nums" data-out="total-fees">
+              {formatMoney(serverResult.totalFees, currencySymbol)}
+            </span>
+          </div>
+        </div>
+
+        <!-- Summary Bar Breakdown -->
+        <div class="rounded-sm border border-hairline bg-canvas p-4 space-y-2">
+          <span class="block text-eyebrow text-muted uppercase font-bold tracking-wider">
+            Financial Summary
+          </span>
+          <div class="space-y-1.5 text-body-sm">
+            <div class="flex justify-between">
+              <span class="text-body">Gross Revenue:</span>
+              <span class="font-semibold text-ink tabular-nums" data-out="gross-revenue">
+                {formatMoney(serverResult.grossRevenue, currencySymbol)}
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-body">Total Costs (COGS + Ship):</span>
+              <span class="font-semibold text-ink tabular-nums" data-out="total-costs">
+                {formatMoney(serverResult.totalCosts, currencySymbol)}
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-body">Platform Fees:</span>
+              <span class="font-semibold text-error tabular-nums" data-out="total-fees-summary">
+                {formatMoney(serverResult.totalFees, currencySymbol)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Itemized Fee Breakdown Table -->
+        <div class="border border-hairline-strong rounded-sm overflow-hidden">
+          <div class="bg-canvas-soft px-4 py-2.5 border-b border-hairline flex justify-between items-center">
+            <h3 class="text-ui-label font-bold text-ink uppercase tracking-wider">
+              Itemized Fee Breakdown
+            </h3>
+            <span class="text-caption text-muted font-medium">Verified Schedule</span>
+          </div>
+          <table class="w-full text-left text-body-sm" aria-label="Fee Breakdown">
+            <thead>
+              <tr class="border-b border-hairline bg-canvas text-eyebrow text-muted font-bold">
+                <th scope="col" class="py-2 px-4">Fee Item</th>
+                <th scope="col" class="py-2 px-4 text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody data-out="fee-breakdown-body" class="divide-y divide-hairline bg-canvas">
+              {
+                serverResult.fees.map((fee) => (
+                  <tr>
+                    <td class="py-2.5 px-4">
+                      <div class="font-semibold text-ink">{fee.name}</div>
+                      {fee.description && <div class="text-micro text-muted">{fee.description}</div>}
+                    </td>
+                    <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
+                      {formatMoney(fee.amount, currencySymbol)}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</seller-calculator>
+
+<script>
+  import {
+    runCalculator,
+    PLATFORM_CONFIGS,
+    type PlatformId,
+    type CalcResult,
+  } from '../lib/calc';
+
+  class SellerCalculator extends HTMLElement {
+    private currentPlatform: PlatformId = 'whatnot';
+    private currentCurrency: 'USD' | 'GBP' = 'USD';
+    private currentSymbol: string = '$';
+
+    private form: HTMLFormElement | null = null;
+    private outNetProfit: HTMLElement | null = null;
+    private outProfitMargin: HTMLElement | null = null;
+    private outRoi: HTMLElement | null = null;
+    private outBreakEven: HTMLElement | null = null;
+    private outTotalFees: HTMLElement | null = null;
+    private outTotalFeesSummary: HTMLElement | null = null;
+    private outGrossRevenue: HTMLElement | null = null;
+    private outTotalCosts: HTMLElement | null = null;
+    private outFeeBreakdownBody: HTMLElement | null = null;
+    private profitBadge: HTMLElement | null = null;
+    private platformDisplayName: HTMLElement | null = null;
+
+    connectedCallback() {
+      this.currentPlatform = (this.dataset.platform as PlatformId) || 'whatnot';
+      const config = PLATFORM_CONFIGS[this.currentPlatform] ?? PLATFORM_CONFIGS.whatnot;
+      this.currentCurrency = config.defaultCurrency;
+      this.currentSymbol = config.currencySymbol;
+
+      this.form = this.querySelector('[data-calculator-form]');
+      this.outNetProfit = this.querySelector('[data-out="net-profit"]');
+      this.outProfitMargin = this.querySelector('[data-out="profit-margin"]');
+      this.outRoi = this.querySelector('[data-out="roi"]');
+      this.outBreakEven = this.querySelector('[data-out="break-even"]');
+      this.outTotalFees = this.querySelector('[data-out="total-fees"]');
+      this.outTotalFeesSummary = this.querySelector('[data-out="total-fees-summary"]');
+      this.outGrossRevenue = this.querySelector('[data-out="gross-revenue"]');
+      this.outTotalCosts = this.querySelector('[data-out="total-costs"]');
+      this.outFeeBreakdownBody = this.querySelector('[data-out="fee-breakdown-body"]');
+      this.profitBadge = this.querySelector('[data-profit-badge]');
+      this.platformDisplayName = this.querySelector('[data-platform-display-name]');
+
+      this.initEvents();
+    }
+
+    private initEvents() {
+      // Input & change events on form inputs
+      this.form?.addEventListener('input', () => this.calculate());
+      this.form?.addEventListener('change', () => this.calculate());
+
+      // Reset button
+      const resetBtn = this.querySelector('[data-reset-btn]');
+      resetBtn?.addEventListener('click', () => this.resetDefaults());
+
+      // Platform switcher tabs
+      const tabs = this.querySelectorAll<HTMLButtonElement>('[data-platform-tab]');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const newPlatform = tab.dataset.platformTab as PlatformId;
+          if (newPlatform && PLATFORM_CONFIGS[newPlatform]) {
+            this.switchPlatform(newPlatform);
+          }
+        });
+      });
+    }
+
+    private switchPlatform(newPlatform: PlatformId) {
+      this.currentPlatform = newPlatform;
+      const config = PLATFORM_CONFIGS[newPlatform];
+      this.currentCurrency = config.defaultCurrency;
+      this.currentSymbol = config.currencySymbol;
+      this.dataset.platform = newPlatform;
+      this.dataset.currency = config.defaultCurrency;
+      this.dataset.symbol = config.currencySymbol;
+
+      // Update tabs UI
+      const tabs = this.querySelectorAll<HTMLButtonElement>('[data-platform-tab]');
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.platformTab === newPlatform;
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        if (isActive) {
+          tab.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+          tab.classList.remove('bg-canvas-soft', 'text-body', 'border-hairline-strong');
+        } else {
+          tab.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+          tab.classList.add('bg-canvas-soft', 'text-body', 'border-hairline-strong');
+        }
+      });
+
+      // Update platform title
+      if (this.platformDisplayName) {
+        this.platformDisplayName.textContent = config.name;
+      }
+
+      // Update currency prefixes
+      const prefixes = this.querySelectorAll('[data-currency-prefix]');
+      prefixes.forEach((el) => {
+        el.textContent = newPlatform === 'twitch-bits' ? '✦' : config.currencySymbol;
+      });
+
+      // Show/Hide platform options
+      const optionPanels = this.querySelectorAll<HTMLElement>('[data-options-panel]');
+      optionPanels.forEach((panel) => {
+        panel.classList.toggle('hidden', panel.dataset.optionsPanel !== newPlatform);
+        panel.classList.toggle('block', panel.dataset.optionsPanel === newPlatform);
+      });
+
+      // Special handling for Twitch Bits inputs
+      const isTwitch = newPlatform === 'twitch-bits';
+      const shippingSection = this.querySelector<HTMLElement>('[data-shipping-section]');
+      const cogsSection = this.querySelector<HTMLElement>('[data-cogs-section]');
+      const labelPrice = this.querySelector<HTMLElement>('[data-label-price]');
+      const priceInput = this.querySelector<HTMLInputElement>('#calc-price');
+
+      if (shippingSection) shippingSection.classList.toggle('hidden', isTwitch);
+      if (cogsSection) cogsSection.classList.toggle('hidden', isTwitch);
+      if (labelPrice) {
+        labelPrice.textContent = isTwitch ? 'Bits Amount' : 'Sold Item Price';
+      }
+      if (priceInput) {
+        priceInput.step = isTwitch ? '1' : '0.01';
+        priceInput.value = config.defaultPrice.toFixed(isTwitch ? 0 : 2);
+      }
+
+      this.calculate();
+    }
+
+    private resetDefaults() {
+      const config = PLATFORM_CONFIGS[this.currentPlatform];
+      const isTwitch = this.currentPlatform === 'twitch-bits';
+
+      const priceInput = this.querySelector<HTMLInputElement>('#calc-price');
+      const qtyInput = this.querySelector<HTMLInputElement>('#calc-quantity');
+      const shippingChargedInput = this.querySelector<HTMLInputElement>('#calc-shipping-charged');
+      const shippingCostInput = this.querySelector<HTMLInputElement>('#calc-shipping-cost');
+      const itemCostInput = this.querySelector<HTMLInputElement>('#calc-item-cost');
+
+      if (priceInput) priceInput.value = config.defaultPrice.toFixed(isTwitch ? 0 : 2);
+      if (qtyInput) qtyInput.value = config.defaultQuantity.toString();
+      if (shippingChargedInput) shippingChargedInput.value = config.defaultShippingCharged.toFixed(2);
+      if (shippingCostInput) shippingCostInput.value = config.defaultShippingCost.toFixed(2);
+      if (itemCostInput) itemCostInput.value = config.defaultItemCost.toFixed(2);
+
+      this.calculate();
+    }
+
+    private formatMoney(amount: number): string {
+      const formatted = Math.abs(amount).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return amount < 0 ? `-${this.currentSymbol}${formatted}` : `${this.currentSymbol}${formatted}`;
+    }
+
+    private calculate() {
+      if (!this.form) return;
+
+      const formData = new FormData(this.form);
+      const price = parseFloat(formData.get('price') as string) || 0;
+      const quantity = Math.max(1, parseInt(formData.get('quantity') as string, 10) || 1);
+      const shippingCharged = parseFloat(formData.get('shippingCharged') as string) || 0;
+      const shippingCost = parseFloat(formData.get('shippingCost') as string) || 0;
+      const itemCost = parseFloat(formData.get('itemCost') as string) || 0;
+
+      // Extract platform specific options
+      const options: Record<string, unknown> = {};
+
+      if (this.currentPlatform === 'ebay-us') {
+        options.isTopRatedSeller = formData.get('isTopRatedSeller') === 'on';
+        options.hasStoreSubscription = formData.get('hasStoreSubscription') === 'on';
+        options.promotedListingPercent = parseFloat(formData.get('promotedListingPercent') as string) || 0;
+      } else if (this.currentPlatform === 'ebay-uk') {
+        options.sellerType = formData.get('sellerType') || 'private';
+        options.promotedListingPercent = parseFloat(formData.get('promotedListingPercentUk') as string) || 0;
+      } else if (this.currentPlatform === 'tiktok-shop') {
+        options.referralFeePercent = parseFloat(formData.get('referralFeePercent') as string) || 6.0;
+        options.affiliateCommissionPercent = parseFloat(formData.get('affiliateCommissionPercent') as string) || 0.0;
+      } else if (this.currentPlatform === 'etsy') {
+        options.hasOffsiteAds = formData.get('hasOffsiteAds') === 'on';
+      } else if (this.currentPlatform === 'depop') {
+        options.region = 'US';
+      }
+
+      const result: CalcResult = runCalculator(
+        this.currentPlatform,
+        {
+          price,
+          quantity,
+          shippingCharged,
+          shippingCost,
+          itemCost,
+        },
+        options
+      );
+
+      this.updateUI(result);
+    }
+
+    private updateUI(result: CalcResult) {
+      if (this.outNetProfit) {
+        this.outNetProfit.textContent = this.formatMoney(result.netProfit);
+      }
+      if (this.outProfitMargin) {
+        this.outProfitMargin.textContent = `${result.profitMargin.toFixed(1)}%`;
+      }
+      if (this.outRoi) {
+        this.outRoi.textContent = `${result.roi.toFixed(1)}%`;
+      }
+      if (this.outBreakEven) {
+        this.outBreakEven.textContent = this.formatMoney(result.breakEvenPrice);
+      }
+      if (this.outTotalFees) {
+        this.outTotalFees.textContent = this.formatMoney(result.totalFees);
+      }
+      if (this.outTotalFeesSummary) {
+        this.outTotalFeesSummary.textContent = this.formatMoney(result.totalFees);
+      }
+      if (this.outGrossRevenue) {
+        this.outGrossRevenue.textContent = this.formatMoney(result.grossRevenue);
+      }
+      if (this.outTotalCosts) {
+        this.outTotalCosts.textContent = this.formatMoney(result.totalCosts);
+      }
+
+      if (this.profitBadge) {
+        const isProfitable = result.netProfit >= 0;
+        this.profitBadge.textContent = isProfitable ? 'Profitable' : 'Loss';
+        this.profitBadge.className = isProfitable
+          ? 'text-micro uppercase font-bold px-2 py-0.5 rounded-xs bg-forest text-lime-hero'
+          : 'text-micro uppercase font-bold px-2 py-0.5 rounded-xs bg-error text-white';
+      }
+
+      if (this.outFeeBreakdownBody) {
+        this.outFeeBreakdownBody.innerHTML = result.fees
+          .map(
+            (fee) => `
+          <tr>
+            <td class="py-2.5 px-4">
+              <div class="font-semibold text-ink">${fee.name}</div>
+              ${fee.description ? `<div class="text-micro text-muted">${fee.description}</div>` : ''}
+            </td>
+            <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
+              ${this.formatMoney(fee.amount)}
+            </td>
+          </tr>
+        `
+          )
+          .join('');
+      }
+    }
+  }
+
+  if (!customElements.get('seller-calculator')) {
+    customElements.define('seller-calculator', SellerCalculator);
+  }
+</script>

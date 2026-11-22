@@ -7,3 +7,4 @@ export * from "./etsy";
 export * from "./ebay-us";
 export * from "./ebay-uk";
 export * from "./twitch-bits";
+export * from "./dispatcher";

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -43,6 +44,19 @@ const websiteSchema = {
           Explore Design Tokens
         </a>
       </div>
+    </section>
+
+    <!-- Interactive Calculator Island -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-heading-2 font-bold text-ink">Instant Profit & Fee Calculator</h2>
+          <p class="text-body-md text-muted">
+            Select a marketplace, enter your pricing and expenses, and see your exact take-home payout.
+          </p>
+        </div>
+      </div>
+      <CalculatorIsland platform="whatnot" showPlatformTabs={true} />
     </section>
 
     <!-- Platform Quick Links Grid -->
