@@ -89,4 +89,33 @@ describe("Etsy Fee Calculator", () => {
     expect(testBe.netProfit).toBeGreaterThanOrEqual(0);
     expect(testBe.netProfit).toBeLessThanOrEqual(0.05);
   });
+
+  it("case 9: Offsite Ads tiers and $100 fee cap", () => {
+    // 15% standard tier
+    const resStandard = calculateEtsy(
+      { price: 100 },
+      { hasOffsiteAds: true, offsiteAdsTier: "standard" },
+    );
+    expect(
+      resStandard.fees.find((f) => f.id === "offsite_ads")?.amount,
+    ).toBe(15.0);
+
+    // 12% high volume tier
+    const resHigh = calculateEtsy(
+      { price: 100 },
+      { hasOffsiteAds: true, offsiteAdsTier: "high_volume" },
+    );
+    expect(resHigh.fees.find((f) => f.id === "offsite_ads")?.amount).toBe(
+      12.0,
+    );
+
+    // $100 maximum cap per order rule ($1,000 * 15% = $150, but capped at $100)
+    const resCapped = calculateEtsy(
+      { price: 1000 },
+      { hasOffsiteAds: true, offsiteAdsTier: "standard" },
+    );
+    const adsFee = resCapped.fees.find((f) => f.id === "offsite_ads");
+    expect(adsFee?.amount).toBe(100.0);
+    expect(adsFee?.name).toContain("$100 Cap");
+  });
 });

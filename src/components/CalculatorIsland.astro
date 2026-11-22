@@ -376,14 +376,30 @@ const platformList: { id: PlatformId; label: string }[] = [
           data-options-panel="etsy"
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">Etsy Options</span>
-          <div class="space-y-2">
+          <div class="space-y-3">
             <ToggleSwitch
               id="opt-offsite-ads"
               name="hasOffsiteAds"
               label="Offsite Ads Attributed"
-              description="15% standard ad fee on orders from Etsy offsite ads"
+              description="Apply ad fee when a sale is driven by Etsy Offsite Ads (max $100 fee per order)"
               checked={Boolean(options.hasOffsiteAds)}
             />
+            <div
+              class:list={['space-y-1.5 pl-6 pt-1', Boolean(options.hasOffsiteAds) ? 'block' : 'hidden']}
+              data-etsy-ads-tier-container
+            >
+              <label for="opt-etsy-ads-tier" class="block text-caption font-bold text-ink">
+                Annual Sales Tier (Offsite Ads Rate)
+              </label>
+              <select
+                id="opt-etsy-ads-tier"
+                name="offsiteAdsTier"
+                class="w-full rounded-xs border border-hairline-strong bg-canvas px-3 py-1.5 text-ui-sm text-ink focus:border-primary focus:outline-none"
+              >
+                <option value="standard" selected={options.offsiteAdsTier !== 'high_volume'}>Standard (&lt; $10k/yr) — 15% (Optional)</option>
+                <option value="high_volume" selected={options.offsiteAdsTier === 'high_volume'}>High Volume (&ge; $10k/yr) — 12% (Mandatory)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -523,6 +539,16 @@ const platformList: { id: PlatformId; label: string }[] = [
         radio.addEventListener('change', () => {
           this.switchTargetType(radio.value as ReverseTargetType, true);
         });
+      });
+
+      // Etsy Offsite Ads toggle listener to show/hide tier selector
+      const offsiteAdsToggle = this.querySelector<HTMLInputElement>('#opt-offsite-ads');
+      offsiteAdsToggle?.addEventListener('change', () => {
+        const tierContainer = this.querySelector<HTMLElement>('[data-etsy-ads-tier-container]');
+        if (tierContainer) {
+          tierContainer.classList.toggle('hidden', !offsiteAdsToggle.checked);
+          tierContainer.classList.toggle('block', offsiteAdsToggle.checked);
+        }
       });
     }
 
@@ -763,6 +789,15 @@ const platformList: { id: PlatformId; label: string }[] = [
           const offsiteEl = this.querySelector<HTMLInputElement>('#opt-offsite-ads');
           if (offsiteEl && typeof urlState.options.hasOffsiteAds === 'boolean') {
             offsiteEl.checked = urlState.options.hasOffsiteAds;
+            const tierContainer = this.querySelector<HTMLElement>('[data-etsy-ads-tier-container]');
+            if (tierContainer) {
+              tierContainer.classList.toggle('hidden', !offsiteEl.checked);
+              tierContainer.classList.toggle('block', offsiteEl.checked);
+            }
+          }
+          const tierEl = this.querySelector<HTMLSelectElement>('#opt-etsy-ads-tier');
+          if (tierEl && typeof urlState.options.offsiteAdsTier === 'string') {
+            tierEl.value = urlState.options.offsiteAdsTier;
           }
         }
       }
@@ -821,7 +856,10 @@ const platformList: { id: PlatformId; label: string }[] = [
         const aff = parseFloat(formData.get('affiliateCommissionPercent') as string);
         if (!isNaN(aff) && aff > 0) opts.affiliateCommissionPercent = aff;
       } else if (this.currentPlatform === 'etsy') {
-        if (formData.get('hasOffsiteAds') === 'on') opts.hasOffsiteAds = true;
+        if (formData.get('hasOffsiteAds') === 'on') {
+          opts.hasOffsiteAds = true;
+          opts.offsiteAdsTier = formData.get('offsiteAdsTier') || 'standard';
+        }
       }
 
       if (Object.keys(opts).length > 0) {
@@ -902,6 +940,7 @@ const platformList: { id: PlatformId; label: string }[] = [
         options.affiliateCommissionPercent = parseFloat(formData.get('affiliateCommissionPercent') as string) || 0.0;
       } else if (this.currentPlatform === 'etsy') {
         options.hasOffsiteAds = formData.get('hasOffsiteAds') === 'on';
+        options.offsiteAdsTier = formData.get('offsiteAdsTier') || 'standard';
       } else if (this.currentPlatform === 'depop') {
         options.region = 'US';
       }

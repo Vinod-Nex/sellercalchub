@@ -1,0 +1,485 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getEntry } from 'astro:content';
+import { PLATFORM_CONFIGS } from '../lib/calc';
+
+// Share exact same verified Etsy fee data source
+const etsyEntry = await getEntry('fees', 'etsy');
+const feeData = etsyEntry?.data;
+const config = PLATFORM_CONFIGS.etsy;
+
+const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
+const sourceUrl = feeData?.source_url ?? config.sourceUrl;
+
+function formatVerifiedDate(isoDate: string): string {
+  try {
+    const [year, month, day] = isoDate.split('-').map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
+const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+
+// Focused FAQ definitions for Offsite Ads
+const faqs = [
+  {
+    question: 'How do Etsy Offsite Ads work and how are they tracked?',
+    answer:
+      'Etsy purchases advertising space on external web channels including Google Search and Shopping, Facebook, Instagram, Pinterest, and Microsoft Bing. When an external shopper clicks an ad featuring one of your items and subsequently makes a purchase from your shop within 30 days, that order is deemed an attributed sale and the Offsite Ads fee is assessed.',
+  },
+  {
+    question: 'What is the fee rate for Etsy Offsite Ads (15% vs 12%)?',
+    answer:
+      'Etsy uses a two-tier structure based on your shop’s trailing 12-month gross sales. If your shop has earned less than $10,000 USD over the past 12 consecutive months, you pay a 15% fee per attributed order (and participation is completely optional). If your shop crosses $10,000 USD in trailing 12-month sales, you are upgraded to a 12% fee rate, but participation becomes mandatory for the remaining lifetime of your shop.',
+  },
+  {
+    question: 'How does the $100 fee cap work?',
+    answer:
+      'Official Etsy policy mandates that the Offsite Ads fee will never exceed $100.00 USD for any single attributed order, regardless of the transaction amount. For standard 15% tier sellers, any single order total above $666.67 USD caps out at $100.00. For high-volume 12% tier sellers, any order total above $833.33 USD caps out at $100.00.',
+  },
+  {
+    question: 'Do I pay if a shopper clicks an ad but does not purchase?',
+    answer:
+      'No. Etsy Offsite Ads operate strictly on a Cost-Per-Acquisition (CPA / pay-for-performance) model. You pay nothing for impressions, clicks, or browsing. You only pay a fee when an ad click directly produces a completed sale within the 30-day attribution window.',
+  },
+  {
+    question: 'Can I choose which specific listings Etsy advertises?',
+    answer:
+      'No. Etsy’s automated advertising algorithm controls which items are displayed based on seasonal search volume, inventory relevancy, and bidding auctions across partner search engines and social platforms. Sellers cannot selectively opt in or opt out specific listings; the program is shop-wide.',
+  },
+];
+
+// Structured Data: WebPage, SoftwareApplication, and FAQPage schemas
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Etsy Offsite Ads Fee Calculator',
+    url: 'https://sellercalchub.com/etsy-offsite-ads-fee-calculator/',
+    description:
+      'Dedicated Etsy Offsite Ads fee calculator. Model the 15% and 12% ad rates, the $100 fee cap, 30-day attribution window, and exact net profit impact.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Etsy Offsite Ads Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Etsy Offsite Ads Fee Calculator (15% vs 12% & $100 Cap)"
+  description="Free Etsy Offsite Ads calculator. Model your exact profit when Etsy advertises your listings on Google, Facebook, and Pinterest. Understand the 15% vs 12% tiers and the $100 fee cap."
+  canonicalPath="/etsy-offsite-ads-fee-calculator/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'Calculators', href: '/#calculators' },
+        { name: 'Etsy Fee Calculator', href: '/etsy-fee-calculator/' },
+        { name: 'Offsite Ads Calculator' },
+      ]}
+    />
+
+    <!-- Header & 1-Paragraph Direct Answer -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Verified Ad Tiers: 15% (&lt;$10k) · 12% (&ge;$10k) · Strict $100 Fee Cap</span>
+      </div>
+
+      <!-- 1. H1 -->
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Etsy Offsite Ads Fee Calculator
+      </h1>
+
+      <!-- 2. One-paragraph answer -->
+      <p class="text-body-lg text-body leading-relaxed max-w-3xl">
+        Etsy Offsite Ads cost <strong>15% per attributed order</strong> for shops making under $10,000 in trailing 12-month sales (optional, can be disabled), or <strong>12% per attributed order</strong> for shops that have surpassed $10,000 in 12-month sales (mandatory for the lifetime of your shop). The fee is charged on the entire transaction total (item price + shipping) on top of Etsy’s standard 6.5% transaction and 3.0% + $0.25 payment processing fees, but is strictly <strong>capped at a maximum of $100.00 USD per order</strong>.
+      </p>
+
+      <!-- Reciprocal Link Back to Main Etsy Calculator -->
+      <div class="pt-1">
+        <a
+          href="/etsy-fee-calculator/"
+          class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>Looking for the standard calculator? Go to the main Etsy Fee & Profit Calculator</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 3. Calculator Above the Fold (Pre-mounted with Offsite Ads Enabled) -->
+    <section aria-label="Etsy Offsite Ads Calculator Island">
+      <CalculatorIsland
+        platform="etsy"
+        showPlatformTabs={false}
+        initialPrice={65.00}
+        initialShippingCharged={5.00}
+        initialItemCost={18.00}
+        initialShippingCost={5.00}
+        initialQuantity={1}
+        initialOptions={{ hasOffsiteAds: true, offsiteAdsTier: 'standard' }}
+      />
+    </section>
+
+    <!-- 4. Formula & Tier Rules in Plain Text -->
+    <section class="space-y-6 pt-6 border-t border-hairline">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Etsy Offsite Ads Rate Structure</h2>
+        <p class="text-body-md text-muted max-w-2xl">
+          Etsy automatically places your listings in external advertising campaigns across Google, Facebook, Instagram, Pinterest, and Bing. Fees apply only when a click leads to a sale.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
+              Standard Tier
+            </span>
+            <span class="text-micro font-bold px-2 py-0.5 rounded-xs bg-canvas border border-hairline text-ink">
+              Optional
+            </span>
+          </div>
+          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
+            15% of Gross Sale
+          </p>
+          <p class="text-caption text-muted">
+            Applies to shops with under $10,000 USD in 12-month sales. Sellers can opt out at any time in Shop Manager.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
+              High-Volume Tier
+            </span>
+            <span class="text-micro font-bold px-2 py-0.5 rounded-xs bg-forest text-lime-hero">
+              Mandatory
+            </span>
+          </div>
+          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
+            12% of Gross Sale
+          </p>
+          <p class="text-caption text-muted">
+            Triggers once a shop hits $10,000 USD in 12-month trailing sales. Participation is mandatory for the lifetime of the shop.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
+              Fee Cap Rule
+            </span>
+            <span class="text-micro font-bold px-2 py-0.5 rounded-xs bg-canvas border border-hairline text-ink">
+              Official Cap
+            </span>
+          </div>
+          <p class="text-heading-4 font-mono font-bold text-ink tabular-nums">
+            $100.00 Max per Order
+          </p>
+          <p class="text-caption text-muted">
+            The Offsite Ads fee never exceeds $100 USD on any single attributed order, protecting margins on high-ticket goods.
+          </p>
+        </div>
+      </div>
+
+      <!-- Plain Text Formulas -->
+      <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-3 font-mono text-ui-sm text-body">
+        <div class="text-caption font-sans font-bold uppercase tracking-wider text-muted">Mathematical Fee Formulas</div>
+        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+          <code>Order Total Basis = Item Price + Buyer-Paid Shipping</code>
+        </div>
+        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+          <code>Standard Offsite Ads Fee = min($100.00, Order Total Basis × 0.15)</code>
+        </div>
+        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+          <code>High-Volume Offsite Ads Fee = min($100.00, Order Total Basis × 0.12)</code>
+        </div>
+        <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+          <code>Combined Total Etsy Take Rate = ($0.20 listing) + (6.5% transaction) + (3.0% + $0.25 payment) + (15% or 12% Offsite Ads) ≈ 24.5% to 27.5%</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Side-by-Side Comparison: Standard Sale vs Offsite Ads Sale -->
+    <section class="space-y-6 pt-6 border-t border-hairline">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Impact Comparison: $65 Product With vs Without Offsite Ads</h2>
+        <p class="text-body-md text-muted max-w-2xl">
+          See the direct profit difference when an item sells through an attributed ad click versus an organic sale.
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3">
+        <div class="overflow-x-auto">
+          <table class="w-full text-ui-sm text-left">
+            <caption class="sr-only">Side-by-side comparison of Etsy seller take-home profit with and without Offsite Ads</caption>
+            <thead class="bg-canvas-soft text-caption text-muted uppercase font-bold border-b border-hairline">
+              <tr>
+                <th scope="col" class="py-3 px-4">Line Item</th>
+                <th scope="col" class="py-3 px-4 text-right">Organic Sale (0% Ads)</th>
+                <th scope="col" class="py-3 px-4 text-right">Standard Offsite Ad (15%)</th>
+                <th scope="col" class="py-3 px-4 text-right">High-Volume Ad (12%)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hairline">
+              <tr>
+                <th scope="row" class="py-3 px-4 font-semibold text-ink">Buyer Gross Paid ($65 + $5 Ship)</th>
+                <td class="py-3 px-4 text-right text-ink font-mono tabular-nums">$70.00</td>
+                <td class="py-3 px-4 text-right text-ink font-mono tabular-nums">$70.00</td>
+                <td class="py-3 px-4 text-right text-ink font-mono tabular-nums">$70.00</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-3 px-4 font-medium text-ink">Etsy Listing Fee</th>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$0.20</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$0.20</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$0.20</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-3 px-4 font-medium text-ink">Transaction Fee (6.5%)</th>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$4.55</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$4.55</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$4.55</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-3 px-4 font-medium text-ink">Payment Processing (3% + $0.25)</th>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$2.35</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$2.35</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$2.35</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-3 px-4 font-bold text-ink">Offsite Ads Deduction</th>
+                <td class="py-3 px-4 text-right text-primary font-mono tabular-nums font-bold">$0.00</td>
+                <td class="py-3 px-4 text-right text-error font-mono tabular-nums font-bold">-$10.50 (15%)</td>
+                <td class="py-3 px-4 text-right text-error font-mono tabular-nums font-bold">-$8.40 (12%)</td>
+              </tr>
+              <tr class="bg-canvas-soft/60 font-semibold">
+                <th scope="row" class="py-3 px-4 text-ink">Total Etsy Deductions</th>
+                <td class="py-3 px-4 text-right text-ink font-mono tabular-nums">-$7.10 (10.1%)</td>
+                <td class="py-3 px-4 text-right text-error font-mono tabular-nums">-$17.60 (25.1%)</td>
+                <td class="py-3 px-4 text-right text-error font-mono tabular-nums">-$15.50 (22.1%)</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-3 px-4 font-medium text-ink">Expenses (COGS $18 + Postage $5)</th>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$23.00</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$23.00</td>
+                <td class="py-3 px-4 text-right text-muted font-mono tabular-nums">-$23.00</td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-canvas-soft border-t-2 border-hairline-strong font-bold text-ui-label">
+              <tr>
+                <th scope="row" class="py-3 px-4 text-ink">Net Take-Home Profit</th>
+                <td class="py-3 px-4 text-right text-primary text-stat-value tabular-nums">+$39.90</td>
+                <td class="py-3 px-4 text-right text-ink text-stat-value tabular-nums">+$29.40</td>
+                <td class="py-3 px-4 text-right text-ink text-stat-value tabular-nums">+$31.50</td>
+              </tr>
+              <tr>
+                <th scope="row" class="py-2 px-4 text-caption text-muted font-normal">Profit Margin (% of Gross)</th>
+                <td class="py-2 px-4 text-right text-caption text-primary tabular-nums">57.0% Margin</td>
+                <td class="py-2 px-4 text-right text-caption text-muted tabular-nums">42.0% Margin</td>
+                <td class="py-2 px-4 text-right text-caption text-muted tabular-nums">45.0% Margin</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Critical Offsite Ads Rules Explained -->
+    <section class="space-y-6 pt-6 border-t border-hairline">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">4 Critical Rules Every Etsy Seller Must Know</h2>
+        <p class="text-body-md text-muted max-w-2xl">
+          Etsy’s legal terms contain specific stipulations that determine when you get charged for an ad sale.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">1. The 30-Day Cookie Window</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Attribution lasts 30 days from the initial ad click. If a buyer clicks an ad for an item on June 1st and purchases on June 28th, the fee still applies. Furthermore, if they click an ad for Item A but buy Item B, the fee applies to whatever they purchase from your shop.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">2. The $10,000 Lifetime Threshold</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Etsy recalculates your trailing 12-month sales on the first day of every calendar month. Once your shop achieves $10,000 USD in trailing 12-month sales at any point, participation is locked in permanently, even if your annual sales drop below $10,000 later.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">3. The $100 Order Cap</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            No single order will ever incur more than $100 in Offsite Ads fees. If you sell a bespoke dining table for $2,500, a 15% ad fee would otherwise be $375; under the official cap rule, Etsy only deducts $100, effectively reducing your ad percentage to just 4%.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-lg border border-hairline-strong bg-canvas space-y-2">
+          <h3 class="text-heading-4 font-bold text-ink">4. Shipping Is Included in the Ad Basis</h3>
+          <p class="text-body-sm text-body leading-relaxed">
+            Like Etsy’s 6.5% transaction fee, the 15% (or 12%) Offsite Ads fee is assessed against the total order amount, which includes the shipping fee charged to the buyer. If you charge $15 for heavy shipping, Etsy takes an extra $2.25 on that shipping portion.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FAQ Section -->
+    <section class="space-y-6 pt-6 border-t border-hairline">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions: Etsy Offsite Ads</h2>
+        <p class="text-body-md text-muted max-w-2xl">
+          Detailed answers to technical questions about opt-out settings, attribution cookies, and billing caps.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map((faq) => (
+          <details class="group rounded-lg border border-hairline-strong bg-canvas p-4 transition-colors hover:border-primary">
+            <summary class="flex items-center justify-between font-bold text-ink text-ui-label cursor-pointer list-none select-none">
+              <span>{faq.question}</span>
+              <svg
+                class="w-4 h-4 text-muted group-open:rotate-180 transition-transform duration-150 shrink-0 ml-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </summary>
+            <div class="mt-3 text-body text-body-sm leading-relaxed border-t border-hairline pt-3">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- 8. Related Calculators Grid -->
+    <section class="space-y-6 pt-6 border-t border-hairline">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">More Marketplace Calculators</h2>
+        <p class="text-body-md text-muted max-w-2xl">
+          Compare your profit margins across other major online reseller channels.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          {
+            name: 'Standard Etsy Fee Calculator',
+            rate: '6.5% + $0.20 + 3% + $0.25',
+            desc: 'The complete Etsy seller profit calculator without ad deductions.',
+            href: '/etsy-fee-calculator/',
+          },
+          {
+            name: 'Whatnot Fee Calculator',
+            rate: '8.0% + 2.9% + $0.30',
+            desc: 'Calculate live auction fees, card processing, and net payouts for livestream sellers.',
+            href: '/whatnot-fee-calculator/',
+          },
+          {
+            name: 'TikTok Shop Fee Calculator',
+            rate: '6.0% + $0.30',
+            desc: 'Calculate referral fees, affiliate creator commissions, and live-selling margins.',
+            href: '/tiktok-shop-fee-calculator/',
+          },
+          {
+            name: 'Depop Fee Calculator',
+            rate: '0% selling + 3.3% + $0.45',
+            desc: 'Calculate marketplace processing fees for vintage apparel and second-hand fashion.',
+            href: '/depop-fee-calculator/',
+          },
+          {
+            name: 'eBay Fee Calculator',
+            rate: '13.25% + $0.40',
+            desc: 'Calculate final value fees, store subscription discounts, and promoted listing rates.',
+            href: '/ebay-fee-calculator/',
+          },
+          {
+            name: 'Twitch Bits Calculator',
+            rate: '$0.01 per Bit payout',
+            desc: 'Calculate streamer take-home earnings from Bits cheers and Twitch revenue splits.',
+            href: '/twitch-bits-calculator/',
+          },
+        ].map((item) => (
+          <a
+            href={item.href}
+            class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+          >
+            <span class="text-caption font-bold text-primary block mb-1">{item.rate}</span>
+            <span class="text-heading-4 font-bold text-ink block mb-2">{item.name}</span>
+            <span class="text-caption text-muted block">{item.desc}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- 9. Last-Verified Stamp -->
+    <footer class="pt-6 border-t border-hairline">
+      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span class="text-ui-label font-bold text-ink">
+              Official Rate Verification
+            </span>
+          </div>
+          <p class="text-caption text-muted">
+            Etsy Offsite Ads rates verified on <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced directly from Etsy’s Legal Fees and Payments Policy.
+          </p>
+        </div>
+
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 px-4 py-2 bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <span>Official Fee Policy</span>
+          <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>

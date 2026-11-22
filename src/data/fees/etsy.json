@@ -3,9 +3,53 @@
   "platform_name": "Etsy",
   "region": "US",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "listing",
+      "name": "Listing Fee",
+      "calculation_type": "fixed",
+      "fixed_amount": 0.20,
+      "currency": "USD",
+      "applies_to": "per_unit",
+      "notes": "$0.20 USD per listing or renewal, active for 4 months or until quantity sold"
+    },
+    {
+      "fee_kind": "commission",
+      "name": "Transaction Fee",
+      "calculation_type": "percent",
+      "percentage": 6.5,
+      "applies_to": "total_buyer_paid",
+      "notes": "6.5% of the total item sale price plus shipping, gift wrapping, and personalization"
+    },
+    {
+      "fee_kind": "payment_processing",
+      "name": "Payment Processing Fee (US)",
+      "calculation_type": "percent_plus_fixed",
+      "percentage": 3.0,
+      "fixed_amount": 0.25,
+      "currency": "USD",
+      "applies_to": "total_buyer_paid",
+      "notes": "3.0% plus $0.25 USD on the total order amount processed via Etsy Payments"
+    },
+    {
+      "fee_kind": "other",
+      "name": "Offsite Ads Fee (Standard)",
+      "calculation_type": "percent",
+      "percentage": 15.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "15% attributed fee for sellers under $10,000 USD in 12-month trailing sales (optional, can opt out)"
+    },
+    {
+      "fee_kind": "other",
+      "name": "Offsite Ads Fee (High Volume)",
+      "calculation_type": "percent",
+      "percentage": 12.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "12% attributed fee for sellers with $10,000+ USD in 12-month trailing sales (mandatory, fee capped at $100 USD per order)"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://www.etsy.com/legal/fees/",
-  "notes": "Awaiting user to paste official Etsy fee schedule into chat to populate typed rates."
+  "notes": "Official Etsy Seller Fees Policy verified for US sellers, including listing, transaction (6.5%), Etsy Payments (3% + $0.25), and Offsite Ads (15% standard / 12% high volume)."
 }

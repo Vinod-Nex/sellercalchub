@@ -13,7 +13,9 @@ export interface EtsyCalcOptions {
   transactionFeePercent?: number; // default 6.5%
   paymentProcessingPercent?: number; // default 3.0% (US)
   paymentProcessingFixed?: number; // default $0.25 (US)
-  offsiteAdsPercent?: number; // default 0% (or 15% / 12%)
+  hasOffsiteAds?: boolean; // default false
+  offsiteAdsPercent?: number; // default 15% if hasOffsiteAds, or 12%
+  offsiteAdsTier?: 'standard' | 'high_volume'; // standard = 15%, high_volume = 12%
   regulatoryFeePercent?: number; // default 0.0%
   skipBreakEven?: boolean;
 }
@@ -34,8 +36,15 @@ export function calculateEtsy(
   const transactionPercent = options.transactionFeePercent ?? 6.5;
   const paymentPercent = options.paymentProcessingPercent ?? 3.0;
   const paymentFixedDollars = options.paymentProcessingFixed ?? 0.25;
-  const offsiteAdsPercent = options.offsiteAdsPercent ?? 0.0;
   const regulatoryPercent = options.regulatoryFeePercent ?? 0.0;
+
+  // Determine Offsite Ads rate: explicit percent, or tier-based if hasOffsiteAds is true
+  let offsiteAdsRate = 0.0;
+  if (typeof options.offsiteAdsPercent === 'number') {
+    offsiteAdsRate = options.offsiteAdsPercent;
+  } else if (options.hasOffsiteAds) {
+    offsiteAdsRate = options.offsiteAdsTier === 'high_volume' ? 12.0 : 15.0;
+  }
 
   const itemPriceCents = toCents(price);
   const qty = Math.max(1, Math.floor(quantity));
@@ -90,19 +99,23 @@ export function calculateEtsy(
     description: `${paymentPercent}% of transaction + $${paymentFixedDollars.toFixed(2)}`,
   });
 
-  // 4. Offsite Ads Fee (optional 15% or 12%)
-  if (offsiteAdsPercent > 0) {
-    const offsiteAdsCents = percentOfCents(
+  // 4. Offsite Ads Fee (optional 15% standard or 12% high volume, capped at $100 per order)
+  if (offsiteAdsRate > 0) {
+    const rawOffsiteAdsCents = percentOfCents(
       grossRevenueCents,
-      offsiteAdsPercent,
+      offsiteAdsRate,
     );
+    // Official Etsy rule: Offsite Ads fee never exceeds $100 USD per single attributed order
+    const maxCapCents = toCents(100.0);
+    const isCapped = rawOffsiteAdsCents > maxCapCents;
+    const offsiteAdsCents = Math.min(maxCapCents, rawOffsiteAdsCents);
     totalFeesCents += offsiteAdsCents;
     fees.push({
       id: "offsite_ads",
-      name: `Offsite Ads Fee (${offsiteAdsPercent}%)`,
+      name: `Offsite Ads Fee (${offsiteAdsRate}%${isCapped ? " - $100 Cap" : ""})`,
       amount: toDollars(offsiteAdsCents),
-      ratePercent: offsiteAdsPercent,
-      description: `${offsiteAdsPercent}% fee when an item sells through Etsy Offsite Ads`,
+      ratePercent: offsiteAdsRate,
+      description: `${offsiteAdsRate}% fee on attributed orders from Etsy Offsite Ads${isCapped ? " (capped at $100 max per order)" : ""}`,
     });
   }
 

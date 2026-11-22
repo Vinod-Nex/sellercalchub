@@ -189,6 +189,11 @@ export function parseUrlState(query: string | URLSearchParams): CalculatorUrlSta
     options.hasOffsiteAds = offsiteAds;
     hasOptions = true;
   }
+  const adsTier = params.get('ads_tier') || params.get('offsiteAdsTier');
+  if (adsTier === 'high_volume' || adsTier === 'standard') {
+    options.offsiteAdsTier = adsTier;
+    hasOptions = true;
+  }
 
   if (hasOptions) {
     state.options = options;
@@ -272,7 +277,12 @@ export function buildUrlQuery(state: CalculatorUrlState): string {
       params.set('affiliate', opts.affiliateCommissionPercent.toString());
     }
   } else if (state.platform === 'etsy') {
-    if (opts.hasOffsiteAds) params.set('offsite_ads', '1');
+    if (opts.hasOffsiteAds) {
+      params.set('offsite_ads', '1');
+      if (opts.offsiteAdsTier === 'high_volume') {
+        params.set('ads_tier', 'high_volume');
+      }
+    }
   }
 
   const qs = params.toString();
