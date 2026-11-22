@@ -61,7 +61,8 @@ describe('URL State Serialization & Parsing', () => {
 
   it('parses platform-specific options', () => {
     // eBay US
-    const usState = parseUrlState('?platform=ebay-us&top_rated=1&store=1&promoted=2.5');
+    const usState = parseUrlState('?platform=ebay-us&category=books_movies_music&top_rated=1&store=1&promoted=2.5');
+    expect(usState.options?.category).toBe('books_movies_music');
     expect(usState.options?.isTopRatedSeller).toBe(true);
     expect(usState.options?.hasStoreSubscription).toBe(true);
     expect(usState.options?.promotedListingPercent).toBe(2.5);

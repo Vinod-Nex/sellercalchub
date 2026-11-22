@@ -293,7 +293,23 @@ const platformList: { id: PlatformId; label: string }[] = [
           data-options-panel="ebay-us"
         >
           <span class="block text-eyebrow font-bold text-muted uppercase tracking-wider">eBay US Options</span>
-          <div class="space-y-2">
+          <div class="space-y-3">
+            <SelectInput
+              id="opt-category-us"
+              name="category"
+              label="eBay Category"
+              options={[
+                { value: 'most_categories', label: 'Most Categories (13.25% / 12.35% Store)' },
+                { value: 'books_movies_music', label: 'Books, Movies & Music (15.3% / 14.95%)' },
+                { value: 'consumer_electronics', label: 'Computers & Electronics (13.25% / 9.35%)' },
+                { value: 'musical_instruments', label: 'Guitars & Musical Instruments (6.7% / 6.35%)' },
+                { value: 'jewelry_watches', label: 'Jewelry & Watches (15.0% / 13.0%)' },
+                { value: 'athletic_shoes_150', label: 'Sneakers & Athletic Shoes ($150+ - 8.0%)' },
+                { value: 'heavy_equipment', label: 'Heavy Equipment & Commercial (3.0% / 2.5%)' },
+              ]}
+              value={String(options.category ?? 'most_categories')}
+              helpText="Final value fee percentage varies by category"
+            />
             <ToggleSwitch
               id="opt-top-rated-us"
               name="isTopRatedSeller"
@@ -755,6 +771,10 @@ const platformList: { id: PlatformId; label: string }[] = [
       // 7. Populate platform options
       if (urlState.options) {
         if (this.currentPlatform === 'ebay-us') {
+          const categoryEl = this.querySelector<HTMLSelectElement>('#opt-category-us');
+          if (categoryEl && typeof urlState.options.category === 'string') {
+            categoryEl.value = urlState.options.category;
+          }
           const topRatedEl = this.querySelector<HTMLInputElement>('#opt-top-rated-us');
           if (topRatedEl && typeof urlState.options.isTopRatedSeller === 'boolean') {
             topRatedEl.checked = urlState.options.isTopRatedSeller;
@@ -841,6 +861,8 @@ const platformList: { id: PlatformId; label: string }[] = [
       // Options
       const opts: Record<string, unknown> = {};
       if (this.currentPlatform === 'ebay-us') {
+        const cat = formData.get('category') as string;
+        if (cat && cat !== 'most_categories') opts.category = cat;
         if (formData.get('isTopRatedSeller') === 'on') opts.isTopRatedSeller = true;
         if (formData.get('hasStoreSubscription') === 'on') opts.hasStoreSubscription = true;
         const prom = parseFloat(formData.get('promotedListingPercent') as string);
@@ -929,6 +951,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       const options: Record<string, unknown> = {};
 
       if (this.currentPlatform === 'ebay-us') {
+        options.category = (formData.get('category') as string) || 'most_categories';
         options.isTopRatedSeller = formData.get('isTopRatedSeller') === 'on';
         options.hasStoreSubscription = formData.get('hasStoreSubscription') === 'on';
         options.promotedListingPercent = parseFloat(formData.get('promotedListingPercent') as string) || 0;

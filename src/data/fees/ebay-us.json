@@ -3,9 +3,100 @@
   "platform_name": "eBay (US)",
   "region": "US",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Most Categories",
+      "calculation_type": "tiered",
+      "percentage": 13.25,
+      "applies_to": "total_buyer_paid",
+      "notes": "13.25% on total amount of sale up to $7,500 per item; 2.35% on the portion over $7,500"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Store Subscriber (Most Categories)",
+      "calculation_type": "tiered",
+      "percentage": 12.35,
+      "applies_to": "total_buyer_paid",
+      "notes": "12.35% on total amount of sale up to $7,500 per item for Basic and higher Store subscribers; 2.35% on the portion over $7,500"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Books, Movies & Music",
+      "calculation_type": "tiered",
+      "percentage": 15.3,
+      "applies_to": "total_buyer_paid",
+      "notes": "15.3% on total amount of sale up to $7,500 (14.95% for Store subscribers); 2.35% on portion over $7,500"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Computers & Electronics (Store)",
+      "calculation_type": "tiered",
+      "percentage": 9.35,
+      "applies_to": "total_buyer_paid",
+      "notes": "9.35% on total amount of sale up to $2,500 for Store subscribers (13.25% non-store); 2.35% on portion over $2,500"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Guitars & Musical Instruments",
+      "calculation_type": "tiered",
+      "percentage": 6.7,
+      "applies_to": "total_buyer_paid",
+      "notes": "6.7% on total amount of sale up to $7,500 (6.35% for Store subscribers); 2.35% on portion over $7,500"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Jewelry & Watches",
+      "calculation_type": "tiered",
+      "percentage": 15.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "15.0% on total amount of sale up to $5,000 (13.0% for Store subscribers); 9.0% on portion over $5,000"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Athletic Shoes & Sneakers ($150+)",
+      "calculation_type": "percent",
+      "percentage": 8.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "8.0% for Men's and Women's Athletic Shoes sold at $150 or more; fixed per-order fee is waived"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Final Value Fee - Heavy Equipment & Commercial",
+      "calculation_type": "tiered",
+      "percentage": 3.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "3.0% on total amount of sale up to $15,000 (2.5% for Store subscribers); 0.5% on portion over $15,000"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Per-Order Fee (Orders over $10.00)",
+      "calculation_type": "fixed",
+      "fixed_amount": 0.40,
+      "currency": "USD",
+      "applies_to": "per_order",
+      "notes": "Fixed $0.40 per order when total buyer payment exceeds $10.00"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Per-Order Fee (Orders $10.00 or less)",
+      "calculation_type": "fixed",
+      "fixed_amount": 0.30,
+      "currency": "USD",
+      "applies_to": "per_order",
+      "notes": "Fixed $0.30 per order when total buyer payment is $10.00 or less"
+    },
+    {
+      "fee_kind": "other",
+      "name": "Top Rated Plus Discount",
+      "calculation_type": "percent",
+      "percentage": 10.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "10% discount applied to the Final Value Fee percentage portion on qualifying Top Rated Plus listings"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://www.ebay.com/help/selling/fees-credits-invoices/selling-fees?id=4822",
-  "notes": "Awaiting user to paste official eBay US fee schedule into chat to populate typed rates."
+  "notes": "Official eBay US selling fee schedule. Final value fee applies to the total amount of the sale, which includes item price and shipping charged to the buyer. Fixed per-order fee is $0.30 for orders $10.00 or less and $0.40 for orders over $10.00."
 }

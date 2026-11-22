@@ -145,6 +145,12 @@ export function parseUrlState(query: string | URLSearchParams): CalculatorUrlSta
   let hasOptions = false;
 
   // eBay US
+  const ebayCat = params.get('category') || params.get('cat');
+  if (ebayCat) {
+    options.category = ebayCat;
+    hasOptions = true;
+  }
+
   const topRated = parseBoolean(params.get('top_rated') || params.get('isTopRatedSeller'));
   if (topRated !== undefined) {
     options.isTopRatedSeller = topRated;
@@ -257,6 +263,9 @@ export function buildUrlQuery(state: CalculatorUrlState): string {
   // Platform options
   const opts = state.options ?? {};
   if (state.platform === 'ebay-us') {
+    if (opts.category && opts.category !== 'most_categories') {
+      params.set('category', String(opts.category));
+    }
     if (opts.isTopRatedSeller) params.set('top_rated', '1');
     if (opts.hasStoreSubscription) params.set('store', '1');
     if (typeof opts.promotedListingPercent === 'number' && opts.promotedListingPercent > 0) {
