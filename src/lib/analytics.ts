@@ -193,7 +193,7 @@ export function trackEvent<T extends AnalyticsEventName>(
   name: T,
   payload: EventPayloadMap[T]
 ): AnalyticsEventRecord<T> {
-  const sanitized = sanitizePayload(payload as Record<string, unknown>) as EventPayloadMap[T];
+  const sanitized = sanitizePayload(payload as unknown as Record<string, unknown>) as unknown as EventPayloadMap[T];
   const record: AnalyticsEventRecord<T> = {
     id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     name,

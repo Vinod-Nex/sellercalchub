@@ -62,14 +62,10 @@ export const feeRateSchema = z.object({
 export type FeeRate = z.infer<typeof feeRateSchema>;
 
 export const platformFeeSchema = z.object({
-  platform: z
-    .string({ required_error: "platform is required" })
-    .min(1, "platform cannot be empty"),
-  platform_name: z
-    .string({ required_error: "platform_name is required" })
-    .min(1),
-  region: z.string({ required_error: "region is required" }).min(1),
-  currency: z.string({ required_error: "currency is required" }).length(3),
+  platform: z.string().min(1, "platform cannot be empty"),
+  platform_name: z.string().min(1),
+  region: z.string().min(1),
+  currency: z.string().length(3),
   rates: z.union([
     z.literal("TODO"),
     z.array(feeRateSchema),
@@ -78,15 +74,9 @@ export const platformFeeSchema = z.object({
       z.union([feeRateSchema, z.literal("TODO"), z.number()]),
     ),
   ]),
-  effective_from: z
-    .string({ required_error: "effective_from is required" })
-    .min(1),
-  verified_on: z
-    .string({ required_error: "verified_on is required" })
-    .min(1, "verified_on cannot be empty"),
-  source_url: z
-    .string({ required_error: "source_url is required" })
-    .url("source_url must be a valid official URL"),
+  effective_from: z.string().min(1),
+  verified_on: z.string().min(1, "verified_on cannot be empty"),
+  source_url: z.string().url("source_url must be a valid official URL"),
   notes: z.string().default(""),
 });
 

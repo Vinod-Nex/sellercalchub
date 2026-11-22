@@ -78,7 +78,7 @@ if (platform && !customSteps) {
     dynamicSteps.push({
       step: stepCounter++,
       fee: fee.name,
-      math: fee.calculation || `${currencySymbol}${fee.amount.toFixed(2)}`,
+      math: fee.description || `${currencySymbol}${fee.amount.toFixed(2)}`,
       amount: `-${currencySymbol}${fee.amount.toFixed(2)}`,
     });
   }

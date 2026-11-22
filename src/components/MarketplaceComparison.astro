@@ -301,7 +301,6 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
   import { trackEvent } from '../lib/analytics';
 
   class MarketplaceComparisonElement extends HTMLElement {
-    private form: HTMLFormElement | null = null;
     private priceInput: HTMLInputElement | null = null;
     private shipInInput: HTMLInputElement | null = null;
     private costInput: HTMLInputElement | null = null;
@@ -309,7 +308,6 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
     private trackCompTimeout: ReturnType<typeof setTimeout> | null = null;
 
     connectedCallback() {
-      this.form = this.querySelector<HTMLFormElement>('[data-comp-form]');
       this.priceInput = this.querySelector<HTMLInputElement>('#comp-price');
       this.shipInInput = this.querySelector<HTMLInputElement>('#comp-ship-in');
       this.costInput = this.querySelector<HTMLInputElement>('#comp-cost');

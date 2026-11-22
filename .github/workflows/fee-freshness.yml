@@ -1,0 +1,138 @@
+name: Monthly Fee Freshness Bot
+
+on:
+  schedule:
+    # Runs at 09:00 UTC on the 1st of every month
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+    inputs:
+      max_days:
+        description: 'Maximum days before fee data is marked stale'
+        required: false
+        default: '30'
+      reference_date:
+        description: 'Optional reference date override (YYYY-MM-DD)'
+        required: false
+        default: ''
+
+concurrency:
+  group: fee-freshness-audit
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit-freshness:
+    name: Audit Fee Schedules & Open Freshness Issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (Pinned via .nvmrc)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Fee Freshness Audit Script
+        id: run_audit
+        run: |
+          MAX_DAYS="${{ github.event.inputs.max_days || '30' }}"
+          REF_DATE="${{ github.event.inputs.reference_date || '' }}"
+          CMD="npx tsx scripts/check-fee-freshness.ts --days=$MAX_DAYS"
+          if [ -n "$REF_DATE" ]; then
+            CMD="$CMD --now=$REF_DATE"
+          fi
+          echo "Executing: $CMD"
+          $CMD || true
+        shell: bash
+
+      - name: Process Audit Results & Manage GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const reportPath = path.resolve(process.cwd(), 'fee-freshness-report.json');
+            if (!fs.existsSync(reportPath)) {
+              console.log('No fee-freshness-report.json found; all fee schedules are fresh (<30 days).');
+
+              // Check if there was an open issue to close
+              const openIssues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'fee-freshness',
+              });
+
+              for (const issue of openIssues.data) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: '✅ **All marketplace fee schedules have been verified and updated!** Closing this monthly audit issue.',
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                });
+                console.log(`Closed resolved fee-freshness issue #${issue.number}`);
+              }
+              return;
+            }
+
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+
+            if (!report.staleCount || report.staleCount === 0) {
+              console.log('Report indicates 0 stale fee files.');
+              return;
+            }
+
+            console.log(`Found ${report.staleCount} stale fee files. Managing GitHub Issue...`);
+
+            // Search for an existing open fee-freshness issue to avoid duplicates
+            const openIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'fee-freshness',
+            });
+
+            if (openIssues.data.length > 0) {
+              const existingIssue = openIssues.data[0];
+              console.log(`Updating existing open issue #${existingIssue.number}`);
+
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                title: report.markdownIssueTitle,
+                body: report.markdownIssueBody,
+              });
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `🔄 **Monthly Audit Updated:** ${report.staleCount} fee schedule(s) currently require reverification as of ${report.referenceDate}.`,
+              });
+            } else {
+              console.log('Creating new fee-freshness issue...');
+              const newIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: report.markdownIssueTitle,
+                body: report.markdownIssueBody,
+                labels: ['fee-freshness', 'automated-audit', 'priority-medium'],
+              });
+              console.log(`Created new issue #${newIssue.data.number}: ${newIssue.data.html_url}`);
+            }

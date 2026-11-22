@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FormulaBlock from '../components/FormulaBlock.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import AuthorByline from '../components/AuthorByline.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import LastVerified from '../components/LastVerified.astro';
+
+// FAQ definitions
+const faqs = [
+  {
+    question: 'Does Depop charge selling fees?',
+    answer:
+      'Depop eliminated its 10% selling fee for US and UK sellers. In the US, Depop charges zero selling fee to the seller, but standard payment processing fees (3.3% + $0.45 via Depop Payments) apply to the total transaction amount.',
+  },
+  {
+    question: 'How much are Depop payment processing fees in the US?',
+    answer:
+      'Depop Payments in the US charges 3.3% of the total order value (item price + shipping + applicable sales tax) plus a fixed $0.45 per transaction.',
+  },
+  {
+    question: 'Does Depop charge listing fees?',
+    answer:
+      'No. Depop has no listing fees or subscription fees. You can list as many vintage, streetwear, and second-hand items as you want for free.',
+  },
+  {
+    question: 'Who pays for shipping on Depop?',
+    answer:
+      'Sellers can choose "Ship with Depop" (using prepaid USPS labels where either buyer or seller pays) or arrange their own custom shipping. If the seller offers free shipping, the cost of the label comes out of their sale earnings.',
+  },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Depop Fee & Profit Calculator',
+    url: 'https://sellercalchub.com/depop-fee-calculator/',
+    description:
+      'Free Depop fee and profit calculator. Calculate your 0% selling fee, 3.3% + $0.45 Depop Payments processing fee, profit margin, and net payout.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Depop Seller Fee Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Depop Fee & Profit Calculator (0% Selling Fee + Processing)"
+  description="Free Depop fee calculator. Calculate net earnings under Depop's 0% selling fee policy, 3.3% + $0.45 payment processing, margin, and ROI."
+  canonicalPath="/depop-fee-calculator/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+        { name: 'Depop Fee Calculator' },
+      ]}
+    />
+
+    <!-- Header & Direct Answer -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Verified 2026 Official Rates</span>
+        <span aria-hidden="true">·</span>
+        <LastVerified platform="depop" />
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Depop Fee &amp; Profit Calculator
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        Depop charges <strong class="text-ink">0% selling fee</strong> in the US and UK. US sellers only pay standard <strong class="text-ink">Depop Payments processing: 3.3% + $0.45</strong> per transaction. Enter your listing price and packaging costs below to calculate your exact take-home earnings.
+      </p>
+    </header>
+
+    <!-- Calculator Island -->
+    <CalculatorIsland platform="depop" showPlatformTabs={false} />
+
+    <!-- Editorial Worked Example & Math -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Depop Fee Breakdown &amp; Example</h2>
+      <p class="text-body text-body leading-relaxed">
+        Here is how Depop Payments processes a typical $35.00 vintage clothing sale:
+      </p>
+
+      <WorkedExample
+        platform="depop"
+        itemPrice={35.0}
+        itemCost={10.0}
+        shippingCharged={0.0}
+        shippingCost={4.5}
+      />
+    </section>
+
+    <!-- Formula Block -->
+    <FormulaBlock platform="depop" />
+
+    <!-- Author & Verification Byline -->
+    <AuthorByline platform="depop" />
+
+    <!-- FAQ Accordion -->
+    <FAQ items={faqs} />
+
+    <!-- Related Calculators -->
+    <RelatedCalculators currentPlatform="depop" />
+  </div>
+</BaseLayout>

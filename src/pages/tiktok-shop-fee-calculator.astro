@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FormulaBlock from '../components/FormulaBlock.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import AuthorByline from '../components/AuthorByline.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import LastVerified from '../components/LastVerified.astro';
+
+// FAQ definitions
+const faqs = [
+  {
+    question: 'What are the seller fees on TikTok Shop US in 2026?',
+    answer:
+      'TikTok Shop charges a standard referral fee of 6.0% per order total (including item price and shipping charged), plus a 30¢ flat transaction fee. During special promotional seller onboarding windows, rates may temporarily vary.',
+  },
+  {
+    question: 'How do TikTok Shop affiliate commissions work?',
+    answer:
+      'If you sell products through the TikTok Shop Affiliate Creator program, you configure a commission percentage (typically 5% to 20%) paid directly to the creator who tagged your product in their viral video or livestream.',
+  },
+  {
+    question: 'Does TikTok Shop charge a monthly subscription fee?',
+    answer:
+      'No. There is zero monthly subscription cost to operate a TikTok Shop storefront. You only incur fees when orders are placed.',
+  },
+  {
+    question: 'Who covers shipping labels on TikTok Shop?',
+    answer:
+      'Sellers can choose between Shipping by TikTok (where TikTok provides subsidized shipping labels) or Shipping by Seller. Buyer shipping fees are deposited to the seller if the seller fulfills postage independently.',
+  },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'TikTok Shop Fee & Profit Calculator',
+    url: 'https://sellercalchub.com/tiktok-shop-fee-calculator/',
+    description:
+      'Free TikTok Shop fee and profit calculator. Calculate standard 6.0% referral fees, 30¢ transaction fees, affiliate commission deductions, and net payout.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'TikTok Shop Seller Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="TikTok Shop Fee & Profit Calculator (Verified 2026 Rates)"
+  description="Calculate your exact TikTok Shop fees: 6.0% referral fee, $0.30 transaction fee, creator affiliate commissions, net margin, and break-even sale price."
+  canonicalPath="/tiktok-shop-fee-calculator/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+        { name: 'TikTok Shop Fee Calculator' },
+      ]}
+    />
+
+    <!-- Header & Direct Answer -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Verified 2026 Official Rates</span>
+        <span aria-hidden="true">·</span>
+        <LastVerified platform="tiktok-shop" />
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        TikTok Shop Fee &amp; Profit Calculator
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        Selling on TikTok Shop US incurs a standard <strong class="text-ink">6.0% referral fee</strong> plus a <strong class="text-ink">$0.30 fixed per-order fee</strong>. Optional creator affiliate commissions are deducted from gross product revenue. Enter your sale price and item costs below to see your exact take-home profit.
+      </p>
+    </header>
+
+    <!-- Calculator Island -->
+    <CalculatorIsland platform="tiktok-shop" showPlatformTabs={false} />
+
+    <!-- Editorial Worked Example & Math -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">TikTok Shop Fee Breakdown &amp; Example</h2>
+      <p class="text-body text-body leading-relaxed">
+        Here is how TikTok Shop calculates platform deductions on a typical $50.00 order with standard creator affiliate commission:
+      </p>
+
+      <WorkedExample
+        platform="tiktok-shop"
+        itemPrice={50.0}
+        itemCost={15.0}
+        shippingCharged={0.0}
+        shippingCost={5.0}
+      />
+    </section>
+
+    <!-- Formula Block -->
+    <FormulaBlock platform="tiktok-shop" />
+
+    <!-- Author & Verification Byline -->
+    <AuthorByline platform="tiktok-shop" />
+
+    <!-- FAQ Accordion -->
+    <FAQ items={faqs} />
+
+    <!-- Related Calculators -->
+    <RelatedCalculators currentPlatform="tiktok-shop" />
+  </div>
+</BaseLayout>
