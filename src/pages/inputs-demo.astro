@@ -1,18 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import MoneyInput from '../components/inputs/MoneyInput.astro';
 import PercentInput from '../components/inputs/PercentInput.astro';
 import SelectInput from '../components/inputs/SelectInput.astro';
 import ToggleSwitch from '../components/inputs/ToggleSwitch.astro';
 import StepperInput from '../components/inputs/StepperInput.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Design Tokens', href: '/design-tokens/' },
+  { name: 'Shared Inputs Demo' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Shared Input Components - Seller Calc Hub',
+    url: 'https://sellercalchub.com/inputs-demo/',
+    description:
+      'Showcase and mobile keyboard verification for shared input components: MoneyInput, PercentInput, SelectInput, ToggleSwitch, and StepperInput.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/inputs-demo/'),
+];
 ---
 
 <BaseLayout
   title="Shared Input Components - Seller Calc Hub"
   description="Showcase and mobile keyboard verification for shared input components: MoneyInput, PercentInput, SelectInput, ToggleSwitch, and StepperInput."
   canonicalPath="/inputs-demo/"
+  structuredData={structuredData}
 >
-  <div class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+  <div class="max-w-4xl mx-auto px-4 py-8 space-y-10">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
     <div class="border-b border-hairline pb-4">
       <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-100 px-2.5 py-1 rounded-xs">
         Phase 9 · Design System Inputs

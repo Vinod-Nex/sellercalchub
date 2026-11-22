@@ -1,29 +1,33 @@
 ---
-import { getAllCalculatorsMeta, type RelatedCalculatorMeta } from '../lib/calc/fee-data';
+import { getPageLinks } from '../lib/seo/links';
 
 export interface Props {
+  currentUrl?: string;
   currentPlatform?: string;
   title?: string;
   description?: string;
-  calculators?: RelatedCalculatorMeta[];
-  limit?: number;
   id?: string;
 }
 
 const {
+  currentUrl,
   currentPlatform,
-  title = 'Compare Other Marketplace Fees',
-  description = 'Cross-list your inventory? Compare your net margins against other major reseller platforms.',
-  calculators: customCalculators,
-  limit = 6,
+  title = 'Related Marketplace Calculators',
+  description = 'Compare your take-home margins across platforms and explore related fee calculators.',
   id = 'related-calculators',
 } = Astro.props;
 
-const allCalculators = customCalculators ?? getAllCalculatorsMeta();
-const filtered = currentPlatform
-  ? allCalculators.filter((c) => c.id !== currentPlatform)
-  : allCalculators;
-const itemsToDisplay = filtered.slice(0, limit);
+// Determine target page entry from currentUrl, Astro.url.pathname, or currentPlatform
+const pathCandidate =
+  currentUrl ||
+  Astro.url.pathname ||
+  (currentPlatform ? `/${currentPlatform}/` : '/');
+
+const pageLinks = getPageLinks(pathCandidate);
+
+const hubLink = pageLinks?.hubLink;
+const pillarLink = pageLinks?.pillarLink;
+const siblings = pageLinks?.siblings ?? [];
 ---
 
 <section class="space-y-6 pt-6 border-t border-hairline" id={id}>
@@ -32,27 +36,74 @@ const itemsToDisplay = filtered.slice(0, limit);
     {description && <p class="text-body-md text-muted max-w-2xl">{description}</p>}
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    {
-      itemsToDisplay.map((item) => (
-        <a
-          href={item.href}
-          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
-        >
-          <div class="flex items-center justify-between gap-2 mb-1.5">
-            <span class="text-caption font-bold text-primary block">{item.rate}</span>
-            {item.badge && (
-              <span class="text-micro font-bold uppercase tracking-wider text-muted bg-canvas-soft px-2 py-0.5 rounded-xs border border-hairline">
-                {item.badge}
-              </span>
-            )}
-          </div>
-          <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-2">
-            {item.name}
+  <!-- 1. Supporting eBay Pillar Banner (Only for Supporting eBay Pages) -->
+  {
+    pillarLink && (
+      <div class="rounded-lg border border-primary/30 bg-mint-50/60 dark:bg-mint-200/5 p-5 space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-100 dark:bg-mint-200/20 px-2 py-0.5 rounded-xs border border-mint-200">
+            Core Pillar Calculator
           </span>
-          <span class="text-caption text-muted block leading-relaxed">{item.desc}</span>
+          <span class="text-caption text-muted">Complete Fee Breakdown</span>
+        </div>
+        <div>
+          <a
+            href={pillarLink.url}
+            class="text-heading-4 font-bold text-ink hover:text-primary transition-colors inline-flex items-center gap-1.5 group"
+          >
+            <span>{pillarLink.anchor}</span>
+            <span class="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+          </a>
+          <p class="text-caption text-muted mt-1 leading-relaxed">{pillarLink.description}</p>
+        </div>
+      </div>
+    )
+  }
+
+  <!-- 2. Two Nearest Sibling Calculators Grid -->
+  {
+    siblings.length > 0 && (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {siblings.map((sibling) => (
+          <a
+            href={sibling.url}
+            class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
+          >
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <span class="text-caption font-bold text-primary block">{sibling.rate}</span>
+              {sibling.badge && (
+                <span class="text-micro font-bold uppercase tracking-wider text-muted bg-canvas-soft px-2 py-0.5 rounded-xs border border-hairline">
+                  {sibling.badge}
+                </span>
+              )}
+            </div>
+            <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-1">
+              {sibling.anchor}
+            </span>
+            <span class="text-caption text-muted block leading-relaxed">{sibling.description}</span>
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  <!-- 3. Hub Link (Links Up to the Marketplace Comparison Hub) -->
+  {
+    hubLink && (
+      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="space-y-1">
+          <span class="text-micro font-bold uppercase tracking-wider text-primary">All-in-One Comparison</span>
+          <h3 class="text-body-md font-bold text-ink">{hubLink.name}</h3>
+          <p class="text-caption text-muted">{hubLink.description}</p>
+        </div>
+        <a
+          href={hubLink.url}
+          class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xs bg-primary text-on-primary font-bold text-ui-label hover:bg-primary-deep transition-colors"
+        >
+          <span>{hubLink.anchor}</span>
+          <span aria-hidden="true">→</span>
         </a>
-      ))
-    }
-  </div>
+      </div>
+    )
+  }
 </section>

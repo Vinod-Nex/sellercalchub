@@ -1,0 +1,423 @@
+{
+  "hub": {
+    "url": "/marketplace-fee-calculators/",
+    "name": "Marketplace Fee Comparison Hub",
+    "anchor": "Compare fees across all major platforms in the Marketplace Fee Comparison Hub",
+    "description": "Cross-listing inventory? Compare fees and profit margins side-by-side across Whatnot, TikTok Shop, Depop, Etsy, and eBay."
+  },
+  "pillar": {
+    "url": "/ebay-fee-calculator/",
+    "name": "eBay Fee Calculator (US Pillar)",
+    "anchor": "Calculate complete category rates, store tiers, and net payout on the US eBay Fee Calculator",
+    "description": "Comprehensive US eBay calculator covering final value fee percentages, store discounts, and promoted listing fees."
+  },
+  "pages": [
+    {
+      "url": "/ebay-fee-calculator/",
+      "isPillar": true,
+      "cluster": "ebay",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare eBay margins with Whatnot, Depop, and Etsy in the Marketplace Fee Comparison Hub",
+        "description": "Cross-listing beyond eBay? Compare your take-home margins across Whatnot, TikTok Shop, Depop, and Etsy."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-final-value-fee-calculator/",
+          "name": "eBay Final Value Fee Calculator",
+          "rate": "13.25% + $0.40",
+          "badge": "FVF Deep Dive",
+          "anchor": "Isolate final value fee tiers and order charges with the eBay Final Value Fee Calculator",
+          "description": "Break down standard category percentages, store subscriber rates, and per-order transaction fees without shipping overhead."
+        },
+        {
+          "url": "/ebay-profit-calculator/",
+          "name": "eBay Profit & Margin Calculator",
+          "rate": "Net Margin %",
+          "badge": "Profit Analysis",
+          "anchor": "Calculate item acquisition costs, packaging, and net seller margin with the eBay Profit Calculator",
+          "description": "Factor in item cost of goods, custom shipping supplies, and promoted listings to determine true ROI and profit margins."
+        }
+      ]
+    },
+    {
+      "url": "/ebay-final-value-fee-calculator/",
+      "isPillar": false,
+      "cluster": "ebay",
+      "pillarLink": {
+        "url": "/ebay-fee-calculator/",
+        "name": "eBay Fee Calculator (US Pillar)",
+        "anchor": "Calculate complete category rates, store tiers, and net payouts on the US eBay Fee Calculator",
+        "description": "Return to the comprehensive US pillar calculator with 25+ categories, store subscriptions, and promoted listings."
+      },
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare eBay final value fees with other platforms in the Marketplace Fee Comparison Hub",
+        "description": "Compare take-home seller payout against Whatnot, Depop, TikTok Shop, and Etsy."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-shipping-fee-calculator/",
+          "name": "eBay Shipping Fee Calculator",
+          "rate": "Shipping FVF",
+          "badge": "Postage Math",
+          "anchor": "Analyze buyer-paid shipping fee deductions using the eBay Shipping Fee Calculator",
+          "description": "Learn how final value fees apply to buyer-paid postage and discover exact break-even shipping rates."
+        },
+        {
+          "url": "/ebay-profit-calculator/",
+          "name": "eBay Profit Calculator",
+          "rate": "Net Margin %",
+          "badge": "Profit Analysis",
+          "anchor": "Calculate total product costs and take-home margin with the eBay Profit Calculator",
+          "description": "Subtract item acquisition costs and postage supplies to calculate your net profit on every eBay sale."
+        }
+      ]
+    },
+    {
+      "url": "/ebay-profit-calculator/",
+      "isPillar": false,
+      "cluster": "ebay",
+      "pillarLink": {
+        "url": "/ebay-fee-calculator/",
+        "name": "eBay Fee Calculator (US Pillar)",
+        "anchor": "Estimate category-specific rates and store tier savings on the US eBay Fee Calculator",
+        "description": "Access the master eBay calculator with 25+ categories, store subscriptions, and international options."
+      },
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare reseller profit margins across all platforms in the Marketplace Fee Comparison Hub",
+        "description": "Evaluate cross-listing profitability across eBay, Whatnot, Depop, TikTok Shop, and Etsy."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-final-value-fee-calculator/",
+          "name": "eBay Final Value Fee Calculator",
+          "rate": "13.25% + $0.40",
+          "badge": "FVF Deep Dive",
+          "anchor": "Isolate eBay final value fees by category with the eBay Final Value Fee Calculator",
+          "description": "Calculate standard seller fees, store tier discounts, and per-order transaction fees."
+        },
+        {
+          "url": "/ebay-and-paypal-fee-calculator/",
+          "name": "eBay & PayPal Fee Calculator",
+          "rate": "Managed Payments",
+          "badge": "Fee Explainer",
+          "anchor": "Review managed payments fee structures using the eBay & PayPal Fee Calculator",
+          "description": "Understand why eBay managed payments eliminated separate PayPal processing charges for sellers."
+        }
+      ]
+    },
+    {
+      "url": "/ebay-shipping-fee-calculator/",
+      "isPillar": false,
+      "cluster": "ebay",
+      "pillarLink": {
+        "url": "/ebay-fee-calculator/",
+        "name": "eBay Fee Calculator (US Pillar)",
+        "anchor": "Calculate full category rates, store discounts, and net payouts on the US eBay Fee Calculator",
+        "description": "Explore the complete US pillar calculator with store tiers, ad rates, and multi-category fees."
+      },
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare shipping fee policies across all marketplaces in the Marketplace Fee Comparison Hub",
+        "description": "Compare shipping fee deduction policies between eBay, Whatnot, Depop, and Etsy."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-final-value-fee-calculator/",
+          "name": "eBay Final Value Fee Calculator",
+          "rate": "13.25% + $0.40",
+          "badge": "FVF Deep Dive",
+          "anchor": "Calculate item price commissions and order charges with the eBay Final Value Fee Calculator",
+          "description": "Examine category fee percentages and per-order charges separated from shipping costs."
+        },
+        {
+          "url": "/ebay-profit-calculator/",
+          "name": "eBay Profit Calculator",
+          "rate": "Net Margin %",
+          "badge": "Profit Analysis",
+          "anchor": "Factor in actual postage costs and packaging with the eBay Profit Calculator",
+          "description": "Determine true net margin and ROI after postage label costs and packaging materials."
+        }
+      ]
+    },
+    {
+      "url": "/ebay-and-paypal-fee-calculator/",
+      "isPillar": false,
+      "cluster": "ebay",
+      "pillarLink": {
+        "url": "/ebay-fee-calculator/",
+        "name": "eBay Fee Calculator (US Pillar)",
+        "anchor": "Calculate verified managed payments fees and seller margins on the US eBay Fee Calculator",
+        "description": "Run comprehensive calculations with official eBay category rates, store discounts, and promoted listing fees."
+      },
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare marketplace payment processing fees in the Marketplace Fee Comparison Hub",
+        "description": "Compare payment processing charges across eBay, Whatnot, Etsy, and TikTok Shop."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-profit-calculator/",
+          "name": "eBay Profit Calculator",
+          "rate": "Net Margin %",
+          "badge": "Profit Analysis",
+          "anchor": "Estimate take-home earnings and net profit margins with the eBay Profit Calculator",
+          "description": "Deduct item acquisition costs and packaging from your gross sale to calculate net return."
+        },
+        {
+          "url": "/ebay-shipping-fee-calculator/",
+          "name": "eBay Shipping Fee Calculator",
+          "rate": "Shipping FVF",
+          "badge": "Postage Math",
+          "anchor": "Calculate break-even shipping rates using the eBay Shipping Fee Calculator",
+          "description": "Discover how eBay's percentage fee applies to buyer-paid postage and eliminate shipping losses."
+        }
+      ]
+    },
+    {
+      "url": "/ebay-fee-calculator-uk/",
+      "isPillar": false,
+      "cluster": "ebay",
+      "pillarLink": {
+        "url": "/ebay-fee-calculator/",
+        "name": "eBay Fee Calculator (US Pillar)",
+        "anchor": "Selling to US buyers or expanding to eBay US? Use our US eBay Fee & Profit Calculator",
+        "description": "Compare UK managed payment rules against US category rates and store subscriber tiers."
+      },
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare UK and international reseller fees in the Marketplace Fee Comparison Hub",
+        "description": "Evaluate cross-border selling fees across eBay, Depop, Etsy, and Whatnot."
+      },
+      "siblings": [
+        {
+          "url": "/depop-fee-calculator/",
+          "name": "Depop Fee Calculator",
+          "rate": "0% Selling Fee",
+          "badge": "UK & US 0% Fees",
+          "anchor": "Compare zero-commission fashion resale using the Depop Fee Calculator",
+          "description": "Depop charges 0% seller commission in the UK and US, matching eBay UK's private seller rates."
+        },
+        {
+          "url": "/ebay-final-value-fee-calculator/",
+          "name": "eBay Final Value Fee Calculator",
+          "rate": "13.25% + $0.40",
+          "badge": "FVF Deep Dive",
+          "anchor": "Compare standard commercial selling fees with the eBay Final Value Fee Calculator",
+          "description": "Review standard managed final value fee percentages and per-order transaction fees."
+        }
+      ]
+    },
+    {
+      "url": "/etsy-fee-calculator/",
+      "isPillar": true,
+      "cluster": "etsy",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare Etsy seller fees against eBay, Whatnot, and Depop in the Marketplace Fee Comparison Hub",
+        "description": "Compare handmade and vintage take-home profit against other major online marketplaces."
+      },
+      "siblings": [
+        {
+          "url": "/etsy-offsite-ads-fee-calculator/",
+          "name": "Etsy Offsite Ads Fee Calculator",
+          "rate": "12% or 15%",
+          "badge": "Ad Deductions",
+          "anchor": "Calculate mandatory and optional advertising costs with the Etsy Offsite Ads Fee Calculator",
+          "description": "Calculate your net margins when Etsy advertises your listings on Google, Instagram, and Bing."
+        },
+        {
+          "url": "/ebay-fee-calculator/",
+          "name": "eBay Fee Calculator (US Pillar)",
+          "rate": "13.25% + $0.40",
+          "badge": "Pillar",
+          "anchor": "Compare craft and collectible fee structures on the US eBay Fee Calculator",
+          "description": "Compare Etsy's 6.5% transaction fee with eBay's 13.25% all-inclusive final value fee."
+        }
+      ]
+    },
+    {
+      "url": "/etsy-offsite-ads-fee-calculator/",
+      "isPillar": false,
+      "cluster": "etsy",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare advertising and marketplace fees in the Marketplace Fee Comparison Hub",
+        "description": "Review total advertising and commission fee percentages across all platforms."
+      },
+      "siblings": [
+        {
+          "url": "/etsy-fee-calculator/",
+          "name": "Etsy Fee Calculator",
+          "rate": "6.5% + $0.20 + 3%",
+          "badge": "Pillar",
+          "anchor": "Calculate baseline listing and payment processing charges with the Etsy Fee Calculator",
+          "description": "Calculate standard listing fees, transaction percentages, and payment processing before ad deductions."
+        },
+        {
+          "url": "/ebay-profit-calculator/",
+          "name": "eBay Profit Calculator",
+          "rate": "Net Margin %",
+          "badge": "Profit Analysis",
+          "anchor": "Evaluate promoted listings ROI with the eBay Profit Calculator",
+          "description": "Compare Etsy Offsite Ads cost-per-sale with eBay Promoted Listings Standard ad models."
+        }
+      ]
+    },
+    {
+      "url": "/whatnot-fee-calculator/",
+      "isPillar": true,
+      "cluster": "live",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare livestream selling fees with TikTok Shop and eBay in the Marketplace Fee Comparison Hub",
+        "description": "Compare livestream commission rates side-by-side with social commerce and auction platforms."
+      },
+      "siblings": [
+        {
+          "url": "/tiktok-shop-fee-calculator/",
+          "name": "TikTok Shop Fee Calculator",
+          "rate": "6.0% Referral Fee",
+          "badge": "Live Commerce",
+          "anchor": "Compare livestreaming commissions using the TikTok Shop Fee Calculator",
+          "description": "Compare Whatnot's 8.0% commission with TikTok Shop's flat 6.0% referral fee structure."
+        },
+        {
+          "url": "/depop-fee-calculator/",
+          "name": "Depop Fee Calculator",
+          "rate": "0% Selling Fee",
+          "badge": "Resale Fashion",
+          "anchor": "Calculate clothing and collectible profits with the Depop Fee Calculator",
+          "description": "Depop charges 0% commission to sellers, making it a powerful companion channel for vintage resellers."
+        }
+      ]
+    },
+    {
+      "url": "/tiktok-shop-fee-calculator/",
+      "isPillar": true,
+      "cluster": "social",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare social selling commissions with Whatnot and Depop in the Marketplace Fee Comparison Hub",
+        "description": "Compare TikTok Shop's 6% fee against Whatnot livestreaming and eBay auctions."
+      },
+      "siblings": [
+        {
+          "url": "/whatnot-fee-calculator/",
+          "name": "Whatnot Fee Calculator",
+          "rate": "8.0% + 2.9% + $0.30",
+          "badge": "Live Auctions",
+          "anchor": "Compare live stream selling rates using the Whatnot Fee Calculator",
+          "description": "Whatnot offers dedicated collector live auctions with built-in buyer shipping labels."
+        },
+        {
+          "url": "/depop-fee-calculator/",
+          "name": "Depop Fee Calculator",
+          "rate": "0% Selling Fee",
+          "badge": "Gen-Z Resale",
+          "anchor": "Calculate zero-fee apparel sales with the Depop Fee Calculator",
+          "description": "Cross-list viral fashion items to Depop with 0% seller commission and keep more profit."
+        }
+      ]
+    },
+    {
+      "url": "/depop-fee-calculator/",
+      "isPillar": true,
+      "cluster": "fashion",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare Depop margins with eBay and Whatnot in the Marketplace Fee Comparison Hub",
+        "description": "See how Depop's 0% commission stacks up against Whatnot, TikTok Shop, and eBay."
+      },
+      "siblings": [
+        {
+          "url": "/whatnot-fee-calculator/",
+          "name": "Whatnot Fee Calculator",
+          "rate": "8.0% + 2.9% + $0.30",
+          "badge": "Live Selling",
+          "anchor": "Calculate live auction margins using the Whatnot Fee Calculator",
+          "description": "Move vintage fashion and collectibles fast via high-energy live streaming auctions."
+        },
+        {
+          "url": "/ebay-fee-calculator-uk/",
+          "name": "eBay UK Fee Calculator",
+          "rate": "0% Private Seller",
+          "badge": "UK 0% Fees",
+          "anchor": "Explore free UK private selling on the eBay UK Fee Calculator",
+          "description": "eBay UK also offers 0% final value fees for private sellers across fashion and home goods."
+        }
+      ]
+    },
+    {
+      "url": "/twitch-bits-to-usd/",
+      "isPillar": true,
+      "cluster": "streaming",
+      "hubLink": {
+        "url": "/marketplace-fee-calculators/",
+        "name": "Marketplace Fee Comparison Hub",
+        "anchor": "Compare creator earnings and marketplace payout rates in the Marketplace Fee Comparison Hub",
+        "description": "Explore fee structures across streaming, live shopping, and resale platforms."
+      },
+      "siblings": [
+        {
+          "url": "/whatnot-fee-calculator/",
+          "name": "Whatnot Fee Calculator",
+          "rate": "8.0% + 2.9% + $0.30",
+          "badge": "Creator Commerce",
+          "anchor": "Turn your viewer audience into live buyers with the Whatnot Fee Calculator",
+          "description": "Twitch streamers frequently monetize communities with live collectible box breaks on Whatnot."
+        },
+        {
+          "url": "/tiktok-shop-fee-calculator/",
+          "name": "TikTok Shop Fee Calculator",
+          "rate": "6.0% Referral Fee",
+          "badge": "Creator Live",
+          "anchor": "Calculate creator affiliate earnings using the TikTok Shop Fee Calculator",
+          "description": "Monetize social followers with direct product showcases and affiliate commission payouts."
+        }
+      ]
+    },
+    {
+      "url": "/marketplace-fee-calculators/",
+      "isPillar": true,
+      "cluster": "hub",
+      "hubLink": {
+        "url": "/",
+        "name": "Home - Seller Calc Hub",
+        "anchor": "Explore the complete suite of fee calculators on the Seller Calc Hub Homepage",
+        "description": "Return to our homepage for quick access to all marketplace calculators and tool groups."
+      },
+      "siblings": [
+        {
+          "url": "/ebay-fee-calculator/",
+          "name": "eBay Fee Calculator (US Pillar)",
+          "rate": "13.25% + $0.40",
+          "badge": "Pillar",
+          "anchor": "Access our most comprehensive tool: the US eBay Fee Calculator",
+          "description": "Explore full category rates, store subscription discounts, and promoted listing fees."
+        },
+        {
+          "url": "/whatnot-fee-calculator/",
+          "name": "Whatnot Fee Calculator",
+          "rate": "8.0% + 2.9% + $0.30",
+          "badge": "Live Selling",
+          "anchor": "Calculate live auction payouts using the Whatnot Fee Calculator",
+          "description": "Accurately project livestream earnings and automated shipping label deductions."
+        }
+      ]
+    }
+  ]
+}
