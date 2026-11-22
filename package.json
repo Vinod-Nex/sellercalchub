@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:prod": "tsx scripts/lint-seo.ts && STRICT_PROD=true astro build",
+    "build:prod": "tsx scripts/lint-seo.ts && STRICT_PROD=true astro build && tsx scripts/check-thin-content.ts",
     "lint:seo": "tsx scripts/lint-seo.ts",
+    "check:thin-content": "tsx scripts/check-thin-content.ts",
     "verify:fees": "STRICT_PROD=true astro sync",
     "preview": "astro preview",
     "astro": "astro",

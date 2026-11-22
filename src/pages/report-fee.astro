@@ -265,6 +265,47 @@ const turnstileSiteKey =
       </div>
     </div>
 
+    <!-- Verification Protocol Guide -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-2">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-50 dark:bg-mint-200/10 px-2.5 py-1 rounded-xs">
+          Editorial SLA &amp; Protocol
+        </span>
+        <h2 class="text-heading-2 font-bold text-ink">
+          How Fee Correction Submissions Are Verified
+        </h2>
+        <p class="text-body text-body leading-relaxed">
+          Seller Calc Hub is built on the principle that no rate or formula is ever estimated. Here is the exact process every community report goes through before modifying live calculation engines:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-2">
+          <div class="font-mono text-ui-label font-bold text-primary">Step 1: Receipt</div>
+          <h3 class="text-heading-4 font-bold text-ink">Submission Intake</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            Your report is queued with timestamps and metadata. Our editorial queue monitors community inputs around the clock to detect emerging marketplace policy changes quickly.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-2">
+          <div class="font-mono text-ui-label font-bold text-primary">Step 2: Audit</div>
+          <h3 class="text-heading-4 font-bold text-ink">Primary Source Audit</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            An analyst reviews the official marketplace documentation URL provided, confirming effective dates, regional scope, and category-level fee thresholds.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-lg border border-hairline bg-canvas space-y-2">
+          <div class="font-mono text-ui-label font-bold text-primary">Step 3: Deploy</div>
+          <h3 class="text-heading-4 font-bold text-ink">Automated Tests &amp; Release</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            The updated rates are committed to our verified fee data files. Automated test suites run to ensure zero calculation regressions before building and publishing the live site.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Fee Disclaimer -->
     <FeeDisclaimer />
   </div>
