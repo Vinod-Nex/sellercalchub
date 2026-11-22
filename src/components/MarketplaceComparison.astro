@@ -1,0 +1,433 @@
+---
+import MoneyInput from './inputs/MoneyInput.astro';
+import { calculateWhatnot } from '../lib/calc/whatnot';
+import { calculateEtsy } from '../lib/calc/etsy';
+import { calculateEbayUs } from '../lib/calc/ebay-us';
+import { calculateDepop } from '../lib/calc/depop';
+import { calculateTikTokShop } from '../lib/calc/tiktok-shop';
+
+interface Props {
+  initialPrice?: number;
+  initialShippingCharged?: number;
+  initialItemCost?: number;
+  initialShippingCost?: number;
+}
+
+const {
+  initialPrice = 50.0,
+  initialShippingCharged = 5.0,
+  initialItemCost = 15.0,
+  initialShippingCost = 5.0,
+} = Astro.props;
+
+// Server-rendered initial calculations
+const baseInput = {
+  price: initialPrice,
+  shippingCharged: initialShippingCharged,
+  itemCost: initialItemCost,
+  shippingCost: initialShippingCost,
+  quantity: 1,
+};
+
+const initialResults = [
+  {
+    id: 'depop',
+    name: 'Depop',
+    badge: 'Fashion & Vintage',
+    feeStructure: '0% Selling + 3.3% + $0.45',
+    calc: calculateDepop(baseInput),
+    href: '/depop-fee-calculator/',
+  },
+  {
+    id: 'tiktok-shop',
+    name: 'TikTok Shop',
+    badge: 'Social Commerce',
+    feeStructure: '6.0% Referral Fee',
+    calc: calculateTikTokShop(baseInput),
+    href: '/tiktok-shop-fee-calculator/',
+  },
+  {
+    id: 'etsy',
+    name: 'Etsy',
+    badge: 'Handmade & Vintage',
+    feeStructure: '6.5% + $0.20 + 3.0% + $0.25',
+    calc: calculateEtsy(baseInput),
+    href: '/etsy-fee-calculator/',
+  },
+  {
+    id: 'whatnot',
+    name: 'Whatnot',
+    badge: 'Livestream Auctions',
+    feeStructure: '8.0% + 2.9% + $0.30',
+    calc: calculateWhatnot(baseInput),
+    href: '/whatnot-fee-calculator/',
+  },
+  {
+    id: 'ebay-us',
+    name: 'eBay (US)',
+    badge: 'Global Marketplace',
+    feeStructure: '13.25% + $0.40 Per Order',
+    calc: calculateEbayUs(baseInput),
+    href: '/ebay-fee-calculator/',
+  },
+];
+
+// Sort descending by initial net profit
+initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
+---
+
+<marketplace-comparison
+  class="block space-y-8"
+  data-initial-price={initialPrice}
+  data-initial-shipping-charged={initialShippingCharged}
+  data-initial-item-cost={initialItemCost}
+  data-initial-shipping-cost={initialShippingCost}
+>
+  <!-- 1. Universal Inputs Bar -->
+  <div class="rounded-lg border-2 border-hairline-strong bg-canvas p-6 shadow-level-2 space-y-4">
+    <div class="border-b border-hairline pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div>
+        <h2 class="text-heading-3 font-bold text-ink">Universal Pricing & Cost Inputs</h2>
+        <p class="text-body-sm text-muted">
+          Change any number below to instantly compare net profit across all marketplaces simultaneously.
+        </p>
+      </div>
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 text-primary text-micro font-bold uppercase tracking-wider shrink-0">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden="true"></span>
+        Live Synchronized Engine
+      </span>
+    </div>
+
+    <form class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" onsubmit="return false;" data-comp-form>
+      <MoneyInput
+        id="comp-price"
+        name="price"
+        label="Item Sale Price"
+        value={initialPrice}
+        currencySymbol="$"
+        helpText="Listing price excluding shipping"
+      />
+      <MoneyInput
+        id="comp-ship-in"
+        name="shippingCharged"
+        label="Shipping Charged to Buyer"
+        value={initialShippingCharged}
+        currencySymbol="$"
+        helpText="Amount collected from customer"
+      />
+      <MoneyInput
+        id="comp-cost"
+        name="itemCost"
+        label="Inventory Sourcing Cost"
+        value={initialItemCost}
+        currencySymbol="$"
+        helpText="Your product acquisition cost (COGS)"
+      />
+      <MoneyInput
+        id="comp-ship-out"
+        name="shippingCost"
+        label="Actual Shipping Label Cost"
+        value={initialShippingCost}
+        currencySymbol="$"
+        helpText="What you pay for carrier postage"
+      />
+    </form>
+  </div>
+
+  <!-- 2. Platform Comparison Cards Grid -->
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-heading-3 font-bold text-ink">Real-Time Platform Comparison</h3>
+      <span class="text-caption text-muted">Ranked from highest to lowest net profit</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" data-comp-cards>
+      {initialResults.map((item, index) => {
+        const isTop = index === 0;
+        return (
+          <div
+            class:list={[
+              'rounded-lg border bg-canvas p-5 flex flex-col justify-between transition-all duration-150 relative shadow-sm',
+              isTop
+                ? 'border-primary ring-2 ring-primary/20 bg-mint-50/20'
+                : 'border-hairline-strong hover:border-hairline hover:shadow-md',
+            ]}
+            data-platform-card={item.id}
+          >
+            {/* Top Rank Badge */}
+            {isTop && (
+              <div class="absolute -top-3 right-4 bg-primary text-on-primary text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm">
+                Highest Payout
+              </div>
+            )}
+
+            <div class="space-y-3">
+              {/* Header */}
+              <div class="flex items-start justify-between gap-2 border-b border-hairline pb-2.5">
+                <div>
+                  <span class="text-micro font-bold text-muted uppercase tracking-wider block">
+                    {item.badge}
+                  </span>
+                  <h4 class="text-heading-3 font-bold text-ink">{item.name}</h4>
+                </div>
+                <span class="text-caption font-mono text-muted text-right">
+                  {item.feeStructure}
+                </span>
+              </div>
+
+              {/* Primary Net Profit Callout */}
+              <div class="rounded-sm bg-canvas-soft p-3.5 text-center">
+                <span class="text-micro uppercase text-muted font-bold block mb-0.5">
+                  You Keep (Net Cash)
+                </span>
+                <span
+                  class="text-display-md font-mono font-bold text-primary block tracking-tight"
+                  data-field="netProfit"
+                >
+                  ${item.calc.netProfit.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Breakdown Grid */}
+              <div class="grid grid-cols-2 gap-2 text-body-sm pt-1">
+                <div class="rounded-xs border border-hairline p-2">
+                  <span class="text-micro text-muted block">Marketplace Fees</span>
+                  <span class="font-mono font-bold text-negative block" data-field="totalFees">
+                    -${item.calc.totalFees.toFixed(2)}
+                  </span>
+                </div>
+                <div class="rounded-xs border border-hairline p-2">
+                  <span class="text-micro text-muted block">Effective Fee %</span>
+                  <span class="font-mono font-bold text-ink block" data-field="feeRate">
+                    {item.calc.grossRevenue > 0
+                      ? ((item.calc.totalFees / item.calc.grossRevenue) * 100).toFixed(1)
+                      : '0.0'}%
+                  </span>
+                </div>
+                <div class="rounded-xs border border-hairline p-2">
+                  <span class="text-micro text-muted block">Profit Margin</span>
+                  <span class="font-mono font-bold text-primary block" data-field="profitMargin">
+                    {item.calc.profitMargin.toFixed(1)}%
+                  </span>
+                </div>
+                <div class="rounded-xs border border-hairline p-2">
+                  <span class="text-micro text-muted block">Break-Even Price</span>
+                  <span class="font-mono font-bold text-ink block" data-field="breakEven">
+                    ${item.calc.breakEvenPrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card Footer Link */}
+            <div class="pt-4 mt-3 border-t border-hairline">
+              <a
+                href={item.href}
+                class="inline-flex items-center justify-between w-full text-ui-label font-bold text-primary hover:text-primary-deep transition-colors text-body-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+              >
+                <span>Open {item.name} Calculator</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- 3. Accessible Side-by-Side Summary Table -->
+  <div class="space-y-3 pt-4 border-t border-hairline">
+    <h3 class="text-heading-3 font-bold text-ink">Tabular Comparison Overview</h3>
+    <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <table class="w-full text-body-sm text-left border-collapse" data-comp-table>
+        <thead>
+          <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+            <th class="p-3.5">Marketplace</th>
+            <th class="p-3.5 text-right">Gross Total</th>
+            <th class="p-3.5 text-right">Total Fees</th>
+            <th class="p-3.5 text-right">Effective Fee %</th>
+            <th class="p-3.5 text-right">Take-Home Profit</th>
+            <th class="p-3.5 text-right">Margin %</th>
+            <th class="p-3.5 text-right">Break-Even</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline">
+          {initialResults.map((item) => (
+            <tr data-table-row={item.id} class="hover:bg-canvas-soft/40 transition-colors">
+              <td class="p-3.5 font-bold text-ink">
+                <a href={item.href} class="hover:text-primary transition-colors underline decoration-hairline">
+                  {item.name}
+                </a>
+              </td>
+              <td class="p-3.5 text-right font-mono" data-field="tableGross">
+                ${item.calc.grossRevenue.toFixed(2)}
+              </td>
+              <td class="p-3.5 text-right font-mono text-negative" data-field="tableFees">
+                -${item.calc.totalFees.toFixed(2)}
+              </td>
+              <td class="p-3.5 text-right font-mono text-muted" data-field="tableFeeRate">
+                {item.calc.grossRevenue > 0
+                  ? ((item.calc.totalFees / item.calc.grossRevenue) * 100).toFixed(1)
+                  : '0.0'}%
+              </td>
+              <td class="p-3.5 text-right font-mono font-bold text-primary" data-field="tableNet">
+                ${item.calc.netProfit.toFixed(2)}
+              </td>
+              <td class="p-3.5 text-right font-mono text-primary" data-field="tableMargin">
+                {item.calc.profitMargin.toFixed(1)}%
+              </td>
+              <td class="p-3.5 text-right font-mono text-ink" data-field="tableBreakEven">
+                ${item.calc.breakEvenPrice.toFixed(2)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</marketplace-comparison>
+
+<script>
+  import { calculateWhatnot } from '../lib/calc/whatnot';
+  import { calculateEtsy } from '../lib/calc/etsy';
+  import { calculateEbayUs } from '../lib/calc/ebay-us';
+  import { calculateDepop } from '../lib/calc/depop';
+  import { calculateTikTokShop } from '../lib/calc/tiktok-shop';
+
+  class MarketplaceComparisonElement extends HTMLElement {
+    private form: HTMLFormElement | null = null;
+    private priceInput: HTMLInputElement | null = null;
+    private shipInInput: HTMLInputElement | null = null;
+    private costInput: HTMLInputElement | null = null;
+    private shipOutInput: HTMLInputElement | null = null;
+
+    connectedCallback() {
+      this.form = this.querySelector<HTMLFormElement>('[data-comp-form]');
+      this.priceInput = this.querySelector<HTMLInputElement>('#comp-price');
+      this.shipInInput = this.querySelector<HTMLInputElement>('#comp-ship-in');
+      this.costInput = this.querySelector<HTMLInputElement>('#comp-cost');
+      this.shipOutInput = this.querySelector<HTMLInputElement>('#comp-ship-out');
+
+      this.bindEvents();
+    }
+
+    private bindEvents() {
+      const inputs = [this.priceInput, this.shipInInput, this.costInput, this.shipOutInput];
+      for (const input of inputs) {
+        if (input) {
+          input.addEventListener('input', () => this.updateAll());
+          input.addEventListener('change', () => this.updateAll());
+        }
+      }
+    }
+
+    private updateAll() {
+      const price = Math.max(0, parseFloat(this.priceInput?.value || '0') || 0);
+      const shippingCharged = Math.max(0, parseFloat(this.shipInInput?.value || '0') || 0);
+      const itemCost = Math.max(0, parseFloat(this.costInput?.value || '0') || 0);
+      const shippingCost = Math.max(0, parseFloat(this.shipOutInput?.value || '0') || 0);
+
+      const baseInput = {
+        price,
+        shippingCharged,
+        itemCost,
+        shippingCost,
+        quantity: 1,
+      };
+
+      const results = [
+        { id: 'depop', calc: calculateDepop(baseInput) },
+        { id: 'tiktok-shop', calc: calculateTikTokShop(baseInput) },
+        { id: 'etsy', calc: calculateEtsy(baseInput) },
+        { id: 'whatnot', calc: calculateWhatnot(baseInput) },
+        { id: 'ebay-us', calc: calculateEbayUs(baseInput) },
+      ];
+
+      // Identify highest payout platform
+      let bestId = results[0].id;
+      let maxProfit = results[0].calc.netProfit;
+      for (const item of results) {
+        if (item.calc.netProfit > maxProfit) {
+          maxProfit = item.calc.netProfit;
+          bestId = item.id;
+        }
+      }
+
+      // Update Cards
+      for (const item of results) {
+        const card = this.querySelector<HTMLElement>(`[data-platform-card="${item.id}"]`);
+        if (card) {
+          const isTop = item.id === bestId;
+          card.classList.toggle('border-primary', isTop);
+          card.classList.toggle('ring-2', isTop);
+          card.classList.toggle('ring-primary/20', isTop);
+          card.classList.toggle('bg-mint-50/20', isTop);
+          card.classList.toggle('border-hairline-strong', !isTop);
+
+          const existingBadge = card.querySelector('.highest-badge');
+          if (isTop) {
+            if (!existingBadge) {
+              const badge = document.createElement('div');
+              badge.className = 'highest-badge absolute -top-3 right-4 bg-primary text-on-primary text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm';
+              badge.textContent = 'Highest Payout';
+              card.appendChild(badge);
+            }
+          } else {
+            existingBadge?.remove();
+          }
+
+          const netEl = card.querySelector<HTMLElement>('[data-field="netProfit"]');
+          if (netEl) netEl.textContent = `$${item.calc.netProfit.toFixed(2)}`;
+
+          const feesEl = card.querySelector<HTMLElement>('[data-field="totalFees"]');
+          if (feesEl) feesEl.textContent = `-$${item.calc.totalFees.toFixed(2)}`;
+
+          const feeRateEl = card.querySelector<HTMLElement>('[data-field="feeRate"]');
+          if (feeRateEl) {
+            const rate = item.calc.grossRevenue > 0
+              ? ((item.calc.totalFees / item.calc.grossRevenue) * 100).toFixed(1)
+              : '0.0';
+            feeRateEl.textContent = `${rate}%`;
+          }
+
+          const marginEl = card.querySelector<HTMLElement>('[data-field="profitMargin"]');
+          if (marginEl) marginEl.textContent = `${item.calc.profitMargin.toFixed(1)}%`;
+
+          const beEl = card.querySelector<HTMLElement>('[data-field="breakEven"]');
+          if (beEl) beEl.textContent = `$${item.calc.breakEvenPrice.toFixed(2)}`;
+        }
+
+        // Update Tabular Rows
+        const row = this.querySelector<HTMLElement>(`[data-table-row="${item.id}"]`);
+        if (row) {
+          const grossEl = row.querySelector<HTMLElement>('[data-field="tableGross"]');
+          if (grossEl) grossEl.textContent = `$${item.calc.grossRevenue.toFixed(2)}`;
+
+          const feesEl = row.querySelector<HTMLElement>('[data-field="tableFees"]');
+          if (feesEl) feesEl.textContent = `-$${item.calc.totalFees.toFixed(2)}`;
+
+          const feeRateEl = row.querySelector<HTMLElement>('[data-field="tableFeeRate"]');
+          if (feeRateEl) {
+            const rate = item.calc.grossRevenue > 0
+              ? ((item.calc.totalFees / item.calc.grossRevenue) * 100).toFixed(1)
+              : '0.0';
+            feeRateEl.textContent = `${rate}%`;
+          }
+
+          const netEl = row.querySelector<HTMLElement>('[data-field="tableNet"]');
+          if (netEl) netEl.textContent = `$${item.calc.netProfit.toFixed(2)}`;
+
+          const marginEl = row.querySelector<HTMLElement>('[data-field="tableMargin"]');
+          if (marginEl) marginEl.textContent = `${item.calc.profitMargin.toFixed(1)}%`;
+
+          const beEl = row.querySelector<HTMLElement>('[data-field="tableBreakEven"]');
+          if (beEl) beEl.textContent = `$${item.calc.breakEvenPrice.toFixed(2)}`;
+        }
+      }
+    }
+  }
+
+  if (!customElements.get('marketplace-comparison')) {
+    customElements.define('marketplace-comparison', MarketplaceComparisonElement);
+  }
+</script>
