@@ -3,6 +3,7 @@ import type { CalcResult } from "../lib/calc";
 
 export interface Props {
   result: CalcResult;
+  platform?: string;
   platformName?: string;
   currencySymbol?: string;
   verifiedOn?: string;
@@ -12,12 +13,15 @@ export interface Props {
 
 const {
   result,
+  platform,
   platformName = "Marketplace",
   currencySymbol = "$",
   verifiedOn = "2026-11-22",
   sourceUrl = "https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot",
   class: className = "",
 } = Astro.props;
+
+const targetPlatform = platform || platformName.toLowerCase().replace(/\s+/g, "-");
 
 function formatMoney(amount: number, symbol: string): string {
   const formatted = Math.abs(amount).toLocaleString("en-US", {
@@ -404,6 +408,36 @@ const headlinePrefix = isProfitable ? "You keep" : "You lose";
     >
       Copied to clipboard!
     </div>
+  </div>
+
+  <!-- 6. User Feedback / Correction Link (Report Wrong Fee) -->
+  <div class="pt-3 border-t border-hairline flex flex-wrap items-center justify-between gap-2 text-caption text-muted">
+    <span class="inline-flex items-center gap-1.5">
+      <svg
+        class="w-3.5 h-3.5 text-muted shrink-0"
+        width="14"
+        height="14"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span>Notice an outdated rate or discrepancy?</span>
+    </span>
+    <a
+      href={`/report-fee/?platform=${encodeURIComponent(targetPlatform)}`}
+      class="inline-flex items-center gap-1 font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xs min-h-[36px] py-1 px-1.5"
+      data-report-fee-link
+      title={`Report a wrong or outdated fee for ${platformName}`}
+    >
+      <span>Report wrong fee</span>
+      <span aria-hidden="true">&rarr;</span>
+    </a>
   </div>
 </section>
 

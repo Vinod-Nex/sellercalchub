@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Report Fee Correction' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Report a Wrong Fee - Seller Calc Hub',
+  url: 'https://sellercalchub.com/report-fee/',
+  description:
+    'Report an outdated fee rate, category discrepancy, or marketplace policy update to the Seller Calc Hub editorial team.',
+};
+
+const turnstileSiteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITEKEY || '1x00000000000000000000AA';
+---
+
+<BaseLayout
+  title="Report a Wrong Fee or Policy Update - Seller Calc Hub"
+  description="Found an outdated rate or calculation discrepancy? Report it directly to our editorial team with official documentation so we can update it immediately."
+  canonicalPath="/report-fee/"
+  structuredData={structuredData}
+>
+  <div class="max-w-3xl mx-auto px-4 py-8 md:py-12 space-y-10">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Page Header -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Verified Rate Integrity · 100% Privacy</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Report an Outdated or Incorrect Fee
+      </h1>
+
+      <p class="text-body-lg text-body leading-relaxed">
+        We never invent or guess fee rates. Every number on Seller Calc Hub comes from official marketplace schedules and is audited regularly. If a platform introduced a new transaction fee, adjusted category percentages, or updated per-order fees, submit the correction below.
+      </p>
+    </header>
+
+    <!-- Submission Form Container -->
+    <div class="rounded-lg border border-hairline bg-canvas p-6 md:p-8 shadow-sm space-y-6">
+      <!-- Status Notice Banner -->
+      <div
+        id="form-status-banner"
+        role="status"
+        aria-live="polite"
+        class="hidden p-4 rounded-xs text-ui-sm font-semibold border transition-all"
+      ></div>
+
+      <form id="fee-report-form" class="space-y-6" novalidate>
+        <!-- Spam Honeypot Field (Invisible to real users) -->
+        <div class="hidden" aria-hidden="true">
+          <label for="hp-website">Leave this field blank</label>
+          <input
+            type="text"
+            id="hp-website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- 1. Platform Selector -->
+        <div class="space-y-2">
+          <label for="report-platform" class="block text-ui-label font-bold text-ink">
+            Marketplace Platform <span class="text-error" aria-hidden="true">*</span>
+          </label>
+          <select
+            id="report-platform"
+            name="platform"
+            required
+            class="w-full px-3.5 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong rounded-xs text-ink text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+          >
+            <option value="" disabled selected>Select a platform...</option>
+            <option value="ebay-us">eBay US</option>
+            <option value="ebay-uk">eBay UK</option>
+            <option value="etsy">Etsy</option>
+            <option value="whatnot">Whatnot</option>
+            <option value="tiktok-shop">TikTok Shop</option>
+            <option value="depop">Depop</option>
+            <option value="twitch-bits">Twitch Bits</option>
+            <option value="other">Other Marketplace</option>
+          </select>
+          <p class="text-caption text-muted">
+            Choose which calculator’s numbers you are correcting.
+          </p>
+        </div>
+
+        <!-- 2. Fee Type / Category -->
+        <div class="space-y-2">
+          <label for="report-fee-type" class="block text-ui-label font-bold text-ink">
+            Fee Category or Type <span class="text-error" aria-hidden="true">*</span>
+          </label>
+          <select
+            id="report-fee-type"
+            name="feeType"
+            required
+            class="w-full px-3.5 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong rounded-xs text-ink text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+          >
+            <option value="" disabled selected>Select fee category...</option>
+            <option value="Final Value / Referral Fee">Final Value / Referral Percentage</option>
+            <option value="Payment Processing Fee">Payment Processing Fee</option>
+            <option value="Fixed Per-Order Fee">Fixed Per-Order Fee (e.g. $0.30 or $0.40)</option>
+            <option value="Category Specific Rate">Category-Specific Commission Rate</option>
+            <option value="Store Subscription Rate">Store Subscription Tier Discount</option>
+            <option value="Promoted Listings / Ads Fee">Promoted Listings or Offsite Ads Fee</option>
+            <option value="Shipping Fee">Shipping Fee Commission</option>
+            <option value="Other Discrepancy">Other Discrepancy</option>
+          </select>
+        </div>
+
+        <!-- 3. Expected Rate / What Is Wrong -->
+        <div class="space-y-2">
+          <label for="report-expected-rate" class="block text-ui-label font-bold text-ink">
+            What is the Correct Official Rate? <span class="text-error" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="report-expected-rate"
+            name="expectedRate"
+            placeholder="e.g. 13.5% instead of 13.25%, or fixed fee is now $0.40"
+            maxlength="200"
+            required
+            class="w-full px-3.5 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong rounded-xs text-ink text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+          />
+          <p class="text-caption text-muted">
+            State the official rate and what differs from our current calculation.
+          </p>
+        </div>
+
+        <!-- 4. Official Source URL -->
+        <div class="space-y-2">
+          <label for="report-source-url" class="block text-ui-label font-bold text-ink">
+            Official Source URL <span class="text-caption text-muted font-normal">(Recommended)</span>
+          </label>
+          <input
+            type="url"
+            id="report-source-url"
+            name="sourceUrl"
+            placeholder="https://pages.ebay.com/... or official policy link"
+            maxlength="500"
+            class="w-full px-3.5 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong rounded-xs text-ink text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+          />
+          <p class="text-caption text-muted">
+            Direct link to the platform’s published fee schedule or official seller news announcement.
+          </p>
+        </div>
+
+        <!-- 5. Details / Notes -->
+        <div class="space-y-2">
+          <label for="report-details" class="block text-ui-label font-bold text-ink">
+            Correction Details &amp; Context <span class="text-error" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="report-details"
+            name="details"
+            rows="4"
+            minlength="10"
+            maxlength="2000"
+            required
+            placeholder="Describe the discrepancy, effective date, or category rules..."
+            class="w-full px-3.5 py-2.5 bg-canvas border border-hairline-strong rounded-xs text-ink text-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+          ></textarea>
+          <p class="text-caption text-muted">
+            Minimum 10 characters. Please do NOT include personal information, account credentials, or private order numbers.
+          </p>
+        </div>
+
+        <!-- 6. Cloudflare Turnstile Human Verification Widget -->
+        <div class="space-y-2 pt-2">
+          <span class="block text-ui-label font-bold text-ink">Human Verification</span>
+          <div
+            id="turnstile-container"
+            class="cf-turnstile"
+            data-sitekey={turnstileSiteKey}
+            data-theme="auto"
+          ></div>
+          <input type="hidden" id="turnstile-token" name="turnstileToken" value="" />
+          <p id="turnstile-error" class="text-caption text-error hidden">
+            Please complete the human verification checkbox before submitting.
+          </p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4 border-t border-hairline flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button
+            type="submit"
+            id="report-submit-btn"
+            class="w-full sm:w-auto px-6 py-3 min-h-[48px] bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <span id="submit-btn-text">Submit Fee Correction</span>
+            <svg
+              id="submit-spinner"
+              class="w-4 h-4 animate-spin hidden"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+          </button>
+
+          <span class="text-caption text-muted">
+            Zero personal data collected · Strictly confidential review
+          </span>
+        </div>
+      </form>
+
+      <!-- Post-Submission Success State -->
+      <div id="form-success-container" class="hidden space-y-4 text-center py-8">
+        <div class="w-12 h-12 mx-auto rounded-full bg-mint-50 dark:bg-mint-200/10 text-primary flex items-center justify-center">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+        <h2 class="text-heading-2 font-bold text-ink">Thank You for Your Report</h2>
+        <p class="text-body text-body max-w-md mx-auto">
+          Your fee correction report has been received and queued for editorial verification against the marketplace’s official published fee schedule.
+        </p>
+        <p id="success-report-id" class="text-caption font-mono text-muted"></p>
+        <div class="pt-4 flex flex-wrap justify-center gap-3">
+          <a
+            href="/marketplace-fee-calculators/"
+            class="px-4 py-2 min-h-[44px] inline-flex items-center justify-center bg-forest text-white font-bold text-ui-label rounded-xs hover:bg-primary-deep transition-colors"
+          >
+            Return to All Calculators
+          </a>
+          <button
+            type="button"
+            id="reset-form-btn"
+            class="px-4 py-2 min-h-[44px] inline-flex items-center justify-center bg-canvas border border-hairline-strong text-ink font-bold text-ui-label rounded-xs hover:border-primary transition-colors cursor-pointer"
+          >
+            Submit Another Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fee Disclaimer -->
+    <FeeDisclaimer />
+  </div>
+
+  <!-- Cloudflare Turnstile API Script -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</BaseLayout>
+
+<script>
+  function initFeeReportPage() {
+    const form = document.getElementById('fee-report-form') as HTMLFormElement | null;
+    const banner = document.getElementById('form-status-banner');
+    const submitBtn = document.getElementById('report-submit-btn') as HTMLButtonElement | null;
+    const btnText = document.getElementById('submit-btn-text');
+    const spinner = document.getElementById('submit-spinner');
+    const successContainer = document.getElementById('form-success-container');
+    const reportIdEl = document.getElementById('success-report-id');
+    const resetBtn = document.getElementById('reset-form-btn');
+    const turnstileTokenInput = document.getElementById('turnstile-token') as HTMLInputElement | null;
+    const turnstileError = document.getElementById('turnstile-error');
+
+    // 1. Auto-select platform from URL query parameter ?platform=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const prefillPlatform = urlParams.get('platform');
+    if (prefillPlatform) {
+      const selectEl = document.getElementById('report-platform') as HTMLSelectElement | null;
+      if (selectEl) {
+        const option = Array.from(selectEl.options).find(
+          (opt) => opt.value === prefillPlatform
+        );
+        if (option) {
+          selectEl.value = option.value;
+        }
+      }
+    }
+
+    // 2. Global Turnstile callback handler
+    (window as unknown as { onTurnstileSuccess?: (token: string) => void }).onTurnstileSuccess = (token: string) => {
+      if (turnstileTokenInput) turnstileTokenInput.value = token;
+      if (turnstileError) turnstileError.classList.add('hidden');
+    };
+
+    function showBanner(message: string, isError: boolean) {
+      if (!banner) return;
+      banner.textContent = message;
+      banner.classList.remove('hidden', 'bg-error/10', 'text-error', 'border-error/20', 'bg-mint-50', 'text-primary', 'border-mint-200');
+      if (isError) {
+        banner.classList.add('bg-error/10', 'text-error', 'border-error/20');
+      } else {
+        banner.classList.add('bg-mint-50', 'text-primary', 'border-mint-200');
+      }
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form) return;
+
+      // Extract form values
+      const formData = new FormData(form);
+      const honeypot = (formData.get('website') as string) || '';
+      const platform = (formData.get('platform') as string) || '';
+      const feeType = (formData.get('feeType') as string) || '';
+      const expectedRate = (formData.get('expectedRate') as string) || '';
+      const sourceUrl = (formData.get('sourceUrl') as string) || '';
+      const details = (formData.get('details') as string) || '';
+
+      // Get Turnstile token from hidden input or form
+      const cfToken =
+        (formData.get('cf-turnstile-response') as string) ||
+        (turnstileTokenInput ? turnstileTokenInput.value : '') ||
+        'TEST_TURNSTILE_PASS_TOKEN'; // Fallback token for local environments
+
+      // Basic client-side checks
+      if (!platform) {
+        showBanner('Please select a platform.', true);
+        return;
+      }
+      if (!feeType) {
+        showBanner('Please select a fee category.', true);
+        return;
+      }
+      if (!expectedRate.trim()) {
+        showBanner('Please state the correct official rate or fee discrepancy.', true);
+        return;
+      }
+      if (details.trim().length < 10) {
+        showBanner('Please provide at least 10 characters in the details field.', true);
+        return;
+      }
+
+      // UI Loading state
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnText) btnText.textContent = 'Submitting report...';
+      if (spinner) spinner.classList.remove('hidden');
+
+      try {
+        const response = await fetch('/api/report-fee', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            platform,
+            feeType,
+            expectedRate,
+            sourceUrl: sourceUrl.trim() || undefined,
+            details,
+            turnstileToken: cfToken,
+            honeypot,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          form.classList.add('hidden');
+          if (banner) banner.classList.add('hidden');
+          if (successContainer) successContainer.classList.remove('hidden');
+          if (reportIdEl && data.reportId) {
+            reportIdEl.textContent = `Report Reference: ${data.reportId}`;
+          }
+        } else {
+          showBanner(data.error || 'Submission failed. Please check the fields and try again.', true);
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        showBanner('A network error occurred. Please try again or contact us directly.', true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Submit Fee Correction';
+        if (spinner) spinner.classList.add('hidden');
+      }
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      form?.reset();
+      form?.classList.remove('hidden');
+      if (successContainer) successContainer.classList.add('hidden');
+      if (banner) banner.classList.add('hidden');
+    });
+  }
+
+  initFeeReportPage();
+  document.addEventListener('astro:page-load', initFeeReportPage);
+</script>

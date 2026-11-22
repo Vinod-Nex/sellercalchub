@@ -442,6 +442,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       <div class="lg:col-span-6" aria-live="polite" data-results-container>
         <ResultsPanel
           result={serverResult}
+          platform={platform}
           platformName={config.name}
           currencySymbol={currencySymbol}
           verifiedOn={config.verifiedOn}
