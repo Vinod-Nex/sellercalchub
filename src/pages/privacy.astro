@@ -1,20 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Privacy Policy' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Privacy Policy - Seller Calc Hub',
-  url: 'https://sellercalchub.com/privacy/',
-  description:
-    'Seller Calc Hub Privacy Policy: zero selling of user data, client-side calculations, and no third-party tracking cookies.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Privacy Policy - Seller Calc Hub',
+    url: 'https://sellercalchub.com/privacy/',
+    description:
+      'Seller Calc Hub Privacy Policy: zero selling of user data, client-side calculations, and no third-party tracking cookies.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/privacy/'),
+];
 ---
 
 <BaseLayout

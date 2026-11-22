@@ -2,20 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Terms of Service' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Terms of Service & Fee Disclaimer - Seller Calc Hub',
-  url: 'https://sellercalchub.com/terms/',
-  description:
-    'Terms of Service and official Fee Disclaimer for Seller Calc Hub: fee estimates only, non-affiliation, and limitation of liability.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Terms of Service & Fee Disclaimer - Seller Calc Hub',
+    url: 'https://sellercalchub.com/terms/',
+    description:
+      'Terms of Service and official Fee Disclaimer for Seller Calc Hub: fee estimates only, non-affiliation, and limitation of liability.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/terms/'),
+];
 ---
 
 <BaseLayout

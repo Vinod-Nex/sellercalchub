@@ -13,8 +13,15 @@ import LastVerified from "../components/LastVerified.astro";
 import { formatFeeSummary } from "../lib/calc/fee-data";
 import { EBAY_US_CATEGORIES } from "../lib/calc/ebay-us";
 import { getPageSeo } from "../lib/seo";
+import { buildCalculatorStructuredData } from "../lib/schema";
 
 const seo = getPageSeo("/ebay-fee-calculator/");
+
+const breadcrumbs = [
+  { name: "Home", href: "/" },
+  { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+  { name: "eBay Fee Calculator" },
+];
 
 // Load verified eBay US fee summary
 const feeSummary = formatFeeSummary("ebay-us");
@@ -54,41 +61,15 @@ const faqs = [
   },
 ];
 
-// Structured Data: WebPage, SoftwareApplication, and FAQPage schemas
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "eBay Fee & Profit Calculator (US)",
-    url: "https://sellercalchub.com/ebay-fee-calculator/",
-    description:
-      "Free, verified eBay fee and profit calculator. Calculate final value fees, category rates, store discounts, per-order fees, promoted listings, and net seller payout.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "eBay Seller Fee Calculator",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "All",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  },
-];
+// Structured Data: WebApplication, BreadcrumbList, and FAQPage schemas
+const structuredData = buildCalculatorStructuredData({
+  name: seo.h1,
+  url: "/ebay-fee-calculator/",
+  description: seo.metaDescription,
+  currency: "USD",
+  breadcrumbs,
+  faqs,
+});
 ---
 
 <BaseLayout
@@ -99,13 +80,7 @@ const structuredData = [
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
     <!-- Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: "Home", href: "/" },
-        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
-        { name: "eBay Fee Calculator" },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Header & 1-Paragraph Direct Answer -->
     <header class="space-y-4">

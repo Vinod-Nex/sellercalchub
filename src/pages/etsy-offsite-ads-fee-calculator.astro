@@ -11,8 +11,16 @@ import RelatedCalculators from "../components/RelatedCalculators.astro";
 import LastVerified from "../components/LastVerified.astro";
 import AuthorByline from "../components/AuthorByline.astro";
 import { getPageSeo } from "../lib/seo";
+import { buildCalculatorStructuredData } from "../lib/schema";
 
 const seo = getPageSeo("/etsy-offsite-ads-fee-calculator/");
+
+const breadcrumbs = [
+  { name: "Home", href: "/" },
+  { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+  { name: "Etsy Fee Calculator", href: "/etsy-fee-calculator/" },
+  { name: "Offsite Ads Calculator" },
+];
 
 // Focused FAQ definitions for Offsite Ads
 const faqs = [
@@ -44,39 +52,14 @@ const faqs = [
 ];
 
 // Structured Data
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Etsy Offsite Ads Fee Calculator",
-    url: "https://sellercalchub.com/etsy-offsite-ads-fee-calculator/",
-    description: seo.metaDescription,
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Etsy Offsite Ads Calculator",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "All",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  },
-];
+const structuredData = buildCalculatorStructuredData({
+  name: seo.h1,
+  url: "/etsy-offsite-ads-fee-calculator/",
+  description: seo.metaDescription,
+  currency: "USD",
+  breadcrumbs,
+  faqs,
+});
 ---
 
 <BaseLayout
@@ -87,14 +70,7 @@ const structuredData = [
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
     <!-- 1. Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: "Home", href: "/" },
-        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
-        { name: "Etsy Fee Calculator", href: "/etsy-fee-calculator/" },
-        { name: "Offsite Ads Calculator" },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Header & Direct Answer in First Paragraph -->
     <header class="space-y-4">

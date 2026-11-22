@@ -2,20 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Analytics & Events Dashboard' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Cloudflare Web Analytics & Custom Events Dashboard - Seller Calc Hub',
-  url: 'https://sellercalchub.com/analytics-dashboard/',
-  description:
-    'Live test session dashboard for Cloudflare Web Analytics and privacy-preserving custom events: calculator_used, mode_changed, result_copied, share_link_copied, fee_report_clicked.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Cloudflare Web Analytics & Custom Events Dashboard - Seller Calc Hub',
+    url: 'https://sellercalchub.com/analytics-dashboard/',
+    description:
+      'Live test session dashboard for Cloudflare Web Analytics and privacy-preserving custom events: calculator_used, mode_changed, result_copied, share_link_copied, fee_report_clicked.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/analytics-dashboard/'),
+];
 ---
 
 <BaseLayout

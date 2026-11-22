@@ -11,8 +11,16 @@ import RelatedCalculators from "../components/RelatedCalculators.astro";
 import LastVerified from "../components/LastVerified.astro";
 import AuthorByline from "../components/AuthorByline.astro";
 import { getPageSeo } from "../lib/seo";
+import { buildCalculatorStructuredData } from "../lib/schema";
 
 const seo = getPageSeo("/ebay-profit-calculator/");
+
+const breadcrumbs = [
+  { name: "Home", href: "/" },
+  { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+  { name: "eBay Fee Calculator", href: "/ebay-fee-calculator/" },
+  { name: "Profit Calculator" },
+];
 
 // FAQ definitions
 const faqs = [
@@ -44,39 +52,14 @@ const faqs = [
 ];
 
 // Structured Data
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "eBay Profit & Margin Calculator",
-    url: "https://sellercalchub.com/ebay-profit-calculator/",
-    description: seo.metaDescription,
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "eBay Profit Calculator",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "All",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  },
-];
+const structuredData = buildCalculatorStructuredData({
+  name: seo.h1,
+  url: "/ebay-profit-calculator/",
+  description: seo.metaDescription,
+  currency: "USD",
+  breadcrumbs,
+  faqs,
+});
 ---
 
 <BaseLayout
@@ -87,14 +70,7 @@ const structuredData = [
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
     <!-- 1. Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: "Home", href: "/" },
-        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
-        { name: "eBay Fee Calculator", href: "/ebay-fee-calculator/" },
-        { name: "Profit Calculator" },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Header & Direct Answer in First Paragraph -->
     <header class="space-y-4">

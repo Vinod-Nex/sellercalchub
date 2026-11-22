@@ -2,20 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'About Seller Calc Hub' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'AboutPage',
-  name: 'About Seller Calc Hub',
-  url: 'https://sellercalchub.com/about/',
-  description:
-    'Learn about Seller Calc Hub: our mission to provide fast, free, transparent, and verified marketplace fee and profit calculators for online resellers.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About Seller Calc Hub',
+    url: 'https://sellercalchub.com/about/',
+    description:
+      'Learn about Seller Calc Hub: our mission to provide fast, free, transparent, and verified marketplace fee and profit calculators for online resellers.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/about/'),
+];
 ---
 
 <BaseLayout

@@ -10,8 +10,15 @@ import RelatedCalculators from "../components/RelatedCalculators.astro";
 import LastVerified from "../components/LastVerified.astro";
 import AuthorByline from "../components/AuthorByline.astro";
 import { getPageSeo } from "../lib/seo";
+import { buildCalculatorStructuredData } from "../lib/schema";
 
 const seo = getPageSeo("/twitch-bits-to-usd/");
+
+const breadcrumbs = [
+  { name: "Home", href: "/" },
+  { name: "All Calculators", href: "/marketplace-fee-calculators/" },
+  { name: "Twitch Bits to USD" },
+];
 
 // Standard Twitch Bits Bundle Table Data
 const commonAmounts = [
@@ -112,40 +119,15 @@ const faqs = [
 ];
 
 // Schema.org Structured Data
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Twitch Bits to USD Converter & Calculator",
-    url: "https://sellercalchub.com/twitch-bits-to-usd/",
-    description:
-      "Fast, verified Twitch Bits to USD converter. Calculate what streamers receive ($0.01/bit) and what viewers pay across all official web bundle tiers.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Twitch Bits to USD Converter",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  },
-];
+const structuredData = buildCalculatorStructuredData({
+  name: seo.h1,
+  url: "/twitch-bits-to-usd/",
+  description: seo.metaDescription,
+  currency: "USD",
+  applicationCategory: "UtilityApplication",
+  breadcrumbs,
+  faqs,
+});
 ---
 
 <BaseLayout
@@ -156,13 +138,7 @@ const structuredData = [
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
     <!-- Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: "Home", href: "/" },
-        { name: "All Calculators", href: "/marketplace-fee-calculators/" },
-        { name: "Twitch Bits to USD" },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Header & Direct Answer in the First Paragraph -->
     <header class="space-y-4">

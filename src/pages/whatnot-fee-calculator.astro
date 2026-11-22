@@ -11,8 +11,15 @@ import FAQ from '../components/FAQ.astro';
 import RelatedCalculators from '../components/RelatedCalculators.astro';
 import LastVerified from '../components/LastVerified.astro';
 import { getPageSeo } from '../lib/seo';
+import { buildCalculatorStructuredData } from '../lib/schema';
 
 const seo = getPageSeo('/whatnot-fee-calculator/');
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
+  { name: 'Whatnot Fee Calculator' },
+];
 
 // FAQ definitions
 const faqs = [
@@ -43,40 +50,15 @@ const faqs = [
   },
 ];
 
-// Structured Data: WebPage, SoftwareApplication, and FAQPage schemas
-const structuredData = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'Whatnot Fee & Profit Calculator',
-    url: 'https://sellercalchub.com/whatnot-fee-calculator/',
-    description: seo.metaDescription,
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Whatnot Seller Fee Calculator',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'All',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  },
-];
+// Structured Data: WebApplication, BreadcrumbList, and FAQPage schemas
+const structuredData = buildCalculatorStructuredData({
+  name: seo.h1,
+  url: '/whatnot-fee-calculator/',
+  description: seo.metaDescription,
+  currency: 'USD',
+  breadcrumbs,
+  faqs,
+});
 ---
 
 <BaseLayout
@@ -87,13 +69,7 @@ const structuredData = [
 >
   <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
     <!-- 1. Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: 'Home', href: '/' },
-        { name: 'All Calculators', href: '/marketplace-fee-calculators/' },
-        { name: 'Whatnot Fee Calculator' },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Header & 1-Paragraph Direct Answer -->
     <header class="space-y-4">

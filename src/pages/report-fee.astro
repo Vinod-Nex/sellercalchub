@@ -2,20 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Report Fee Correction' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ContactPage',
-  name: 'Report a Wrong Fee - Seller Calc Hub',
-  url: 'https://sellercalchub.com/report-fee/',
-  description:
-    'Report an outdated fee rate, category discrepancy, or marketplace policy update to the Seller Calc Hub editorial team.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Report a Wrong Fee - Seller Calc Hub',
+    url: 'https://sellercalchub.com/report-fee/',
+    description:
+      'Report an outdated fee rate, category discrepancy, or marketplace policy update to the Seller Calc Hub editorial team.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/report-fee/'),
+];
 
 const turnstileSiteKey =
   import.meta.env.PUBLIC_TURNSTILE_SITEKEY || '1x00000000000000000000AA';

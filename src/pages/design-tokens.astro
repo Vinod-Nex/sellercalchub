@@ -1,6 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Design Tokens' },
+];
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Design Tokens Verification - Seller Calc Hub',
+    url: 'https://sellercalchub.com/design-tokens/',
+    description:
+      'Verification and reference showcase for all Seller Calc Hub design tokens from DESIGN.md in Light and Dark mode.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/design-tokens/'),
+];
 
 const colors = [
   { group: 'Brand & Accent', tokens: [
@@ -84,15 +102,11 @@ const radii = [
   title="Design Tokens Verification - Seller Calc Hub"
   description="Verification and reference showcase for all Seller Calc Hub design tokens from DESIGN.md in Light and Dark mode."
   canonicalPath="/design-tokens/"
+  structuredData={structuredData}
 >
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-12">
     <!-- Visible Semantic Breadcrumbs -->
-    <Breadcrumbs
-      items={[
-        { name: 'Home', href: '/' },
-        { name: 'Design Tokens' },
-      ]}
-    />
+    <Breadcrumbs items={breadcrumbs} />
 
     <!-- Hero Band Component from DESIGN.md -->
     <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-6 md:p-10 shadow-level-3">

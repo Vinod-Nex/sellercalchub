@@ -1,20 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Contact & Corrections' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ContactPage',
-  name: 'Contact Seller Calc Hub',
-  url: 'https://sellercalchub.com/contact/',
-  description:
-    'Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contact Seller Calc Hub',
+    url: 'https://sellercalchub.com/contact/',
+    description:
+      'Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/contact/'),
+];
 ---
 
 <BaseLayout

@@ -1,20 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Calculation Disclaimer' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Seller Calc Hub Fee Calculation & Estimates Disclaimer',
-  url: 'https://sellercalchub.com/disclaimer/',
-  description:
-    'Official fee calculation and estimates disclaimer for Seller Calc Hub: rate verification, tax nuances, and independent marketplace policies.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Seller Calc Hub Fee Calculation & Estimates Disclaimer',
+    url: 'https://sellercalchub.com/disclaimer/',
+    description:
+      'Official fee calculation and estimates disclaimer for Seller Calc Hub: rate verification, tax nuances, and independent marketplace policies.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/disclaimer/'),
+];
 
 const supportedMarketplaces = [
   { name: 'Whatnot Fee Calculator', href: '/whatnot-fee-calculator/' },

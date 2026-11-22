@@ -1,34 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import MarketplaceComparison from "../components/MarketplaceComparison.astro";
+import {
+  buildOrganizationSchema,
+  buildWebSiteSchema,
+  buildWebApplicationSchema,
+} from "../lib/schema";
 
 // Structured Data
 const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Seller Calc Hub",
-    url: "https://sellercalchub.com/",
+  buildOrganizationSchema(),
+  buildWebSiteSchema(),
+  buildWebApplicationSchema({
+    name: "Seller Calc Hub Marketplace Fee & Profit Calculator",
+    url: "/",
     description:
       "Free, fast marketplace fee and profit calculators for online resellers across Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://sellercalchub.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Seller Calc Hub Marketplace Fee & Profit Calculator",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "All",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  },
+    currency: "USD",
+  }),
 ];
 
 // All platform calculators organized by category

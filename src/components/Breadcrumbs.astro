@@ -1,8 +1,6 @@
 ---
-export interface BreadcrumbItem {
-  name: string;
-  href?: string;
-}
+import type { BreadcrumbItem } from '../lib/schema';
+export type { BreadcrumbItem };
 
 interface Props {
   items: BreadcrumbItem[];
@@ -10,27 +8,7 @@ interface Props {
 }
 
 const { items, class: className = '' } = Astro.props;
-
-// Build Schema.org BreadcrumbList structured data
-const siteUrl = Astro.site ? Astro.site.toString() : 'https://sellercalchub.com/';
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: items.map((item, index) => {
-    const itemUrl = item.href ? new URL(item.href, siteUrl).toString() : undefined;
-    return {
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      ...(itemUrl ? { item: itemUrl } : {}),
-    };
-  }),
-};
 ---
-
-<!-- JSON-LD Structured Data for Search Engines -->
-<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 
 <!-- Visible Semantic HTML Breadcrumbs (WCAG AA compliant) -->
 <nav aria-label="Breadcrumb" class={`py-2 text-caption ${className}`}>

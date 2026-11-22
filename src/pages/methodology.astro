@@ -4,20 +4,24 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SourceLink from '../components/SourceLink.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
 import { ALL_PLATFORM_FEES, formatVerifiedDate, formatFeeSummary } from '../lib/calc/fee-data';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
   { name: 'Home', href: '/' },
   { name: 'Fee Verification Methodology' },
 ];
 
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Marketplace Fee Verification Methodology & Primary Sources',
-  url: 'https://sellercalchub.com/methodology/',
-  description:
-    'Our exact verify-and-date methodology: how Seller Calc Hub audits, calculates, and verifies seller fee rates across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch.',
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Marketplace Fee Verification Methodology & Primary Sources',
+    url: 'https://sellercalchub.com/methodology/',
+    description:
+      'Our exact verify-and-date methodology: how Seller Calc Hub audits, calculates, and verifies seller fee rates across eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch.',
+  },
+  buildBreadcrumbSchema(breadcrumbs, '/methodology/'),
+];
 
 const platformsList = [
   {
