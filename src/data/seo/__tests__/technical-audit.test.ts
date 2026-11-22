@@ -35,7 +35,7 @@ describe('Phase 38: Technical SEO Audit & Critical Check', () => {
     const allFiles = findHtmlFiles(DIST_DIR);
     const contentFiles = allFiles.filter((f) => {
       const content = fs.readFileSync(f, 'utf-8');
-      return !content.includes('<meta http-equiv="refresh"');
+      return !content.includes('<meta http-equiv="refresh"') && !f.includes('/embed/');
     });
 
     const criticalViolations: string[] = [];

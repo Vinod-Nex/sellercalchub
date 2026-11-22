@@ -137,9 +137,9 @@ describe('Phase 37: Self-Referencing Canonicals & Robots Directives', () => {
   it('every indexable page has a self-referencing canonical URL', () => {
     const allFiles = findHtmlFiles(DIST_DIR);
 
-    // Filter out redirect stubs and 404 page
+    // Filter out redirect stubs, 404 page, and standalone iframe widgets
     const indexableFiles = allFiles.filter((f) => {
-      if (f.endsWith('404.html') || f.includes('/404/')) return false;
+      if (f.endsWith('404.html') || f.includes('/404/') || f.includes('/embed/')) return false;
       const content = fs.readFileSync(f, 'utf-8');
       return !content.includes('<meta http-equiv="refresh"');
     });
