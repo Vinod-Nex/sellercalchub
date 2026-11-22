@@ -282,3 +282,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Prevent flash of default values when restoring state from URL query parameters (Phase 12) */
+html.calc-restoring seller-calculator:not([data-initialized]) {
+  visibility: hidden;
+}

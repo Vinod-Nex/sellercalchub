@@ -258,12 +258,12 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
     </a>
   </div>
 
-  <!-- 5. Actions: Copy-Result Button & Status Feedback -->
+  <!-- 5. Actions: Copy-Result Button, Share-Link Button & Status Feedback -->
   <div class="flex flex-col sm:flex-row items-center gap-3">
     <button
       type="button"
       data-copy-result-btn
-      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       <svg class="w-4 h-4 text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-copy-icon>
         <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
@@ -271,6 +271,19 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
       </svg>
       <span data-copy-btn-text>Copy Breakdown</span>
     </button>
+
+    <button
+      type="button"
+      data-share-link-btn
+      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    >
+      <svg class="w-4 h-4 text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-share-icon>
+        <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z" />
+        <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z" />
+      </svg>
+      <span data-share-btn-text>Share Link</span>
+    </button>
+
     <div
       role="status"
       aria-live="polite"
@@ -283,8 +296,9 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
 </section>
 
 <script>
-  function initCopyButtons() {
+  function initActionButtons() {
     const copyBtns = document.querySelectorAll<HTMLButtonElement>('button[data-copy-result-btn]');
+    const shareBtns = document.querySelectorAll<HTMLButtonElement>('button[data-share-link-btn]');
 
     copyBtns.forEach((btn) => {
       if (btn.dataset.initialized === 'true') return;
@@ -323,7 +337,10 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
           const statusEl = panel.querySelector<HTMLElement>('[data-copy-status]');
 
           if (btnText) btnText.textContent = '✓ Copied!';
-          if (statusEl) statusEl.classList.remove('invisible');
+          if (statusEl) {
+            statusEl.textContent = 'Breakdown copied to clipboard!';
+            statusEl.classList.remove('invisible');
+          }
           btn.classList.add('bg-mint-50', 'border-primary');
 
           setTimeout(() => {
@@ -336,8 +353,42 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
         }
       });
     });
+
+    shareBtns.forEach((btn) => {
+      if (btn.dataset.initialized === 'true') return;
+      btn.dataset.initialized = 'true';
+
+      btn.addEventListener('click', async () => {
+        const panel = btn.closest<HTMLElement>('[data-results-panel]');
+        if (!panel) return;
+
+        const urlToCopy = window.location.href;
+
+        try {
+          await navigator.clipboard.writeText(urlToCopy);
+
+          const btnText = btn.querySelector('[data-share-btn-text]');
+          const statusEl = panel.querySelector<HTMLElement>('[data-copy-status]');
+
+          if (btnText) btnText.textContent = '✓ Copied!';
+          if (statusEl) {
+            statusEl.textContent = 'Shareable link copied to clipboard!';
+            statusEl.classList.remove('invisible');
+          }
+          btn.classList.add('bg-mint-50', 'border-primary');
+
+          setTimeout(() => {
+            if (btnText) btnText.textContent = 'Share Link';
+            if (statusEl) statusEl.classList.add('invisible');
+            btn.classList.remove('bg-mint-50', 'border-primary');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy link to clipboard:', err);
+        }
+      });
+    });
   }
 
-  initCopyButtons();
-  document.addEventListener('astro:page-load', initCopyButtons);
+  initActionButtons();
+  document.addEventListener('astro:page-load', initActionButtons);
 </script>

@@ -418,9 +418,12 @@ const platformList: { id: PlatformId; label: string }[] = [
     runCalculator,
     calculateReverse,
     PLATFORM_CONFIGS,
+    parseUrlState,
+    buildUrlQuery,
     type PlatformId,
     type CalcResult,
     type ReverseTargetType,
+    type CalculatorUrlState,
   } from '../lib/calc';
 
   class SellerCalculator extends HTMLElement {
@@ -443,6 +446,8 @@ const platformList: { id: PlatformId; label: string }[] = [
     private profitBadge: HTMLElement | null = null;
     private platformDisplayName: HTMLElement | null = null;
 
+    private urlSyncTimeout: ReturnType<typeof setTimeout> | null = null;
+
     connectedCallback() {
       this.currentPlatform = (this.dataset.platform as PlatformId) || 'whatnot';
       const config = PLATFORM_CONFIGS[this.currentPlatform] ?? PLATFORM_CONFIGS.whatnot;
@@ -463,12 +468,28 @@ const platformList: { id: PlatformId; label: string }[] = [
       this.platformDisplayName = this.querySelector('[data-platform-display-name]');
 
       this.initEvents();
+
+      // Restore state from URL query parameters without flash of default values
+      try {
+        if (typeof window !== 'undefined' && window.location.search && window.location.search.length > 1) {
+          const urlState = parseUrlState(window.location.search);
+          this.applyUrlState(urlState);
+          this.calculate(false);
+        }
+      } catch (err) {
+        console.error('Error restoring URL state:', err);
+      } finally {
+        this.setAttribute('data-initialized', 'true');
+        if (typeof document !== 'undefined') {
+          document.documentElement.classList.remove('calc-restoring');
+        }
+      }
     }
 
     private initEvents() {
       // Input & change events on form inputs
-      this.form?.addEventListener('input', () => this.calculate());
-      this.form?.addEventListener('change', () => this.calculate());
+      this.form?.addEventListener('input', () => this.calculate(true));
+      this.form?.addEventListener('change', () => this.calculate(true));
 
       // Reset button
       const resetBtn = this.querySelector('[data-reset-btn]');
@@ -480,7 +501,7 @@ const platformList: { id: PlatformId; label: string }[] = [
         tab.addEventListener('click', () => {
           const newPlatform = tab.dataset.platformTab as PlatformId;
           if (newPlatform && PLATFORM_CONFIGS[newPlatform]) {
-            this.switchPlatform(newPlatform);
+            this.switchPlatform(newPlatform, true);
           }
         });
       });
@@ -491,7 +512,7 @@ const platformList: { id: PlatformId; label: string }[] = [
         btn.addEventListener('click', () => {
           const mode = btn.dataset.modeBtn as 'forward' | 'reverse';
           if (mode && mode !== this.currentMode) {
-            this.switchMode(mode);
+            this.switchMode(mode, true);
           }
         });
       });
@@ -500,12 +521,12 @@ const platformList: { id: PlatformId; label: string }[] = [
       const targetTypeRadios = this.querySelectorAll<HTMLInputElement>('input[name="reverseTargetType"]');
       targetTypeRadios.forEach((radio) => {
         radio.addEventListener('change', () => {
-          this.switchTargetType(radio.value as ReverseTargetType);
+          this.switchTargetType(radio.value as ReverseTargetType, true);
         });
       });
     }
 
-    private switchMode(mode: 'forward' | 'reverse') {
+    private switchMode(mode: 'forward' | 'reverse', shouldSyncUrl = true) {
       this.currentMode = mode;
 
       const modeBtns = this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]');
@@ -527,10 +548,10 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (forwardPanel) forwardPanel.classList.toggle('hidden', mode !== 'forward');
       if (reversePanel) reversePanel.classList.toggle('hidden', mode !== 'reverse');
 
-      this.calculate();
+      this.calculate(shouldSyncUrl);
     }
 
-    private switchTargetType(type: ReverseTargetType) {
+    private switchTargetType(type: ReverseTargetType, shouldSyncUrl = true) {
       this.currentReverseTargetType = type;
 
       const profitLabel = this.querySelector<HTMLElement>('[data-target-type-label="profit"]');
@@ -562,10 +583,10 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (profitInputContainer) profitInputContainer.classList.toggle('hidden', type !== 'profit');
       if (marginInputContainer) marginInputContainer.classList.toggle('hidden', type !== 'margin');
 
-      this.calculate();
+      this.calculate(shouldSyncUrl);
     }
 
-    private switchPlatform(newPlatform: PlatformId) {
+    private switchPlatform(newPlatform: PlatformId, shouldSyncUrl = true) {
       this.currentPlatform = newPlatform;
       const config = PLATFORM_CONFIGS[newPlatform];
       this.currentCurrency = config.defaultCurrency;
@@ -646,7 +667,189 @@ const platformList: { id: PlatformId; label: string }[] = [
         priceInput.value = config.defaultPrice.toFixed(isTwitch ? 0 : 2);
       }
 
-      this.calculate();
+      this.calculate(shouldSyncUrl);
+    }
+
+    private applyUrlState(urlState: CalculatorUrlState) {
+      // 1. Switch platform if specified
+      if (urlState.platform && urlState.platform !== this.currentPlatform && PLATFORM_CONFIGS[urlState.platform]) {
+        this.switchPlatform(urlState.platform, false);
+      }
+
+      // 2. Switch mode if specified
+      if (urlState.mode && urlState.mode !== this.currentMode) {
+        this.switchMode(urlState.mode, false);
+      }
+
+      // 3. Switch reverse target type if specified
+      if (urlState.reverseTargetType && urlState.reverseTargetType !== this.currentReverseTargetType) {
+        this.switchTargetType(urlState.reverseTargetType, false);
+      }
+
+      const isTwitch = this.currentPlatform === 'twitch-bits';
+
+      // 4. Populate forward inputs
+      if (typeof urlState.price === 'number') {
+        const priceInput = this.querySelector<HTMLInputElement>('#calc-price');
+        if (priceInput) priceInput.value = isTwitch ? Math.round(urlState.price).toString() : urlState.price.toFixed(2);
+      }
+      if (typeof urlState.quantity === 'number') {
+        const qtyInput = this.querySelector<HTMLInputElement>('#calc-quantity');
+        if (qtyInput) qtyInput.value = urlState.quantity.toString();
+      }
+
+      // 5. Populate reverse inputs
+      if (typeof urlState.targetProfit === 'number') {
+        const targetProfitInput = this.querySelector<HTMLInputElement>('#calc-target-profit');
+        if (targetProfitInput) targetProfitInput.value = urlState.targetProfit.toFixed(2);
+      }
+      if (typeof urlState.targetMargin === 'number') {
+        const targetMarginInput = this.querySelector<HTMLInputElement>('#calc-target-margin');
+        if (targetMarginInput) targetMarginInput.value = urlState.targetMargin.toFixed(1);
+      }
+      if (typeof urlState.reverseQuantity === 'number') {
+        const revQtyInput = this.querySelector<HTMLInputElement>('#calc-reverse-quantity');
+        if (revQtyInput) revQtyInput.value = urlState.reverseQuantity.toString();
+      }
+
+      // 6. Populate costs
+      if (typeof urlState.shippingCharged === 'number') {
+        const shipChargedInput = this.querySelector<HTMLInputElement>('#calc-shipping-charged');
+        if (shipChargedInput) shipChargedInput.value = urlState.shippingCharged.toFixed(2);
+      }
+      if (typeof urlState.shippingCost === 'number') {
+        const shipCostInput = this.querySelector<HTMLInputElement>('#calc-shipping-cost');
+        if (shipCostInput) shipCostInput.value = urlState.shippingCost.toFixed(2);
+      }
+      if (typeof urlState.itemCost === 'number') {
+        const itemCostInput = this.querySelector<HTMLInputElement>('#calc-item-cost');
+        if (itemCostInput) itemCostInput.value = urlState.itemCost.toFixed(2);
+      }
+
+      // 7. Populate platform options
+      if (urlState.options) {
+        if (this.currentPlatform === 'ebay-us') {
+          const topRatedEl = this.querySelector<HTMLInputElement>('#opt-top-rated-us');
+          if (topRatedEl && typeof urlState.options.isTopRatedSeller === 'boolean') {
+            topRatedEl.checked = urlState.options.isTopRatedSeller;
+          }
+          const storeEl = this.querySelector<HTMLInputElement>('#opt-store-us');
+          if (storeEl && typeof urlState.options.hasStoreSubscription === 'boolean') {
+            storeEl.checked = urlState.options.hasStoreSubscription;
+          }
+          const promEl = this.querySelector<HTMLInputElement>('#opt-promoted-us');
+          if (promEl && typeof urlState.options.promotedListingPercent === 'number') {
+            promEl.value = urlState.options.promotedListingPercent.toString();
+          }
+        } else if (this.currentPlatform === 'ebay-uk') {
+          const sellerTypeEl = this.querySelector<HTMLSelectElement>('#opt-seller-type-uk');
+          if (sellerTypeEl && typeof urlState.options.sellerType === 'string') {
+            sellerTypeEl.value = urlState.options.sellerType;
+          }
+          const promUkEl = this.querySelector<HTMLInputElement>('#opt-promoted-uk');
+          if (promUkEl && typeof urlState.options.promotedListingPercent === 'number') {
+            promUkEl.value = urlState.options.promotedListingPercent.toString();
+          }
+        } else if (this.currentPlatform === 'tiktok-shop') {
+          const refEl = this.querySelector<HTMLInputElement>('#opt-referral-fee');
+          if (refEl && typeof urlState.options.referralFeePercent === 'number') {
+            refEl.value = urlState.options.referralFeePercent.toString();
+          }
+          const affEl = this.querySelector<HTMLInputElement>('#opt-affiliate-fee');
+          if (affEl && typeof urlState.options.affiliateCommissionPercent === 'number') {
+            affEl.value = urlState.options.affiliateCommissionPercent.toString();
+          }
+        } else if (this.currentPlatform === 'etsy') {
+          const offsiteEl = this.querySelector<HTMLInputElement>('#opt-offsite-ads');
+          if (offsiteEl && typeof urlState.options.hasOffsiteAds === 'boolean') {
+            offsiteEl.checked = urlState.options.hasOffsiteAds;
+          }
+        }
+      }
+    }
+
+    private getCurrentState(): CalculatorUrlState {
+      if (!this.form) return { platform: this.currentPlatform };
+      const formData = new FormData(this.form);
+      const state: CalculatorUrlState = {
+        platform: this.currentPlatform,
+        mode: this.currentMode,
+      };
+
+      const isTwitch = this.currentPlatform === 'twitch-bits';
+
+      if (this.currentMode === 'reverse') {
+        state.reverseTargetType = this.currentReverseTargetType;
+        if (this.currentReverseTargetType === 'margin') {
+          state.targetMargin = parseFloat(formData.get('targetMargin') as string) || 30.0;
+        } else {
+          state.targetProfit = parseFloat(formData.get('targetProfit') as string) || 25.0;
+        }
+        const rq = parseInt(formData.get('reverseQuantity') as string, 10);
+        if (!isNaN(rq) && rq > 1) state.reverseQuantity = rq;
+      } else {
+        const p = parseFloat(formData.get('price') as string);
+        if (!isNaN(p)) state.price = p;
+        const q = parseInt(formData.get('quantity') as string, 10);
+        if (!isNaN(q) && q > 1) state.quantity = q;
+      }
+
+      if (!isTwitch) {
+        const sc = parseFloat(formData.get('shippingCharged') as string);
+        if (!isNaN(sc) && sc > 0) state.shippingCharged = sc;
+        const so = parseFloat(formData.get('shippingCost') as string);
+        if (!isNaN(so) && so > 0) state.shippingCost = so;
+        const ic = parseFloat(formData.get('itemCost') as string);
+        if (!isNaN(ic) && ic > 0) state.itemCost = ic;
+      }
+
+      // Options
+      const opts: Record<string, unknown> = {};
+      if (this.currentPlatform === 'ebay-us') {
+        if (formData.get('isTopRatedSeller') === 'on') opts.isTopRatedSeller = true;
+        if (formData.get('hasStoreSubscription') === 'on') opts.hasStoreSubscription = true;
+        const prom = parseFloat(formData.get('promotedListingPercent') as string);
+        if (!isNaN(prom) && prom > 0) opts.promotedListingPercent = prom;
+      } else if (this.currentPlatform === 'ebay-uk') {
+        const st = formData.get('sellerType') as string;
+        if (st && st !== 'private') opts.sellerType = st;
+        const promUk = parseFloat(formData.get('promotedListingPercentUk') as string);
+        if (!isNaN(promUk) && promUk > 0) opts.promotedListingPercent = promUk;
+      } else if (this.currentPlatform === 'tiktok-shop') {
+        const ref = parseFloat(formData.get('referralFeePercent') as string);
+        if (!isNaN(ref) && ref !== 6.0) opts.referralFeePercent = ref;
+        const aff = parseFloat(formData.get('affiliateCommissionPercent') as string);
+        if (!isNaN(aff) && aff > 0) opts.affiliateCommissionPercent = aff;
+      } else if (this.currentPlatform === 'etsy') {
+        if (formData.get('hasOffsiteAds') === 'on') opts.hasOffsiteAds = true;
+      }
+
+      if (Object.keys(opts).length > 0) {
+        state.options = opts;
+      }
+
+      return state;
+    }
+
+    private scheduleUrlSync() {
+      if (typeof window === 'undefined' || !window.history?.replaceState) return;
+      if (this.urlSyncTimeout) {
+        clearTimeout(this.urlSyncTimeout);
+      }
+      this.urlSyncTimeout = setTimeout(() => {
+        this.syncUrlNow();
+      }, 150);
+    }
+
+    private syncUrlNow() {
+      if (typeof window === 'undefined' || !window.history?.replaceState) return;
+      const state = this.getCurrentState();
+      const query = buildUrlQuery(state);
+      const newRelative = `${window.location.pathname}${query}${window.location.hash}`;
+      const currentRelative = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (newRelative !== currentRelative) {
+        window.history.replaceState({ sellerCalc: true }, '', newRelative);
+      }
     }
 
     private resetDefaults() {
@@ -665,7 +868,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (shippingCostInput) shippingCostInput.value = config.defaultShippingCost.toFixed(2);
       if (itemCostInput) itemCostInput.value = config.defaultItemCost.toFixed(2);
 
-      this.calculate();
+      this.calculate(true);
     }
 
     private formatMoney(amount: number): string {
@@ -676,7 +879,7 @@ const platformList: { id: PlatformId; label: string }[] = [
       return amount < 0 ? `-${this.currentSymbol}${formatted}` : `${this.currentSymbol}${formatted}`;
     }
 
-    private calculate() {
+    private calculate(shouldSyncUrl = true) {
       if (!this.form) return;
 
       const formData = new FormData(this.form);
@@ -760,6 +963,10 @@ const platformList: { id: PlatformId; label: string }[] = [
         );
 
         this.updateUI(result);
+      }
+
+      if (shouldSyncUrl) {
+        this.scheduleUrlSync();
       }
     }
 
