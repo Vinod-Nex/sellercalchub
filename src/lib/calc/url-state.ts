@@ -175,6 +175,11 @@ export function parseUrlState(query: string | URLSearchParams): CalculatorUrlSta
     options.sellerType = sellerType;
     hasOptions = true;
   }
+  const vat = parseBoolean(params.get('vat') || params.get('includeVatOnFees'));
+  if (vat !== undefined) {
+    options.includeVatOnFees = vat;
+    hasOptions = true;
+  }
 
   // TikTok Shop
   const referral = parsePositiveNumber(params.get('referral') || params.get('referralFeePercent'));
@@ -274,6 +279,9 @@ export function buildUrlQuery(state: CalculatorUrlState): string {
   } else if (state.platform === 'ebay-uk') {
     if (opts.sellerType && opts.sellerType !== 'private') {
       params.set('seller_type', String(opts.sellerType));
+      if (opts.includeVatOnFees === false) {
+        params.set('vat', '0');
+      }
     }
     if (typeof opts.promotedListingPercent === 'number' && opts.promotedListingPercent > 0) {
       params.set('promoted', opts.promotedListingPercent.toString());

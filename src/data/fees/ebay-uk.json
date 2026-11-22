@@ -3,9 +3,43 @@
   "platform_name": "eBay (UK)",
   "region": "UK",
   "currency": "GBP",
-  "rates": "TODO",
-  "effective_from": "2026-01-01",
+  "rates": [
+    {
+      "fee_kind": "final_value",
+      "name": "Private Seller Final Value Fee",
+      "calculation_type": "percent",
+      "percentage": 0.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "0% selling fee for UK private individual sellers across eligible categories (free to sell)"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Business Final Value Fee",
+      "calculation_type": "percent",
+      "percentage": 12.8,
+      "applies_to": "total_buyer_paid",
+      "notes": "12.8% standard Final Value Fee for registered UK business sellers (exclusive of 20% UK VAT)"
+    },
+    {
+      "fee_kind": "final_value",
+      "name": "Business Per-Order Fee",
+      "calculation_type": "fixed",
+      "fixed_amount": 0.30,
+      "currency": "GBP",
+      "applies_to": "per_order",
+      "notes": "Fixed £0.30 per order fee for registered business sellers (exclusive of 20% UK VAT)"
+    },
+    {
+      "fee_kind": "regulatory_operating",
+      "name": "UK VAT on eBay Fees",
+      "calculation_type": "percent",
+      "percentage": 20.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "Standard 20% UK VAT applied to all eBay selling fees billed to UK business sellers"
+    }
+  ],
+  "effective_from": "2024-10-01",
   "verified_on": "2026-11-22",
   "source_url": "https://www.ebay.co.uk/help/selling/fees-credits-invoices/selling-fees?id=4822",
-  "notes": "Awaiting user to paste official eBay UK fee schedule into chat to populate typed rates."
+  "notes": "Official eBay UK selling fees schedule. Private individuals sell for 0% final value fees. Business sellers pay 12.8% + £0.30 per order plus 20% UK VAT on eBay fees."
 }

@@ -1,0 +1,349 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getEntry } from 'astro:content';
+import { PLATFORM_CONFIGS } from '../lib/calc';
+
+// Load eBay fee metadata from content collection
+const ebayEntry = await getEntry('fees', 'ebay-us');
+const feeData = ebayEntry?.data;
+const config = PLATFORM_CONFIGS['ebay-us'];
+
+const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
+const sourceUrl = feeData?.source_url ?? config.sourceUrl;
+
+function formatVerifiedDate(isoDate: string): string {
+  try {
+    const [year, month, day] = isoDate.split('-').map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
+const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+
+// FAQ definitions
+const faqs = [
+  {
+    question: "Does eBay charge a separate PayPal fee if a buyer pays with PayPal?",
+    answer:
+      "No. Even if a buyer completes checkout using their PayPal balance or PayPal Credit, eBay processes the transaction through eBay Managed Payments. You are never charged a separate PayPal merchant fee, and PayPal takes $0.00 from your seller payout.",
+  },
+  {
+    question: "When did eBay stop using PayPal for seller payouts?",
+    answer:
+      "eBay and PayPal originally spun off into separate public companies in 2015. Between 2018 and 2021, eBay phased in its own internal Managed Payments system in partnership with Adyen. By mid-2021, Managed Payments became mandatory globally, eliminating PayPal as the merchant processor for eBay sellers.",
+  },
+  {
+    question: "Can buyers still use PayPal to purchase items on eBay?",
+    answer:
+      "Yes. Buyers can freely pay with PayPal, PayPal Credit, Apple Pay, Google Pay, Venmo, credit cards, and debit cards. eBay acts as the merchant of record and absorbs all payment acquiring fees. As a seller, you receive your payout directly to your bank account regardless of which payment method the buyer selected.",
+  },
+  {
+    question: "Where do my eBay sales proceeds get deposited?",
+    answer:
+      "Your net sales funds are deposited directly into your linked checking account or bank account via automated ACH electronic funds transfer. You can configure your payout schedule to daily, weekly, biweekly, or monthly.",
+  },
+  {
+    question: "Why do some online calculators still show a 2.9% + $0.30 PayPal fee for eBay?",
+    answer:
+      "Outdated online calculators built before 2021 have not been updated to reflect eBay Managed Payments. Prior to 2021, sellers paid a 10% fee to eBay and a separate 2.9% + $0.30 fee to PayPal. Today, eBay charges a single consolidated Final Value Fee (typically 13.25% + $0.30/$0.40) with zero third-party processing charges.",
+  },
+];
+
+// Structured Data
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'eBay & PayPal Fee Calculator (How Payments Work Today)',
+    url: 'https://sellercalchub.com/ebay-and-paypal-fee-calculator/',
+    description:
+      'How eBay and PayPal fees work today. Learn why eBay sellers no longer pay separate PayPal fees under eBay Managed Payments, and calculate your exact modern final value fee.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'eBay & PayPal Fee Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="eBay & PayPal Fee Calculator - How Payments Work Today (2026)"
+  description="How eBay and PayPal fees work today. Learn why eBay sellers no longer pay separate PayPal fees under eBay Managed Payments, and calculate your exact modern final value fee."
+  canonicalPath="/ebay-and-paypal-fee-calculator/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'Calculators', href: '/#calculators' },
+        { name: 'eBay Fee Calculator', href: '/ebay-fee-calculator/' },
+        { name: 'eBay & PayPal Explainer' },
+      ]}
+    />
+
+    <!-- Header & Immediate Current Facts -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Current Reality: eBay Managed Payments · Zero Separate PayPal Fees · Direct Bank Payouts</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        eBay & PayPal Fee Calculator
+      </h1>
+
+      <!-- Opening Paragraph: Current Facts First, Not Legacy Ones -->
+      <div class="rounded-lg border-2 border-primary/20 bg-mint-50/70 dark:bg-mint-200/10 p-5 space-y-2 shadow-sm">
+        <strong class="text-ink font-bold text-body-lg block">
+          Current Fact: You Never Pay a Separate PayPal Fee on eBay
+        </strong>
+        <p class="text-body text-body leading-relaxed">
+          eBay and PayPal severed their operational integration in 2021. Today, <strong class="text-ink">all transactions on eBay are processed exclusively through eBay Managed Payments</strong>. Even if a buyer chooses PayPal at checkout, PayPal takes <strong class="text-primary font-bold">$0.00</strong> from your seller payout. Instead, eBay charges a single consolidated Final Value Fee (typically <strong class="text-ink">13.25% + $0.30 or $0.40</strong> in the US), and your net sales balance deposits directly into your bank account.
+        </p>
+      </div>
+
+      <!-- Reciprocal Link to Main Pillar -->
+      <div class="pt-1">
+        <a
+          href="/ebay-fee-calculator/"
+          class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>Calculate your complete profit with store rates and promoted listings on the main eBay Fee Calculator</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Side-by-Side: Myth vs Reality Table -->
+    <section class="space-y-4">
+      <h2 class="text-heading-2 font-bold text-ink">Old Legacy System vs. How Payments Work Now</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Legacy Card -->
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-3 opacity-80">
+          <span class="text-caption font-bold text-muted uppercase tracking-wider block">Legacy Era (Pre-2021) — Outdated</span>
+          <h3 class="text-heading-4 font-bold text-ink">Two Separate Invoices & Fees</h3>
+          <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
+            <li><strong>eBay Fee:</strong> 10.0% billed monthly via an itemized invoice.</li>
+            <li><strong>PayPal Fee:</strong> 2.9% + $0.30 deducted instantly at checkout.</li>
+            <li><strong>Payouts:</strong> Deposited into your PayPal digital wallet.</li>
+            <li><strong>Total Fees:</strong> ~12.9% + $0.30 across two separate companies.</li>
+          </ul>
+        </div>
+
+        <!-- Modern Reality Card -->
+        <div class="rounded-lg border-2 border-primary/40 bg-mint-50/50 dark:bg-mint-200/10 p-5 space-y-3">
+          <span class="text-caption font-bold text-primary uppercase tracking-wider block">Current Reality (2026) — Active</span>
+          <h3 class="text-heading-4 font-bold text-ink">One Consolidated Final Value Fee</h3>
+          <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
+            <li><strong>eBay Fee:</strong> 13.25% + $0.30/$0.40 deducted automatically.</li>
+            <li><strong>PayPal Fee:</strong> <strong class="text-primary font-bold">$0.00 (Zero)</strong>.</li>
+            <li><strong>Payouts:</strong> Automated direct deposit straight into your checking account.</li>
+            <li><strong>Buyer Options:</strong> Buyers can still use PayPal, Apple Pay, Google Pay, or credit cards.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator Island Above the Fold -->
+    <section class="space-y-4" id="calculator">
+      <div class="space-y-1">
+        <h2 class="text-heading-2 font-bold text-ink">Modern eBay Managed Payments Calculator</h2>
+        <p class="text-body text-body leading-relaxed">
+          Calculate your exact deductions under eBay’s current unified payment system. Notice that payment processing is $0.00:
+        </p>
+      </div>
+      <CalculatorIsland platform="ebay-us" showPlatformTabs={false} />
+    </section>
+
+    <!-- How the Payment Flow Works Today -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">How eBay Payment Processing Operates Today</h2>
+      <p class="text-body text-body leading-relaxed">
+        eBay Managed Payments operates similarly to Shopify Payments or Amazon. Here is the step-by-step transaction flow from the moment a buyer clicks "Buy It Now":
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-4 space-y-2">
+          <span class="text-micro font-bold text-primary uppercase tracking-wider block">Step 1</span>
+          <h3 class="text-heading-4 font-bold text-ink">Buyer Checkout</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            The buyer selects PayPal, Apple Pay, Google Pay, Venmo, or a credit card.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-4 space-y-2">
+          <span class="text-micro font-bold text-primary uppercase tracking-wider block">Step 2</span>
+          <h3 class="text-heading-4 font-bold text-ink">eBay Acquires Funds</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            eBay processes the charge and pays all card network and PayPal interchange fees.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-4 space-y-2">
+          <span class="text-micro font-bold text-primary uppercase tracking-wider block">Step 3</span>
+          <h3 class="text-heading-4 font-bold text-ink">Fee Deduction</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            eBay deducts its single Final Value Fee (13.25% + $0.30 or $0.40). No extra fees exist.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-4 space-y-2">
+          <span class="text-micro font-bold text-primary uppercase tracking-wider block">Step 4</span>
+          <h3 class="text-heading-4 font-bold text-ink">Bank Direct Deposit</h3>
+          <p class="text-caption text-muted leading-relaxed">
+            Your net payout is electronically transferred directly to your bank account via ACH.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- When DO PayPal Fees Still Apply? -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">When Do PayPal Fees Still Apply to Resellers?</h2>
+      <p class="text-body text-body leading-relaxed">
+        While PayPal fees never apply to eBay marketplace sales, resellers still encounter PayPal fees in specific external scenarios:
+      </p>
+
+      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 space-y-3 text-body-sm text-body leading-relaxed">
+        <div>
+          <strong class="text-ink block mb-1">1. Direct Invoicing & Social Media Sales (PayPal Goods & Services)</strong>
+          <p>
+            If you sell directly to buyers on Reddit, Instagram, Facebook Groups, or forums and send a PayPal invoice, PayPal charges its standard merchant rate of <strong>2.99% + $0.49</strong> per transaction.
+          </p>
+        </div>
+        <div class="border-t border-hairline pt-3">
+          <strong class="text-ink block mb-1">2. PayPal Working Capital & Business Loans</strong>
+          <p>
+            Some long-time eBay sellers retain a PayPal business debit card or loan that automatically deducts fixed repayment percentages from off-platform PayPal balances.
+          </p>
+        </div>
+        <div class="border-t border-hairline pt-3">
+          <strong class="text-ink block mb-1">3. International Currency Conversion</strong>
+          <p>
+            If you hold foreign currency in a personal PayPal account and transfer it to an external bank, PayPal's standard 3% to 4% currency spread applies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQs -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-1">
+        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions</h2>
+        <p class="text-body text-body leading-relaxed">
+          Answers to common questions regarding eBay Managed Payments, PayPal checkout, and direct deposits.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map((faq) => (
+          <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
+            <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+              <span>{faq.question}</span>
+              <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
+                &#9660;
+              </span>
+            </summary>
+            <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Related Calculators -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Related eBay Calculators</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a
+          href="/ebay-fee-calculator/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">Pillar Calculator</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Fee Calculator</span>
+          <span class="text-caption text-muted block">The full all-in-one calculator with store subscriptions and promoted listings.</span>
+        </a>
+        <a
+          href="/ebay-profit-calculator/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">Bottom Line Profit</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Profit Calculator</span>
+          <span class="text-caption text-muted block">Calculate net profit, margins, ROI, and break-even sale price across all expenses.</span>
+        </a>
+        <a
+          href="/ebay-fee-calculator-uk/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">United Kingdom</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay UK Fee Calculator</span>
+          <span class="text-caption text-muted block">Calculate 0% private seller fees and 12.8% business fees with 20% UK VAT in GBP (£).</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Last-Verified Stamp -->
+    <footer class="pt-6 border-t border-hairline">
+      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span class="text-ui-label font-bold text-ink">
+              Official Payment Policy Verification
+            </span>
+          </div>
+          <p class="text-caption text-muted">
+            Payment processing rules officially verified on <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced directly from eBay Managed Payments Terms of Use.
+          </p>
+        </div>
+
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+        >
+          <span>View Official eBay Selling Fees</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>

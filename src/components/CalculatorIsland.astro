@@ -352,6 +352,13 @@ const platformList: { id: PlatformId; label: string }[] = [
               ]}
               helpText="UK private sellers enjoy 0% selling fees on eBay"
             />
+            <ToggleSwitch
+              id="opt-vat-uk"
+              name="includeVatOnFees"
+              label="Include 20% UK VAT on Business Fees"
+              description="HMRC requires 20% VAT on eBay business seller fees"
+              checked={options.includeVatOnFees !== false}
+            />
             <PercentInput
               id="opt-promoted-uk"
               name="promotedListingPercentUk"
@@ -792,6 +799,10 @@ const platformList: { id: PlatformId; label: string }[] = [
           if (sellerTypeEl && typeof urlState.options.sellerType === 'string') {
             sellerTypeEl.value = urlState.options.sellerType;
           }
+          const vatEl = this.querySelector<HTMLInputElement>('#opt-vat-uk');
+          if (vatEl && typeof urlState.options.includeVatOnFees === 'boolean') {
+            vatEl.checked = urlState.options.includeVatOnFees;
+          }
           const promUkEl = this.querySelector<HTMLInputElement>('#opt-promoted-uk');
           if (promUkEl && typeof urlState.options.promotedListingPercent === 'number') {
             promUkEl.value = urlState.options.promotedListingPercent.toString();
@@ -870,6 +881,11 @@ const platformList: { id: PlatformId; label: string }[] = [
       } else if (this.currentPlatform === 'ebay-uk') {
         const st = formData.get('sellerType') as string;
         if (st && st !== 'private') opts.sellerType = st;
+        if (formData.get('includeVatOnFees') === 'on') {
+          opts.includeVatOnFees = true;
+        } else {
+          opts.includeVatOnFees = false;
+        }
         const promUk = parseFloat(formData.get('promotedListingPercentUk') as string);
         if (!isNaN(promUk) && promUk > 0) opts.promotedListingPercent = promUk;
       } else if (this.currentPlatform === 'tiktok-shop') {
@@ -957,6 +973,7 @@ const platformList: { id: PlatformId; label: string }[] = [
         options.promotedListingPercent = parseFloat(formData.get('promotedListingPercent') as string) || 0;
       } else if (this.currentPlatform === 'ebay-uk') {
         options.sellerType = formData.get('sellerType') || 'private';
+        options.includeVatOnFees = formData.get('includeVatOnFees') === 'on';
         options.promotedListingPercent = parseFloat(formData.get('promotedListingPercentUk') as string) || 0;
       } else if (this.currentPlatform === 'tiktok-shop') {
         options.referralFeePercent = parseFloat(formData.get('referralFeePercent') as string) || 6.0;

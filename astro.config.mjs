@@ -10,6 +10,7 @@ export default defineConfig({
   trailingSlash: "always",
   redirects: {
     "/twitch-bits-calculator/": "/twitch-bits-to-usd/",
+    "/ebay-uk-fee-calculator/": "/ebay-fee-calculator-uk/",
   },
   build: {
     inlineStylesheets: "always",
