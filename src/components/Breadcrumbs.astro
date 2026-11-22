@@ -1,0 +1,75 @@
+---
+export interface BreadcrumbItem {
+  name: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  class?: string;
+}
+
+const { items, class: className = '' } = Astro.props;
+
+// Build Schema.org BreadcrumbList structured data
+const siteUrl = Astro.site ? Astro.site.toString() : 'https://sellercalchub.com/';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => {
+    const itemUrl = item.href ? new URL(item.href, siteUrl).toString() : undefined;
+    return {
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      ...(itemUrl ? { item: itemUrl } : {}),
+    };
+  }),
+};
+---
+
+<!-- JSON-LD Structured Data for Search Engines -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+<!-- Visible Semantic HTML Breadcrumbs (WCAG AA compliant) -->
+<nav aria-label="Breadcrumb" class={`py-2 text-caption ${className}`}>
+  <ol class="flex flex-wrap items-center gap-1.5 list-none p-0 m-0 text-muted">
+    {items.map((item, index) => {
+      const isLast = index === items.length - 1;
+      return (
+        <li class="inline-flex items-center gap-1.5">
+          {index > 0 && (
+            <svg
+              class="w-3.5 h-3.5 text-faint shrink-0"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 12 10 8 6 4" />
+            </svg>
+          )}
+          {isLast || !item.href ? (
+            <span
+              class="text-ink font-medium truncate max-w-xs sm:max-w-md"
+              aria-current={isLast ? 'page' : undefined}
+            >
+              {item.name}
+            </span>
+          ) : (
+            <a
+              href={item.href}
+              class="text-muted hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-xxs"
+            >
+              {item.name}
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>

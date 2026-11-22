@@ -1,0 +1,107 @@
+---
+const currentYear = new Date().getFullYear();
+
+const calculators = [
+  { name: 'Whatnot Fee Calculator', href: '/whatnot-fee-calculator/' },
+  { name: 'TikTok Shop Fee Calculator', href: '/tiktok-shop-fee-calculator/' },
+  { name: 'Depop Fee Calculator', href: '/depop-fee-calculator/' },
+  { name: 'Etsy Fee Calculator', href: '/etsy-fee-calculator/' },
+  { name: 'eBay Fee Calculator', href: '/ebay-fee-calculator/' },
+  { name: 'Twitch Bits Calculator', href: '/twitch-bits-calculator/' },
+];
+
+const company = [
+  { name: 'About Seller Calc Hub', href: '/about/' },
+  { name: 'Fee Methodology & Sources', href: '/methodology/' },
+  { name: 'Contact & Corrections', href: '/contact/' },
+];
+
+const legal = [
+  { name: 'Privacy Policy', href: '/privacy/' },
+  { name: 'Terms of Service', href: '/terms/' },
+  { name: 'Design Tokens', href: '/design-tokens/' },
+];
+---
+
+<footer class="w-full bg-canvas-soft border-t border-hairline text-body text-body-sm mt-auto" role="contentinfo">
+  <div class="max-w-6xl mx-auto px-4 py-12 space-y-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand & Mission Column -->
+      <div class="space-y-4 md:col-span-1">
+        <div class="flex items-center gap-2.5">
+          <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime" aria-hidden="true"></span>
+          <span class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</span>
+        </div>
+        <p class="text-body-sm font-light text-muted">
+          Free, fast, and verified profit calculators for online resellers and marketplace sellers. Know your exact fees before you list.
+        </p>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-canvas border border-hairline text-caption text-ink">
+          <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span>100% Verified Official Fee Rates</span>
+        </div>
+      </div>
+
+      <!-- Calculators Column -->
+      <div class="space-y-3">
+        <h3 class="text-ui-label text-ink uppercase tracking-wider font-bold">Marketplace Calculators</h3>
+        <ul class="space-y-2 list-none p-0 m-0">
+          {calculators.map((calc) => (
+            <li>
+              <a
+                href={calc.href}
+                class="text-muted hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xxs"
+              >
+                {calc.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Transparency & Company Column -->
+      <div class="space-y-3">
+        <h3 class="text-ui-label text-ink uppercase tracking-wider font-bold">Methodology & About</h3>
+        <ul class="space-y-2 list-none p-0 m-0">
+          {company.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-muted hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xxs"
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Legal & Policies Column -->
+      <div class="space-y-3">
+        <h3 class="text-ui-label text-ink uppercase tracking-wider font-bold">Legal & Policies</h3>
+        <ul class="space-y-2 list-none p-0 m-0">
+          {legal.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-muted hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xxs"
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Disclaimer & Copyright Bar -->
+    <div class="border-t border-hairline pt-6 space-y-3 text-caption text-faint">
+      <p>
+        <strong>Disclaimer:</strong> Seller Calc Hub is an independent financial calculations utility and is not affiliated with, sponsored by, or endorsed by eBay Inc., Etsy Inc., Depop Ltd, ByteDance / TikTok, Whatnot Inc., or Twitch Interactive Inc. All registered trademarks and marketplace brand names belong to their respective owners. Fee structures and calculations are provided for estimation purposes and reflect officially published rates verified in 2026.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 text-muted">
+        <span>&copy; {currentYear} Seller Calc Hub (SellerCalcHub.com). All rights reserved.</span>
+        <span>Built with Astro SSG · Mobile First · WCAG AA Accessible</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -22,19 +21,6 @@ const websiteSchema = {
   canonicalPath="/"
   structuredData={websiteSchema}
 >
-  <header slot="header" class="border-b border-hairline bg-canvas sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime" aria-hidden="true"></span>
-        <a href="/" class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</a>
-      </div>
-      <nav class="flex items-center gap-4" aria-label="Main Navigation">
-        <a href="/design-tokens/" class="text-ui-label text-link hover:underline">Design Tokens</a>
-        <ThemeToggle />
-      </nav>
-    </div>
-  </header>
-
   <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
     <!-- Hero Band (Single H1 for the page) -->
     <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-8 md:p-12 shadow-level-3">
@@ -63,11 +49,21 @@ const websiteSchema = {
     <section class="space-y-4">
       <h2 class="text-heading-2 font-bold text-ink">Supported Marketplaces</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {['Whatnot', 'TikTok Shop', 'Depop', 'Etsy', 'eBay', 'Twitch Bits'].map((platform) => (
-          <div class="rounded-lg border border-hairline-strong bg-canvas p-4 text-center hover:border-primary transition-colors">
-            <span class="text-heading-4 text-ink font-bold block mb-1">{platform}</span>
+        {[
+          { name: 'Whatnot', href: '/whatnot-fee-calculator/' },
+          { name: 'TikTok Shop', href: '/tiktok-shop-fee-calculator/' },
+          { name: 'Depop', href: '/depop-fee-calculator/' },
+          { name: 'Etsy', href: '/etsy-fee-calculator/' },
+          { name: 'eBay', href: '/ebay-fee-calculator/' },
+          { name: 'Twitch Bits', href: '/twitch-bits-calculator/' },
+        ].map((platform) => (
+          <a
+            href={platform.href}
+            class="rounded-lg border border-hairline-strong bg-canvas p-4 text-center hover:border-primary hover:bg-mint-50/50 transition-colors block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span class="text-heading-4 text-ink font-bold block mb-1">{platform.name}</span>
             <span class="text-caption text-muted">Fee Calculator</span>
-          </div>
+          </a>
         ))}
       </div>
     </section>

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Head from '../components/Head.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 export interface Props {
   /** Page title - required per page (no default hard-coded in layout) */
@@ -65,15 +67,19 @@ const {
       Skip to main content
     </a>
 
-    <!-- Global / Page Header Slot -->
-    <slot name="header" />
+    <!-- Sticky-free Header Slot with default Header component -->
+    <slot name="header">
+      <Header />
+    </slot>
 
     <!-- Main Content Region -->
     <main id="main-content" class={`flex-1 ${mainClass}`}>
       <slot />
     </main>
 
-    <!-- Global / Page Footer Slot -->
-    <slot name="footer" />
+    <!-- Footer Slot with default Footer component -->
+    <slot name="footer">
+      <Footer />
+    </slot>
   </body>
 </html>

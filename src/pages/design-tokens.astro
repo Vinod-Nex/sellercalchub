@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 const colors = [
   { group: 'Brand & Accent', tokens: [
@@ -85,22 +85,15 @@ const radii = [
   description="Verification and reference showcase for all Seller Calc Hub design tokens from DESIGN.md in Light and Dark mode."
   canonicalPath="/design-tokens/"
 >
-  <header class="border-b border-hairline bg-canvas sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime"></span>
-        <a href="/" class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</a>
-        <span class="text-ui-sm text-muted font-normal px-2 py-0.5 rounded-sm bg-mint-50 border border-hairline">
-          Design System & Tokens
-        </span>
-      </div>
-      <div class="flex items-center gap-4">
-        <ThemeToggle />
-      </div>
-    </div>
-  </header>
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+    <!-- Visible Semantic Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'Design Tokens' },
+      ]}
+    />
 
-  <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
     <!-- Hero Band Component from DESIGN.md -->
     <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-6 md:p-10 shadow-level-3">
       <div class="flex items-center gap-2 mb-3">
@@ -268,5 +261,5 @@ const radii = [
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </BaseLayout>
