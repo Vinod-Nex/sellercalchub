@@ -9,6 +9,7 @@ import EdgeCases from '../components/EdgeCases.astro';
 import AuthorByline from '../components/AuthorByline.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedCalculators from '../components/RelatedCalculators.astro';
+import EmbedModal from '../components/EmbedModal.astro';
 import LastVerified from '../components/LastVerified.astro';
 import { getPageSeo } from '../lib/seo';
 import { buildCalculatorStructuredData } from '../lib/schema';
@@ -129,6 +130,9 @@ const structuredData = buildCalculatorStructuredData({
         Read our complete breakdown covering the 8% commission, smart shipping bundling, and Early Payout status in <a href="/guides/whatnot-fees-explained/" class="text-primary font-bold hover:underline">Whatnot Fees Explained: Live Auction Commission &amp; Payouts &rarr;</a>.
       </p>
     </section>
+
+    <!-- Embed Widget Card -->
+    <EmbedModal calculatorSlug="whatnot-fee-calculator" calculatorName="Whatnot Fee & Profit Calculator" />
 
     <!-- 7. Related Calculators Grid -->
     <RelatedCalculators currentPlatform="whatnot" />

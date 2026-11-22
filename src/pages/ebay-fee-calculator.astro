@@ -9,6 +9,7 @@ import WorkedExample from "../components/WorkedExample.astro";
 import EdgeCases from "../components/EdgeCases.astro";
 import FAQ from "../components/FAQ.astro";
 import RelatedCalculators from "../components/RelatedCalculators.astro";
+import EmbedModal from "../components/EmbedModal.astro";
 import LastVerified from "../components/LastVerified.astro";
 import { formatFeeSummary } from "../lib/calc/fee-data";
 import { EBAY_US_CATEGORIES } from "../lib/calc/ebay-us";
@@ -267,6 +268,9 @@ const structuredData = buildCalculatorStructuredData({
         </a>
       </div>
     </section>
+
+    <!-- Embed Widget Card -->
+    <EmbedModal calculatorSlug="ebay-fee-calculator" calculatorName="eBay Fee & Profit Calculator" />
 
     <!-- Related Marketplace Calculators -->
     <RelatedCalculators currentPlatform="ebay-us" />

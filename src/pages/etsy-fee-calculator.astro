@@ -8,6 +8,7 @@ import WorkedExample from "../components/WorkedExample.astro";
 import EdgeCases from "../components/EdgeCases.astro";
 import FAQ from "../components/FAQ.astro";
 import RelatedCalculators from "../components/RelatedCalculators.astro";
+import EmbedModal from "../components/EmbedModal.astro";
 import LastVerified from "../components/LastVerified.astro";
 import AuthorByline from "../components/AuthorByline.astro";
 import { getPageSeo } from "../lib/seo";
@@ -146,6 +147,9 @@ const structuredData = buildCalculatorStructuredData({
       title="Frequently Asked Questions About Etsy Fees"
       description="Everything handmade and vintage sellers need to know about listing costs, processing rates, and ad deductions."
     />
+
+    <!-- Embed Widget Card -->
+    <EmbedModal calculatorSlug="etsy-fee-calculator" calculatorName="Etsy Fee & Profit Calculator" />
 
     <!-- 7. Related Calculators Grid -->
     <RelatedCalculators currentPlatform="etsy" />

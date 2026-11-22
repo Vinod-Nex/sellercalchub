@@ -1,0 +1,77 @@
+---
+export interface Props {
+  calculatorSlug: string;
+  calculatorName: string;
+}
+
+const { calculatorSlug, calculatorName } = Astro.props;
+const cleanSlug = calculatorSlug.replace(/^\//, '').replace(/\/$/, '');
+const embedUrl = `https://sellercalchub.com/embed/${cleanSlug}/`;
+const parentUrl = `https://sellercalchub.com/${cleanSlug}/`;
+
+const embedCode = `<iframe src="${embedUrl}" width="100%" height="720" frameborder="0" title="${calculatorName} Widget" loading="lazy" style="border: 1px solid #e5e7eb; border-radius: 8px; width: 100%;"></iframe>\n<p style="font-size: 12px; color: #6b7280; margin-top: 6px;">Free calculation tool provided by <a href="${parentUrl}" target="_blank" rel="noopener">${calculatorName} on Seller Calc Hub</a>.</p>`;
+---
+
+<div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <div class="space-y-1">
+      <div class="flex items-center gap-1.5">
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+          Free Web Widget
+        </span>
+      </div>
+      <h3 class="text-heading-4 font-bold text-ink">
+        Embed This Calculator on Your Website
+      </h3>
+      <p class="text-caption text-muted">
+        Are you an ecommerce blogger, reseller educator, or YouTuber? Embed this free, live interactive calculator directly into your blog posts or guides:
+      </p>
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <label for={`embed-code-${cleanSlug}`} class="sr-only">HTML Embed Code</label>
+    <div class="relative">
+      <textarea
+        id={`embed-code-${cleanSlug}`}
+        readonly
+        rows={3}
+        class="w-full font-mono text-micro bg-canvas-soft border border-hairline rounded-xs p-3 text-muted select-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >{embedCode}</textarea>
+    </div>
+    <div class="flex items-center justify-between">
+      <span class="text-micro text-muted">Zero ads · Fully responsive · Automatic rate updates</span>
+      <button
+        type="button"
+        id={`copy-embed-btn-${cleanSlug}`}
+        class="px-4 py-2 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-caption rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer flex items-center gap-1.5"
+      >
+        <span class="copy-text">Copy Embed Code</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ cleanSlug }}>
+  const btn = document.getElementById(`copy-embed-btn-${cleanSlug}`);
+  const textarea = document.getElementById(`embed-code-${cleanSlug}`);
+  if (btn && textarea) {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        const textSpan = btn.querySelector('.copy-text');
+        if (textSpan) {
+          const original = textSpan.textContent;
+          textSpan.textContent = 'Copied to Clipboard!';
+          btn.classList.add('bg-primary-deep');
+          setTimeout(() => {
+            textSpan.textContent = original;
+            btn.classList.remove('bg-primary-deep');
+          }, 2000);
+        }
+      } catch (err) {
+        textarea.select();
+      }
+    });
+  }
+</script>

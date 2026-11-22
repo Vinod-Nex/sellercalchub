@@ -9,6 +9,7 @@ import EdgeCases from '../components/EdgeCases.astro';
 import AuthorByline from '../components/AuthorByline.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedCalculators from '../components/RelatedCalculators.astro';
+import EmbedModal from '../components/EmbedModal.astro';
 import LastVerified from '../components/LastVerified.astro';
 import { getPageSeo } from '../lib/seo';
 import { buildCalculatorStructuredData } from '../lib/schema';
@@ -107,6 +108,9 @@ const structuredData = buildCalculatorStructuredData({
       title="Frequently Asked Questions About TikTok Shop Fees"
       description="Common questions about referral deductions, creator affiliate commissions, and payout schedules."
     />
+
+    <!-- Embed Widget Card -->
+    <EmbedModal calculatorSlug="tiktok-shop-fee-calculator" calculatorName="TikTok Shop Fee & Profit Calculator" />
 
     <!-- 7. Related Calculators -->
     <RelatedCalculators currentPlatform="tiktok-shop" />

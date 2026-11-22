@@ -1,0 +1,118 @@
+---
+import CalculatorIsland from '../../components/CalculatorIsland.astro';
+import type { PlatformId } from '../../lib/calc';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    {
+      params: { calculator: 'ebay-fee-calculator' },
+      props: {
+        platform: 'ebay-us' as PlatformId,
+        name: 'eBay Fee Calculator',
+        parentUrl: '/ebay-fee-calculator/',
+      },
+    },
+    {
+      params: { calculator: 'whatnot-fee-calculator' },
+      props: {
+        platform: 'whatnot' as PlatformId,
+        name: 'Whatnot Fee Calculator',
+        parentUrl: '/whatnot-fee-calculator/',
+      },
+    },
+    {
+      params: { calculator: 'etsy-fee-calculator' },
+      props: {
+        platform: 'etsy' as PlatformId,
+        name: 'Etsy Fee Calculator',
+        parentUrl: '/etsy-fee-calculator/',
+      },
+    },
+    {
+      params: { calculator: 'tiktok-shop-fee-calculator' },
+      props: {
+        platform: 'tiktok-shop' as PlatformId,
+        name: 'TikTok Shop Fee Calculator',
+        parentUrl: '/tiktok-shop-fee-calculator/',
+      },
+    },
+    {
+      params: { calculator: 'depop-fee-calculator' },
+      props: {
+        platform: 'depop' as PlatformId,
+        name: 'Depop Fee Calculator',
+        parentUrl: '/depop-fee-calculator/',
+      },
+    },
+    {
+      params: { calculator: 'ebay-fee-calculator-uk' },
+      props: {
+        platform: 'ebay-uk' as PlatformId,
+        name: 'eBay UK Fee Calculator',
+        parentUrl: '/ebay-fee-calculator-uk/',
+      },
+    },
+  ];
+}
+
+interface Props {
+  platform: PlatformId;
+  name: string;
+  parentUrl: string;
+}
+
+const { platform, name, parentUrl } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{name} Widget - Seller Calc Hub</title>
+    <!-- Embeds carry noindex so search engines index the parent canonical calculator page -->
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={`https://sellercalchub.com${parentUrl}`} />
+    <!-- Theme Script to match parent container -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (theme === 'dark') document.documentElement.classList.add('dark');
+    </script>
+  </head>
+  <body class="bg-canvas text-ink antialiased p-2 sm:p-4">
+    <div class="max-w-3xl mx-auto rounded-lg border border-hairline bg-canvas shadow-sm overflow-hidden flex flex-col justify-between min-h-[500px]">
+      <!-- Widget Top Brand Bar -->
+      <div class="p-3 bg-canvas-soft border-b border-hairline flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-5 h-5 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center shrink-0">
+            SCH
+          </div>
+          <span class="text-caption font-bold text-ink">{name}</span>
+        </div>
+        <span class="text-micro font-bold uppercase tracking-wider text-forest bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+          2026 Verified
+        </span>
+      </div>
+
+      <!-- Calculator Island -->
+      <div class="p-3 sm:p-4">
+        <CalculatorIsland platform={platform} showPlatformTabs={false} />
+      </div>
+
+      <!-- Attribution Footer with SEO Link -->
+      <footer class="p-3 bg-canvas-soft border-t border-hairline flex flex-wrap items-center justify-between gap-2 text-caption">
+        <span class="text-muted text-micro">Free instant reseller profit tool</span>
+        <a
+          href={`https://sellercalchub.com${parentUrl}`}
+          target="_blank"
+          rel="noopener"
+          class="text-primary font-bold hover:underline inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+        >
+          <span>Calculate on Seller Calc Hub</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </footer>
+    </div>
+  </body>
+</html>
