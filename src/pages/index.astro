@@ -1,24 +1,42 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Seller Calc Hub',
+  url: 'https://sellercalchub.com/',
+  description: 'Free, fast marketplace fee and profit calculators for online resellers and sellers.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://sellercalchub.com/?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
-<Layout title="Seller Calc Hub - Free Marketplace Fee & Profit Calculators">
-  <header class="border-b border-hairline bg-canvas sticky top-0 z-50">
+<BaseLayout
+  title="Seller Calc Hub - Free Marketplace Fee & Profit Calculators"
+  description="Free, fast marketplace fee and profit calculators for Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits. See exactly what you keep on every sale."
+  canonicalPath="/"
+  structuredData={websiteSchema}
+>
+  <header slot="header" class="border-b border-hairline bg-canvas sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime"></span>
+        <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime" aria-hidden="true"></span>
         <a href="/" class="text-heading-4 font-bold text-primary tracking-tight">Seller Calc Hub</a>
       </div>
-      <div class="flex items-center gap-4">
+      <nav class="flex items-center gap-4" aria-label="Main Navigation">
         <a href="/design-tokens/" class="text-ui-label text-link hover:underline">Design Tokens</a>
         <ThemeToggle />
-      </div>
+      </nav>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-12 space-y-12">
-    <!-- Hero Band -->
+  <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
+    <!-- Hero Band (Single H1 for the page) -->
     <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-8 md:p-12 shadow-level-3">
       <div class="flex items-center gap-2 mb-4">
         <span class="text-micro font-bold uppercase tracking-wider text-lime-panel bg-forest/50 px-2 py-0.5 rounded-xs">
@@ -53,5 +71,5 @@ import ThemeToggle from '../components/ThemeToggle.astro';
         ))}
       </div>
     </section>
-  </main>
-</Layout>
+  </div>
+</BaseLayout>

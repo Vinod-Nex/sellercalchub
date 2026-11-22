@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
 const colors = [
@@ -80,7 +80,11 @@ const radii = [
 ];
 ---
 
-<Layout title="Design Tokens Verification - Seller Calc Hub">
+<BaseLayout
+  title="Design Tokens Verification - Seller Calc Hub"
+  description="Verification and reference showcase for all Seller Calc Hub design tokens from DESIGN.md in Light and Dark mode."
+  canonicalPath="/design-tokens/"
+>
   <header class="border-b border-hairline bg-canvas sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -265,4 +269,4 @@ const radii = [
       </div>
     </section>
   </main>
-</Layout>
+</BaseLayout>

@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+import Head from '../components/Head.astro';
+
+export interface Props {
+  /** Page title - required per page (no default hard-coded in layout) */
+  title: string;
+  /** Meta description - required per page (no default hard-coded in layout) */
+  description: string;
+  /** Explicit canonical path (e.g. '/whatnot-fee-calculator/') or defaults to current pathname */
+  canonicalPath?: string;
+  /** Open Graph preview image URL */
+  ogImage?: string;
+  /** Open Graph type ('website' | 'article') */
+  ogType?: 'website' | 'article';
+  /** Prevent search engines from indexing this page */
+  noindex?: boolean;
+  /** Schema.org structured data object or array */
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+  /** HTML document language code (defaults to current Astro locale or 'en') */
+  lang?: string;
+  /** Optional class name for the <main> container */
+  mainClass?: string;
+}
+
+/**
+ * HEADING HIERARCHY CONVENTION:
+ * Every page consuming BaseLayout MUST render exactly ONE <h1> tag inside the
+ * <main id="main-content"> element to ensure strict WCAG AA accessibility
+ * and search engine indexing compliance. Do not place multiple <h1> tags per page.
+ */
+
+const {
+  title,
+  description,
+  canonicalPath,
+  ogImage,
+  ogType,
+  noindex,
+  structuredData,
+  lang = Astro.currentLocale ?? 'en',
+  mainClass = '',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <Head
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+      structuredData={structuredData}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-canvas text-body font-sans transition-colors duration-150 antialiased">
+    <!-- Accessible Skip Link (WCAG AA 2.4.1) -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-primary focus:text-on-primary focus:font-bold focus:text-ui-label focus:rounded-xs focus:shadow-level-4 focus:outline-none focus:ring-2 focus:ring-on-primary"
+    >
+      Skip to main content
+    </a>
+
+    <!-- Global / Page Header Slot -->
+    <slot name="header" />
+
+    <!-- Main Content Region -->
+    <main id="main-content" class={`flex-1 ${mainClass}`}>
+      <slot />
+    </main>
+
+    <!-- Global / Page Footer Slot -->
+    <slot name="footer" />
+  </body>
+</html>

@@ -1,44 +1,13 @@
 ---
-import '../styles/global.css';
+import BaseLayout, { type Props as BaseLayoutProps } from './BaseLayout.astro';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
+export type Props = BaseLayoutProps;
 
-const {
-  title = 'Seller Calc Hub - Free Marketplace Fee & Profit Calculators',
-  description = 'Accurate, verified fee and profit calculators for Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits.',
-} = Astro.props;
+const props = Astro.props;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-
-    <!-- Execute theme detection synchronously to prevent flash of wrong theme (FOUC) -->
-    <script is:inline>
-      (function () {
-        const storedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        } else {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        }
-      })();
-    </script>
-  </head>
-  <body class="min-h-screen bg-canvas text-body font-sans transition-colors duration-150">
-    <slot />
-  </body>
-</html>
+<BaseLayout {...props}>
+  <slot name="header" slot="header" />
+  <slot />
+  <slot name="footer" slot="footer" />
+</BaseLayout>
