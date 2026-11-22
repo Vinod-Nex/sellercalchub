@@ -79,10 +79,18 @@
     ackBtn?.addEventListener('click', handleDismiss);
   }
 
-  // Run on page load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPrivacyNotice);
+  // Defer privacy banner initialization to idle time to preserve 0ms TBT on mobile
+  const scheduleInit = () => {
+    if ('requestIdleCallback' in window) {
+      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(initPrivacyNotice);
+    } else {
+      setTimeout(initPrivacyNotice, 1000);
+    }
+  };
+
+  if (document.readyState === 'complete') {
+    scheduleInit();
   } else {
-    initPrivacyNotice();
+    window.addEventListener('load', scheduleInit, { once: true });
   }
 </script>
