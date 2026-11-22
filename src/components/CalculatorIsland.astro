@@ -127,8 +127,30 @@ const platformList: { id: PlatformId; label: string }[] = [
           </p>
         </div>
 
-        <!-- Price & Quantity Row -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- Calculation Mode Toggle: Forward vs Reverse -->
+        <div class="rounded-xs bg-canvas-soft border border-hairline-strong p-1 flex items-center gap-1 select-none" role="radiogroup" aria-label="Calculation Mode">
+          <button
+            type="button"
+            role="radio"
+            data-mode-btn="forward"
+            aria-checked="true"
+            class="flex-1 py-2 px-3 text-ui-sm font-bold rounded-xs transition-colors cursor-pointer text-center bg-primary text-on-primary shadow-sm"
+          >
+            Forward (Price → Profit)
+          </button>
+          <button
+            type="button"
+            role="radio"
+            data-mode-btn="reverse"
+            aria-checked="false"
+            class="flex-1 py-2 px-3 text-ui-sm font-semibold rounded-xs transition-colors cursor-pointer text-center text-body hover:text-ink hover:bg-canvas"
+          >
+            Reverse (Target → Price)
+          </button>
+        </div>
+
+        <!-- Forward Mode Panel: Sold Price Input -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" data-mode-panel="forward">
           <div class="sm:col-span-2">
             <MoneyInput
               id="calc-price"
@@ -150,6 +172,80 @@ const platformList: { id: PlatformId; label: string }[] = [
               min={1}
               helpText="Units sold"
             />
+          </div>
+        </div>
+
+        <!-- Reverse Mode Panel: Target Goal Inputs & Solved Listing Price Banner -->
+        <div class="hidden space-y-4" data-mode-panel="reverse">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2 space-y-3">
+              <!-- Target Type Selector -->
+              <div>
+                <label class="block text-caption font-bold text-ink mb-1.5">
+                  Target Goal Type
+                </label>
+                <div class="flex gap-2">
+                  <label class="flex-1 text-center py-1.5 px-3 rounded-xs border border-primary bg-mint-50 text-primary font-bold text-ui-sm cursor-pointer select-none" data-target-type-label="profit">
+                    <input type="radio" name="reverseTargetType" value="profit" checked class="sr-only" />
+                    Target Net Profit ({currencySymbol})
+                  </label>
+                  <label class="flex-1 text-center py-1.5 px-3 rounded-xs border border-hairline-strong bg-canvas-soft text-body font-medium text-ui-sm cursor-pointer select-none" data-target-type-label="margin">
+                    <input type="radio" name="reverseTargetType" value="margin" class="sr-only" />
+                    Target Margin (%)
+                  </label>
+                </div>
+              </div>
+
+              <!-- Target Value Inputs -->
+              <div data-target-input-profit>
+                <MoneyInput
+                  id="calc-target-profit"
+                  name="targetProfit"
+                  label="Target Net Profit"
+                  value={25.00}
+                  currencySymbol={currencySymbol}
+                  helpText="Exact take-home profit you want to keep"
+                />
+              </div>
+
+              <div class="hidden" data-target-input-margin>
+                <PercentInput
+                  id="calc-target-margin"
+                  name="targetMargin"
+                  label="Target Profit Margin"
+                  value={35.0}
+                  min={0}
+                  max={90}
+                  helpText="Desired net profit percentage of gross revenue"
+                />
+              </div>
+            </div>
+
+            <div>
+              <StepperInput
+                id="calc-reverse-quantity"
+                name="reverseQuantity"
+                label="Quantity"
+                value={quantity}
+                min={1}
+                helpText="Units to sell"
+              />
+            </div>
+          </div>
+
+          <!-- Solved Required Price Banner -->
+          <div class="rounded-sm bg-mint-50 dark:bg-mint-200/10 border border-mint-200 p-4 space-y-1">
+            <span class="block text-eyebrow text-primary uppercase font-bold tracking-wider">
+              Required Listing Price
+            </span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-stat-value md:text-heading-2 font-bold text-ink tabular-nums" data-reverse-solved-price>
+                $43.34
+              </span>
+              <span class="text-caption text-muted font-medium" data-reverse-solved-desc>
+                List at $43.34 to keep $25.00 profit
+              </span>
+            </div>
           </div>
         </div>
 
@@ -320,15 +416,19 @@ const platformList: { id: PlatformId; label: string }[] = [
 <script>
   import {
     runCalculator,
+    calculateReverse,
     PLATFORM_CONFIGS,
     type PlatformId,
     type CalcResult,
+    type ReverseTargetType,
   } from '../lib/calc';
 
   class SellerCalculator extends HTMLElement {
     private currentPlatform: PlatformId = 'whatnot';
     private currentCurrency: 'USD' | 'GBP' = 'USD';
     private currentSymbol: string = '$';
+    private currentMode: 'forward' | 'reverse' = 'forward';
+    private currentReverseTargetType: ReverseTargetType = 'profit';
 
     private form: HTMLFormElement | null = null;
     private outNetProfit: HTMLElement | null = null;
@@ -384,6 +484,85 @@ const platformList: { id: PlatformId; label: string }[] = [
           }
         });
       });
+
+      // Mode toggle buttons (Forward vs Reverse)
+      const modeBtns = this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]');
+      modeBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const mode = btn.dataset.modeBtn as 'forward' | 'reverse';
+          if (mode && mode !== this.currentMode) {
+            this.switchMode(mode);
+          }
+        });
+      });
+
+      // Reverse target type radios (Profit vs Margin)
+      const targetTypeRadios = this.querySelectorAll<HTMLInputElement>('input[name="reverseTargetType"]');
+      targetTypeRadios.forEach((radio) => {
+        radio.addEventListener('change', () => {
+          this.switchTargetType(radio.value as ReverseTargetType);
+        });
+      });
+    }
+
+    private switchMode(mode: 'forward' | 'reverse') {
+      this.currentMode = mode;
+
+      const modeBtns = this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]');
+      modeBtns.forEach((btn) => {
+        const isActive = btn.dataset.modeBtn === mode;
+        btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        if (isActive) {
+          btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm', 'font-bold');
+          btn.classList.remove('text-body', 'font-semibold');
+        } else {
+          btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm', 'font-bold');
+          btn.classList.add('text-body', 'font-semibold');
+        }
+      });
+
+      const forwardPanel = this.querySelector<HTMLElement>('[data-mode-panel="forward"]');
+      const reversePanel = this.querySelector<HTMLElement>('[data-mode-panel="reverse"]');
+
+      if (forwardPanel) forwardPanel.classList.toggle('hidden', mode !== 'forward');
+      if (reversePanel) reversePanel.classList.toggle('hidden', mode !== 'reverse');
+
+      this.calculate();
+    }
+
+    private switchTargetType(type: ReverseTargetType) {
+      this.currentReverseTargetType = type;
+
+      const profitLabel = this.querySelector<HTMLElement>('[data-target-type-label="profit"]');
+      const marginLabel = this.querySelector<HTMLElement>('[data-target-type-label="margin"]');
+
+      if (profitLabel) {
+        profitLabel.classList.toggle('border-primary', type === 'profit');
+        profitLabel.classList.toggle('bg-mint-50', type === 'profit');
+        profitLabel.classList.toggle('text-primary', type === 'profit');
+        profitLabel.classList.toggle('font-bold', type === 'profit');
+        profitLabel.classList.toggle('border-hairline-strong', type !== 'profit');
+        profitLabel.classList.toggle('bg-canvas-soft', type !== 'profit');
+        profitLabel.classList.toggle('text-body', type !== 'profit');
+      }
+
+      if (marginLabel) {
+        marginLabel.classList.toggle('border-primary', type === 'margin');
+        marginLabel.classList.toggle('bg-mint-50', type === 'margin');
+        marginLabel.classList.toggle('text-primary', type === 'margin');
+        marginLabel.classList.toggle('font-bold', type === 'margin');
+        marginLabel.classList.toggle('border-hairline-strong', type !== 'margin');
+        marginLabel.classList.toggle('bg-canvas-soft', type !== 'margin');
+        marginLabel.classList.toggle('text-body', type !== 'margin');
+      }
+
+      const profitInputContainer = this.querySelector<HTMLElement>('[data-target-input-profit]');
+      const marginInputContainer = this.querySelector<HTMLElement>('[data-target-input-margin]');
+
+      if (profitInputContainer) profitInputContainer.classList.toggle('hidden', type !== 'profit');
+      if (marginInputContainer) marginInputContainer.classList.toggle('hidden', type !== 'margin');
+
+      this.calculate();
     }
 
     private switchPlatform(newPlatform: PlatformId) {
@@ -501,8 +680,6 @@ const platformList: { id: PlatformId; label: string }[] = [
       if (!this.form) return;
 
       const formData = new FormData(this.form);
-      const price = parseFloat(formData.get('price') as string) || 0;
-      const quantity = Math.max(1, parseInt(formData.get('quantity') as string, 10) || 1);
       const shippingCharged = parseFloat(formData.get('shippingCharged') as string) || 0;
       const shippingCost = parseFloat(formData.get('shippingCost') as string) || 0;
       const itemCost = parseFloat(formData.get('itemCost') as string) || 0;
@@ -526,19 +703,64 @@ const platformList: { id: PlatformId; label: string }[] = [
         options.region = 'US';
       }
 
-      const result: CalcResult = runCalculator(
-        this.currentPlatform,
-        {
-          price,
-          quantity,
-          shippingCharged,
-          shippingCost,
-          itemCost,
-        },
-        options
-      );
+      if (this.currentMode === 'reverse') {
+        const reverseQuantity = Math.max(1, parseInt(formData.get('reverseQuantity') as string, 10) || 1);
+        const targetType = this.currentReverseTargetType;
+        const targetValue =
+          targetType === 'margin'
+            ? parseFloat(formData.get('targetMargin') as string) || 30.0
+            : parseFloat(formData.get('targetProfit') as string) || 25.0;
 
-      this.updateUI(result);
+        const rev = calculateReverse(
+          this.currentPlatform,
+          {
+            targetType,
+            targetValue,
+            quantity: reverseQuantity,
+            shippingCharged,
+            shippingCost,
+            itemCost,
+          },
+          options
+        );
+
+        const isTwitch = this.currentPlatform === 'twitch-bits';
+        const solvedPriceEl = this.querySelector('[data-reverse-solved-price]');
+        const solvedDescEl = this.querySelector('[data-reverse-solved-desc]');
+
+        if (solvedPriceEl) {
+          solvedPriceEl.textContent = isTwitch
+            ? `${Math.round(rev.targetPrice).toLocaleString()} Bits`
+            : this.formatMoney(rev.targetPrice);
+        }
+
+        if (solvedDescEl) {
+          const targetStr =
+            targetType === 'margin'
+              ? `${targetValue.toFixed(1)}% margin`
+              : `${this.formatMoney(targetValue)} net profit`;
+          solvedDescEl.textContent = `List at ${this.formatMoney(rev.targetPrice)} to achieve ${targetStr}`;
+        }
+
+        this.updateUI(rev.forwardResult);
+      } else {
+        const price = parseFloat(formData.get('price') as string) || 0;
+        const quantity = Math.max(1, parseInt(formData.get('quantity') as string, 10) || 1);
+
+        const result: CalcResult = runCalculator(
+          this.currentPlatform,
+          {
+            price,
+            quantity,
+            shippingCharged,
+            shippingCost,
+            itemCost,
+          },
+          options
+        );
+
+        this.updateUI(result);
+      }
     }
 
     private updateUI(result: CalcResult) {
