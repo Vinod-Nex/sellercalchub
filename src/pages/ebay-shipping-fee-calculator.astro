@@ -1,0 +1,374 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorIsland from '../components/CalculatorIsland.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getEntry } from 'astro:content';
+import { PLATFORM_CONFIGS } from '../lib/calc';
+
+// Load eBay US fee metadata from content collection
+const ebayEntry = await getEntry('fees', 'ebay-us');
+const feeData = ebayEntry?.data;
+const config = PLATFORM_CONFIGS['ebay-us'];
+
+const verifiedOnIso = feeData?.verified_on ?? config.verifiedOn;
+const sourceUrl = feeData?.source_url ?? config.sourceUrl;
+
+function formatVerifiedDate(isoDate: string): string {
+  try {
+    const [year, month, day] = isoDate.split('-').map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
+const verifiedDateFormatted = formatVerifiedDate(verifiedOnIso);
+
+// FAQ definitions
+const faqs = [
+  {
+    question: "Why does eBay charge final value fees on shipping?",
+    answer:
+      "eBay charges its percentage Final Value Fee on shipping to prevent fee circumvention. Years ago, sellers would list expensive items for $0.99 with $99.00 shipping to avoid paying final value fees. Charging fees on the total transaction amount (item price plus shipping) created a fair, level playing field across all listings.",
+  },
+  {
+    question: "How do I calculate break-even shipping so I don't lose money on postage?",
+    answer:
+      "To break even after eBay takes its 13.25% fee, divide your expected shipping label cost by 0.8675 (which is 1 minus 0.1325). For example, if a USPS Ground Advantage label costs you $10.00, you must charge the buyer $11.53 ($10.00 ÷ 0.8675). eBay will deduct $1.53 in fees, leaving you with exactly $10.00 to purchase the postage label.",
+  },
+  {
+    question: "Does offering 'Free Shipping' cost more in eBay fees?",
+    answer:
+      "No. eBay charges the exact same percentage fee regardless of whether shipping is charged separately or built into the item price. A $50 item with $10 shipping ($60 total) incurs the exact same $7.95 in percentage fees as a $60 item with free shipping ($60 total). However, free shipping often increases conversion and search rank.",
+  },
+  {
+    question: "Do I get a discount when buying shipping labels through eBay Delivery?",
+    answer:
+      "Yes. Purchasing USPS, UPS, and FedEx labels directly through eBay Delivery provides commercial base discounts—typically 15% to 30% below retail post office counter prices. These postage savings help offset the Final Value Fee charged on your shipping total.",
+  },
+  {
+    question: "Are fees on shipping refunded if a buyer returns an item?",
+    answer:
+      "If you issue a full refund upon receiving a returned item, eBay credits back the proportional Final Value Fee on both the item price and the original shipping amount. However, return shipping label costs and discretionary restocking fees are governed by your shop's return policy.",
+  },
+];
+
+// Structured Data
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'eBay Shipping Fee Calculator',
+    url: 'https://sellercalchub.com/ebay-shipping-fee-calculator/',
+    description:
+      'Does eBay charge fees on shipping? Calculate how much of your shipping charge eBay keeps, avoid losing money on postage, and model free shipping vs buyer-paid.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'eBay Shipping Fee Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="eBay Shipping Fee Calculator - Fees on Postage & Shipping Profit"
+  description="Does eBay charge fees on shipping? Calculate how much of your shipping charge eBay keeps, avoid losing money on postage, and model free shipping vs buyer-paid."
+  canonicalPath="/ebay-shipping-fee-calculator/"
+  structuredData={structuredData}
+>
+  <div class="max-w-5xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Breadcrumbs -->
+    <Breadcrumbs
+      items={[
+        { name: 'Home', href: '/' },
+        { name: 'Calculators', href: '/#calculators' },
+        { name: 'eBay Fee Calculator', href: '/ebay-fee-calculator/' },
+        { name: 'Shipping Fee Calculator' },
+      ]}
+    />
+
+    <!-- Header & Direct Answer -->
+    <header class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+        <span>Postage Economics: 13.25% Deducted on Shipping · Break-Even Padding · Free Shipping Comparison</span>
+      </div>
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        eBay Shipping Fee Calculator
+      </h1>
+
+      <p class="text-body-lg text-body max-w-3xl leading-relaxed">
+        Yes, eBay charges its full category Final Value Fee (typically <strong class="text-ink">13.25% for standard sellers</strong> or <strong class="text-ink">12.35% for Store subscribers</strong>) on <strong class="text-ink">the shipping fee collected from the buyer</strong>. For example, if you collect $10.00 for shipping, eBay retains $1.33 in fees, leaving you with only $8.67 toward the postage label. If the actual carrier label costs $10.00, you lose $1.33 out of pocket. This calculator shows your exact shipping margin, fee deductions, and how to price postage profitably.
+      </p>
+
+      <!-- Reciprocal Link to Pillar -->
+      <div class="pt-1">
+        <a
+          href="/ebay-fee-calculator/"
+          class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>Need to calculate total seller profit across all costs? Visit the main eBay Fee Calculator</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Calculator Island Above the Fold -->
+    <section class="space-y-4" id="calculator">
+      <CalculatorIsland platform="ebay-us" showPlatformTabs={false} />
+    </section>
+
+    <!-- The Shipping Fee Trap Explained -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">The "Shipping Fee Trap" Explained</h2>
+      <p class="text-body text-body leading-relaxed">
+        Many new sellers fall into the trap of charging the buyer the exact postage counter price (e.g., $10.00), only to discover at month-end that they are losing money on every single package. Because eBay charges 13.25% on the entire order, you must account for the fee cut taken from shipping:
+      </p>
+
+      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+        <table class="w-full text-body-sm text-left border-collapse">
+          <thead>
+            <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
+              <th class="p-3.5">Shipping Strategy</th>
+              <th class="p-3.5 text-right">Shipping Charged</th>
+              <th class="p-3.5 text-right">eBay Fee on Shipping (13.25%)</th>
+              <th class="p-3.5 text-right">Actual Label Cost</th>
+              <th class="p-3.5 text-right">Net Shipping Margin</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-hairline">
+            <tr class="bg-negative/5">
+              <td class="p-3.5 font-medium text-ink">
+                <strong>1. Pass-Through (Exact Cost)</strong>
+                <span class="block text-caption text-muted">Charging buyer exact label price</span>
+              </td>
+              <td class="p-3.5 text-right font-mono font-bold text-ink">$10.00</td>
+              <td class="p-3.5 text-right font-mono text-negative">-$1.33</td>
+              <td class="p-3.5 text-right font-mono text-muted">-$10.00</td>
+              <td class="p-3.5 text-right font-mono text-negative font-bold">-$1.33 (Loss)</td>
+            </tr>
+            <tr class="bg-primary/5">
+              <td class="p-3.5 font-medium text-ink">
+                <strong>2. Padded (Break-Even)</strong>
+                <span class="block text-caption text-muted">Charging $10.00 ÷ 0.8675</span>
+              </td>
+              <td class="p-3.5 text-right font-mono font-bold text-ink">$11.53</td>
+              <td class="p-3.5 text-right font-mono text-negative">-$1.53</td>
+              <td class="p-3.5 text-right font-mono text-muted">-$10.00</td>
+              <td class="p-3.5 text-right font-mono text-primary font-bold">$0.00 (Break-Even)</td>
+            </tr>
+            <tr class="hover:bg-canvas-soft/40 transition-colors">
+              <td class="p-3.5 font-medium text-ink">
+                <strong>3. Free Shipping (Baked In)</strong>
+                <span class="block text-caption text-muted">$50 item + $11.53 baked into $61.53 price</span>
+              </td>
+              <td class="p-3.5 text-right font-mono font-bold text-ink">$0.00</td>
+              <td class="p-3.5 text-right font-mono text-muted">$0.00</td>
+              <td class="p-3.5 text-right font-mono text-muted">-$10.00</td>
+              <td class="p-3.5 text-right font-mono text-primary font-bold">$0.00 (Built In)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Break-Even Formula in Plain Text -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">The Break-Even Shipping Formula</h2>
+      <p class="text-body text-body leading-relaxed">
+        Use this simple formula to determine exactly what dollar amount to charge your buyer for shipping to avoid losing money:
+      </p>
+
+      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink">
+        <div class="text-primary font-bold">Break-Even Shipping Charge Formula</div>
+        <div class="pl-4 text-muted">
+          Break-Even Shipping = Actual Label Cost &divide; (1 &minus; Final Value Fee Rate)
+        </div>
+        <div class="pl-4 text-muted">
+          For Standard Sellers (13.25% FVF): Break-Even Shipping = Actual Label Cost &divide; 0.8675
+        </div>
+        <div class="pl-4 text-muted">
+          For Store Subscribers (12.35% FVF): Break-Even Shipping = Actual Label Cost &divide; 0.8765
+        </div>
+        <div class="pl-4 text-muted">
+          For Top Rated Plus Sellers (11.92% Net FVF): Break-Even Shipping = Actual Label Cost &divide; 0.8808
+        </div>
+      </div>
+    </section>
+
+    <!-- Worked Practical Example -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Worked Example: USPS Ground Advantage ($12.00 Package)</h2>
+      <p class="text-body text-body leading-relaxed">
+        A seller ships a 2 lb parcel across Zone 6. The actual USPS shipping label purchased on eBay Delivery costs <strong class="text-ink">$12.00</strong>. The sold item price is <strong class="text-ink">$50.00</strong>:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-3">
+          <span class="text-caption font-bold text-negative uppercase tracking-wider block">Option A: Pass-Through Shipping ($12.00 Charged)</span>
+          <div class="space-y-1 text-body-sm">
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">Buyer Pays for Shipping:</span>
+              <span class="font-mono font-bold text-ink">$12.00</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">eBay 13.25% Fee on Shipping:</span>
+              <span class="font-mono text-negative">-$1.59</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">Postage Label Cost:</span>
+              <span class="font-mono text-muted">-$12.00</span>
+            </div>
+            <div class="flex justify-between py-1 font-bold pt-1">
+              <span class="text-negative">Seller Shipping Net Loss:</span>
+              <span class="font-mono text-negative">-$1.59</span>
+            </div>
+          </div>
+          <p class="text-caption text-muted">
+            The seller has to cover $1.59 of postage out of their item profit.
+          </p>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-3">
+          <span class="text-caption font-bold text-primary uppercase tracking-wider block">Option B: Padded Shipping ($13.83 Charged)</span>
+          <div class="space-y-1 text-body-sm">
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">Buyer Pays for Shipping:</span>
+              <span class="font-mono font-bold text-ink">$13.83</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">eBay 13.25% Fee on Shipping:</span>
+              <span class="font-mono text-negative">-$1.83</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-hairline">
+              <span class="text-muted">Postage Label Cost:</span>
+              <span class="font-mono text-muted">-$12.00</span>
+            </div>
+            <div class="flex justify-between py-1 font-bold pt-1">
+              <span class="text-primary">Seller Shipping Margin:</span>
+              <span class="font-mono text-primary">$0.00 (Protected)</span>
+            </div>
+          </div>
+          <p class="text-caption text-muted">
+            The buyer covers the exact postage cost plus eBay's fee on postage.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQs -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-1">
+        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions</h2>
+        <p class="text-body text-body leading-relaxed">
+          Common questions on shipping fee mechanics, label discounts, and free shipping strategies.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map((faq) => (
+          <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
+            <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+              <span>{faq.question}</span>
+              <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
+                &#9660;
+              </span>
+            </summary>
+            <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Related Calculators -->
+    <section class="space-y-4 border-t border-hairline pt-8">
+      <h2 class="text-heading-2 font-bold text-ink">Related eBay Calculators</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a
+          href="/ebay-fee-calculator/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">Pillar Calculator</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Fee Calculator</span>
+          <span class="text-caption text-muted block">The full all-in-one calculator with store subscriptions and promoted listings.</span>
+        </a>
+        <a
+          href="/ebay-final-value-fee-calculator/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">Commission Only</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Final Value Fee Calculator</span>
+          <span class="text-caption text-muted block">Isolate platform fees and review category rates and the $7,500 cap.</span>
+        </a>
+        <a
+          href="/ebay-profit-calculator/"
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
+        >
+          <span class="text-caption font-bold text-primary block mb-1">Profit & Loss</span>
+          <span class="text-heading-4 font-bold text-ink block mb-2">eBay Profit Calculator</span>
+          <span class="text-caption text-muted block">Calculate net cash profit, margins, ROI, and break-even listing price.</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Last-Verified Stamp -->
+    <footer class="pt-6 border-t border-hairline">
+      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span class="text-ui-label font-bold text-ink">
+              Official Rate Verification
+            </span>
+          </div>
+          <p class="text-caption text-muted">
+            eBay US fee rates officially verified on <strong class="text-ink">{verifiedDateFormatted}</strong>. Sourced directly from eBay’s official Selling Fees policy and Store Fee Schedules.
+          </p>
+        </div>
+
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+        >
+          <span>View Official eBay Selling Fees</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
