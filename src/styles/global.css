@@ -44,7 +44,7 @@
   /* Semantic */
   --color-link: #005fb9;
   --color-info: #4b99e6;
-  --color-error: #de2828;
+  --color-error: #c52222;
 
   /* Shadows */
   --shadow-level-3:
@@ -56,10 +56,10 @@
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     /* Brand & Accent */
-    --color-primary: #059669;
+    --color-primary: #10b981;
     --color-primary-deep: #004d32;
     --color-forest: #003823;
-    --color-on-primary: #ffffff;
+    --color-on-primary: #0c120f;
 
     --color-lime-hero: #a3e635;
     --color-lime-panel: #162a14;
@@ -97,10 +97,10 @@
 
 html.dark {
   /* Brand & Accent */
-  --color-primary: #059669;
+  --color-primary: #10b981;
   --color-primary-deep: #004d32;
   --color-forest: #003823;
-  --color-on-primary: #ffffff;
+  --color-on-primary: #0c120f;
 
   --color-lime-hero: #a3e635;
   --color-lime-panel: #162a14;
@@ -166,7 +166,7 @@ html.light {
   /* Semantic */
   --color-link: #005fb9;
   --color-info: #4b99e6;
-  --color-error: #de2828;
+  --color-error: #c52222;
 
   /* Shadows */
   --shadow-level-3:
@@ -286,4 +286,19 @@ body {
 /* Prevent flash of default values when restoring state from URL query parameters (Phase 12) */
 html.calc-restoring seller-calculator:not([data-initialized]) {
   visibility: hidden;
+}
+
+/* Accessible Screen-Reader-Only utility guaranteed not to break viewport overflow */
+.sr-only:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
 }

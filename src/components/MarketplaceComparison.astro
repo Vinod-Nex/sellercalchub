@@ -223,7 +223,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
             <div class="pt-4 mt-3 border-t border-hairline">
               <a
                 href={item.href}
-                class="inline-flex items-center justify-between w-full text-ui-label font-bold text-primary hover:text-primary-deep transition-colors text-body-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+                class="inline-flex items-center justify-between w-full min-h-[44px] py-3 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors text-body-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
               >
                 <span>Open {item.name} Calculator</span>
                 <span aria-hidden="true">&rarr;</span>
@@ -238,7 +238,12 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
   <!-- 3. Accessible Side-by-Side Summary Table -->
   <div class="space-y-3 pt-4 border-t border-hairline">
     <h3 class="text-heading-3 font-bold text-ink">Tabular Comparison Overview</h3>
-    <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+    <div
+      class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+      tabindex="0"
+      role="region"
+      aria-label="Tabular marketplace fee comparison"
+    >
       <table class="w-full text-body-sm text-left border-collapse" data-comp-table>
         <thead>
           <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
@@ -255,7 +260,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
           {initialResults.map((item) => (
             <tr data-table-row={item.id} class="hover:bg-canvas-soft/40 transition-colors">
               <td class="p-3.5 font-bold text-ink">
-                <a href={item.href} class="hover:text-primary transition-colors underline decoration-hairline">
+                <a href={item.href} class="hover:text-primary transition-colors underline decoration-hairline min-h-[44px] min-w-[44px] inline-flex items-center">
                   {item.name}
                 </a>
               </td>

@@ -290,7 +290,7 @@ const structuredData = [
               <button
                 type="button"
                 data-preset-bits={amount}
-                class="px-3 py-1.5 rounded-xs bg-canvas-soft border border-hairline hover:border-primary hover:text-ink text-body text-ui-sm font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary tabular-nums"
+                class="px-3 py-2 min-h-[44px] inline-flex items-center justify-center rounded-xs bg-canvas-soft border border-hairline hover:border-primary hover:text-ink text-body text-ui-sm font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary tabular-nums"
               >
                 ✦ {amount.toLocaleString()}
               </button>
@@ -361,7 +361,12 @@ const structuredData = [
       </div>
 
       <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3">
-        <div class="overflow-x-auto">
+        <div
+          class="overflow-x-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+          tabindex="0"
+          role="region"
+          aria-label="Twitch Bits conversion table"
+        >
           <table class="w-full text-ui-sm text-left">
             <caption class="sr-only">
               Table of Twitch Bits conversions showing streamer earnings and
@@ -506,7 +511,7 @@ const structuredData = [
       <div class="space-y-3">
         {faqs.map((faq) => (
           <details class="group rounded-lg border border-hairline-strong bg-canvas p-4 transition-colors hover:border-primary">
-            <summary class="flex items-center justify-between font-bold text-ink text-ui-label cursor-pointer list-none select-none">
+            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink text-ui-label cursor-pointer list-none select-none">
               <span>{faq.question}</span>
               <svg
                 class="w-4 h-4 text-muted group-open:rotate-180 transition-transform duration-150 shrink-0 ml-2"
@@ -622,7 +627,7 @@ const structuredData = [
           href={sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-4 py-2 bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Official Twitch Guide</span>
           <svg

@@ -1,5 +1,5 @@
 ---
-import type { CalcResult } from '../lib/calc';
+import type { CalcResult } from "../lib/calc";
 
 export interface Props {
   result: CalcResult;
@@ -12,15 +12,15 @@ export interface Props {
 
 const {
   result,
-  platformName = 'Marketplace',
-  currencySymbol = '$',
-  verifiedOn = '2026-11-22',
-  sourceUrl = 'https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot',
-  class: className = '',
+  platformName = "Marketplace",
+  currencySymbol = "$",
+  verifiedOn = "2026-11-22",
+  sourceUrl = "https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot",
+  class: className = "",
 } = Astro.props;
 
 function formatMoney(amount: number, symbol: string): string {
-  const formatted = Math.abs(amount).toLocaleString('en-US', {
+  const formatted = Math.abs(amount).toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -30,13 +30,13 @@ function formatMoney(amount: number, symbol: string): string {
 // Format verified date nicely (e.g. "November 22, 2026")
 function formatVerifiedDate(isoDate: string): string {
   try {
-    const [year, month, day] = isoDate.split('-').map(Number);
+    const [year, month, day] = isoDate.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      timeZone: 'UTC',
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
     });
   } catch {
     return isoDate;
@@ -59,60 +59,78 @@ const cogsPct = Number(((cogsAmount / totalBasis) * 100).toFixed(1));
 const shipPct = Number(((shipAmount / totalBasis) * 100).toFixed(1));
 
 const isProfitable = result.netProfit >= 0;
-const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
+const headlinePrefix = isProfitable ? "You keep" : "You lose";
 ---
 
 <section
-  class:list={['results-panel space-y-6', className]}
+  class:list={["results-panel space-y-6", className]}
   aria-labelledby="results-headline-title"
   data-results-panel
 >
   <!-- 1. Headline Net Profit Block (NerdWallet stat-block-dark) -->
   <div
     class:list={[
-      'rounded-lg text-on-primary p-6 md:p-8 shadow-level-3 relative overflow-hidden transition-colors',
-      isProfitable ? 'bg-primary-deep' : 'bg-error',
+      "rounded-lg text-on-primary p-6 md:p-8 shadow-level-3 relative overflow-hidden transition-colors",
+      isProfitable ? "bg-primary-deep" : "bg-error",
     ]}
     data-net-profit-card
   >
     <div class="flex items-center justify-between mb-2">
       <span
         id="results-headline-title"
-        class="text-ui-label uppercase font-bold tracking-wider text-lime-panel"
+        class="text-ui-label uppercase font-bold tracking-wider text-lime-hero"
       >
         Estimated Payout
       </span>
       <span
         data-profit-badge
         class:list={[
-          'text-micro uppercase font-bold px-2.5 py-0.5 rounded-xs',
-          isProfitable ? 'bg-forest text-lime-hero' : 'bg-black/30 text-white',
+          "text-micro uppercase font-bold px-2.5 py-0.5 rounded-xs",
+          isProfitable ? "bg-forest text-lime-hero" : "bg-black/30 text-white",
         ]}
       >
-        {isProfitable ? 'Profitable' : 'Loss'}
+        {isProfitable ? "Profitable" : "Loss"}
       </span>
     </div>
 
     <!-- Main Headline: 'You keep $X' -->
     <div class="flex items-baseline gap-2">
       <h3 class="text-display-lg md:text-display-xl font-bold tracking-tight text-white tabular-nums">
-        <span data-headline-prefix>{headlinePrefix}</span>{' '}
-        <span data-out="net-profit">{formatMoney(result.netProfit, currencySymbol)}</span>
+        <span data-headline-prefix>{headlinePrefix}</span>{" "}
+        <span data-out="net-profit">
+          {formatMoney(result.netProfit, currencySymbol)}
+        </span>
       </h3>
     </div>
 
     <!-- Key Metrics Subtitle: Margin & ROI -->
-    <div class="flex flex-wrap items-center gap-3 mt-3 text-body-sm text-mint-100 font-light">
+    <div class="flex flex-wrap items-center gap-3 mt-3 text-body-sm text-white/90 font-light">
       <span class="inline-flex items-center gap-1 font-medium">
-        Margin: <strong class="font-bold text-white tabular-nums" data-out="profit-margin">{result.profitMargin.toFixed(1)}%</strong>
+        Margin:{" "}
+        <strong
+          class="font-bold text-white tabular-nums"
+          data-out="profit-margin"
+        >
+          {result.profitMargin.toFixed(1)}%
+        </strong>
       </span>
-      <span aria-hidden="true" class="text-mint-200/60">·</span>
-      <span class="inline-flex items-center gap-1 font-medium">
-        ROI: <strong class="font-bold text-white tabular-nums" data-out="roi">{result.roi.toFixed(1)}%</strong>
+      <span aria-hidden="true" class="text-mint-200/60">
+        ·
       </span>
-      <span aria-hidden="true" class="text-mint-200/60">·</span>
       <span class="inline-flex items-center gap-1 font-medium">
-        Break-Even: <strong class="font-bold text-white tabular-nums" data-out="break-even">{formatMoney(result.breakEvenPrice, currencySymbol)}</strong>
+        ROI:{" "}
+        <strong class="font-bold text-white tabular-nums" data-out="roi">
+          {result.roi.toFixed(1)}%
+        </strong>
+      </span>
+      <span aria-hidden="true" class="text-mint-200/60">
+        ·
+      </span>
+      <span class="inline-flex items-center gap-1 font-medium">
+        Break-Even:{" "}
+        <strong class="font-bold text-white tabular-nums" data-out="break-even">
+          {formatMoney(result.breakEvenPrice, currencySymbol)}
+        </strong>
       </span>
     </div>
   </div>
@@ -123,7 +141,9 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
       <h4 class="text-eyebrow text-muted uppercase font-bold tracking-wider">
         Where Each Dollar Goes
       </h4>
-      <span class="text-caption text-muted font-medium">Sale Proceeds Distribution</span>
+      <span class="text-caption text-muted font-medium">
+        Sale Proceeds Distribution
+      </span>
     </div>
 
     <!-- Visual Stacked Bar -->
@@ -138,56 +158,92 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
         style={`width: ${profitPct}%`}
         class="bg-primary h-full transition-all duration-300 relative group"
         title={`Net Profit: ${profitPct}%`}
-      >
-      </div>
+      ></div>
       <div
         data-bar-fees
         style={`width: ${feesPct}%`}
         class="bg-amber-600 dark:bg-amber-500 h-full transition-all duration-300 relative group"
         title={`Platform Fees: ${feesPct}%`}
-      >
-      </div>
+      ></div>
       <div
         data-bar-cogs
         style={`width: ${cogsPct}%`}
         class="bg-slate-600 dark:bg-slate-400 h-full transition-all duration-300 relative group"
         title={`Product Cost (COGS): ${cogsPct}%`}
-      >
-      </div>
+      ></div>
       <div
         data-bar-shipping
         style={`width: ${shipPct}%`}
         class="bg-blue-600 dark:bg-blue-400 h-full transition-all duration-300 relative group"
         title={`Shipping Out-of-Pocket: ${shipPct}%`}
-      >
-      </div>
+      ></div>
     </div>
 
     <!-- Accessible Text Alternative for Screen Readers -->
     <ol class="sr-only" data-bar-sr-list>
-      <li data-sr-profit>Net Profit: {formatMoney(profitAmount, currencySymbol)} ({profitPct}%)</li>
-      <li data-sr-fees>Marketplace Fees: {formatMoney(feesAmount, currencySymbol)} ({feesPct}%)</li>
-      <li data-sr-cogs>Product Cost: {formatMoney(cogsAmount, currencySymbol)} ({cogsPct}%)</li>
-      <li data-sr-shipping>Shipping Cost: {formatMoney(shipAmount, currencySymbol)} ({shipPct}%)</li>
+      <li data-sr-profit>
+        Net Profit: {formatMoney(profitAmount, currencySymbol)} ({profitPct}%)
+      </li>
+      <li data-sr-fees>
+        Marketplace Fees: {formatMoney(feesAmount, currencySymbol)} ({feesPct}%)
+      </li>
+      <li data-sr-cogs>
+        Product Cost: {formatMoney(cogsAmount, currencySymbol)} ({cogsPct}%)
+      </li>
+      <li data-sr-shipping>
+        Shipping Cost: {formatMoney(shipAmount, currencySymbol)} ({shipPct}%)
+      </li>
     </ol>
 
     <!-- Visible Responsive Legend -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-micro text-body">
       <div class="flex items-center gap-1.5">
-        <span class="w-3 h-3 rounded-xxs bg-primary shrink-0" aria-hidden="true"></span>
-        <span>Profit: <strong class="tabular-nums" data-legend-profit>{profitPct}%</strong></span>
+        <span
+          class="w-3 h-3 rounded-xxs bg-primary shrink-0"
+          aria-hidden="true"
+        ></span>
+        <span>
+          Profit:{" "}
+          <strong class="tabular-nums" data-legend-profit>
+            {profitPct}%
+          </strong>
+        </span>
       </div>
       <div class="flex items-center gap-1.5">
-        <span class="w-3 h-3 rounded-xxs bg-amber-600 dark:bg-amber-500 shrink-0" aria-hidden="true"></span>
-        <span>Fees: <strong class="tabular-nums" data-legend-fees>{feesPct}%</strong></span>
+        <span
+          class="w-3 h-3 rounded-xxs bg-amber-600 dark:bg-amber-500 shrink-0"
+          aria-hidden="true"
+        ></span>
+        <span>
+          Fees:{" "}
+          <strong class="tabular-nums" data-legend-fees>
+            {feesPct}%
+          </strong>
+        </span>
       </div>
       <div class="flex items-center gap-1.5">
-        <span class="w-3 h-3 rounded-xxs bg-slate-600 dark:bg-slate-400 shrink-0" aria-hidden="true"></span>
-        <span>COGS: <strong class="tabular-nums" data-legend-cogs>{cogsPct}%</strong></span>
+        <span
+          class="w-3 h-3 rounded-xxs bg-slate-600 dark:bg-slate-400 shrink-0"
+          aria-hidden="true"
+        ></span>
+        <span>
+          COGS:{" "}
+          <strong class="tabular-nums" data-legend-cogs>
+            {cogsPct}%
+          </strong>
+        </span>
       </div>
       <div class="flex items-center gap-1.5">
-        <span class="w-3 h-3 rounded-xxs bg-blue-600 dark:bg-blue-400 shrink-0" aria-hidden="true"></span>
-        <span>Shipping: <strong class="tabular-nums" data-legend-shipping>{shipPct}%</strong></span>
+        <span
+          class="w-3 h-3 rounded-xxs bg-blue-600 dark:bg-blue-400 shrink-0"
+          aria-hidden="true"
+        ></span>
+        <span>
+          Shipping:{" "}
+          <strong class="tabular-nums" data-legend-shipping>
+            {shipPct}%
+          </strong>
+        </span>
       </div>
     </div>
   </div>
@@ -198,36 +254,55 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
       <h4 class="text-ui-label font-bold text-ink uppercase tracking-wider">
         Itemised Fee Breakdown
       </h4>
-      <span class="text-caption text-muted font-medium">Official Platform Rates</span>
+      <span class="text-caption text-muted font-medium">
+        Official Platform Rates
+      </span>
     </div>
 
-    <table class="w-full text-left text-body-sm" aria-label="Itemised Fee Breakdown">
-      <caption class="sr-only">Detailed breakdown of platform fees deducted from this sale</caption>
+    <table
+      class="w-full text-left text-body-sm"
+      aria-label="Itemised Fee Breakdown"
+    >
+      <caption class="sr-only">
+        Detailed breakdown of platform fees deducted from this sale
+      </caption>
       <thead>
         <tr class="border-b border-hairline bg-canvas text-eyebrow text-muted font-bold">
-          <th scope="col" class="py-2.5 px-4">Fee Item</th>
-          <th scope="col" class="py-2.5 px-4 text-right">Amount</th>
+          <th scope="col" class="py-2.5 px-4">
+            Fee Item
+          </th>
+          <th scope="col" class="py-2.5 px-4 text-right">
+            Amount
+          </th>
         </tr>
       </thead>
-      <tbody data-out="fee-breakdown-body" class="divide-y divide-hairline bg-canvas">
-        {
-          result.fees.map((fee) => (
-            <tr>
-              <th scope="row" class="py-2.5 px-4 font-normal text-left">
-                <div class="font-semibold text-ink">{fee.name}</div>
-                {fee.description && <div class="text-micro text-muted">{fee.description}</div>}
-              </th>
-              <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
-                {formatMoney(fee.amount, currencySymbol)}
-              </td>
-            </tr>
-          ))
-        }
+      <tbody
+        data-out="fee-breakdown-body"
+        class="divide-y divide-hairline bg-canvas"
+      >
+        {result.fees.map((fee) => (
+          <tr>
+            <th scope="row" class="py-2.5 px-4 font-normal text-left">
+              <div class="font-semibold text-ink">{fee.name}</div>
+              {fee.description && (
+                <div class="text-micro text-muted">{fee.description}</div>
+              )}
+            </th>
+            <td class="py-2.5 px-4 text-right font-medium text-ink tabular-nums whitespace-nowrap">
+              {formatMoney(fee.amount, currencySymbol)}
+            </td>
+          </tr>
+        ))}
       </tbody>
       <tfoot>
         <tr class="border-t-2 border-hairline-strong bg-canvas-soft font-bold text-ink">
-          <th scope="row" class="py-2.5 px-4 text-left">Total Platform Fees</th>
-          <td class="py-2.5 px-4 text-right text-error tabular-nums" data-out="total-fees">
+          <th scope="row" class="py-2.5 px-4 text-left">
+            Total Platform Fees
+          </th>
+          <td
+            class="py-2.5 px-4 text-right text-error tabular-nums"
+            data-out="total-fees"
+          >
             {formatMoney(result.totalFees, currencySymbol)}
           </td>
         </tr>
@@ -240,7 +315,10 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
     <div class="flex items-center gap-2">
       <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
       <span>
-        Rates verified on <strong class="font-semibold text-ink" data-verified-date>{formattedDate}</strong>
+        Rates verified on{" "}
+        <strong class="font-semibold text-ink" data-verified-date>
+          {formattedDate}
+        </strong>
       </span>
     </div>
     <a
@@ -248,12 +326,27 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
       target="_blank"
       rel="noopener noreferrer"
       data-source-link
-      class="text-link hover:underline font-semibold inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+      class="text-link hover:underline font-semibold min-h-[44px] py-2 inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
     >
       Official <span data-platform-name>{platformName}</span> Fee Schedule
-      <svg class="w-3.5 h-3.5" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" />
-        <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z" clip-rule="evenodd" />
+      <svg
+        class="w-3.5 h-3.5"
+        width="14"
+        height="14"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+          clip-rule="evenodd"
+        />
+        <path
+          fill-rule="evenodd"
+          d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z"
+          clip-rule="evenodd"
+        />
       </svg>
     </a>
   </div>
@@ -263,9 +356,17 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
     <button
       type="button"
       data-copy-result-btn
-      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      class="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
-      <svg class="w-4 h-4 text-primary" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-copy-icon>
+      <svg
+        class="w-4 h-4 text-primary"
+        width="16"
+        height="16"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+        data-copy-icon
+      >
         <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
         <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.439 6.439A1.5 1.5 0 008.38 6H4.5z" />
       </svg>
@@ -275,9 +376,17 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
     <button
       type="button"
       data-share-link-btn
-      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      class="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-canvas border border-hairline-strong hover:border-primary active:bg-mint-50 text-ink text-ui-label font-bold rounded-xs shadow-sm transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
-      <svg class="w-4 h-4 text-primary" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-share-icon>
+      <svg
+        class="w-4 h-4 text-primary"
+        width="16"
+        height="16"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+        data-share-icon
+      >
         <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z" />
         <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z" />
       </svg>
@@ -297,24 +406,42 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
 
 <script>
   function initActionButtons() {
-    const copyBtns = document.querySelectorAll<HTMLButtonElement>('button[data-copy-result-btn]');
-    const shareBtns = document.querySelectorAll<HTMLButtonElement>('button[data-share-link-btn]');
+    const copyBtns = document.querySelectorAll<HTMLButtonElement>(
+      "button[data-copy-result-btn]",
+    );
+    const shareBtns = document.querySelectorAll<HTMLButtonElement>(
+      "button[data-share-link-btn]",
+    );
 
     copyBtns.forEach((btn) => {
-      if (btn.dataset.initialized === 'true') return;
-      btn.dataset.initialized = 'true';
+      if (btn.dataset.initialized === "true") return;
+      btn.dataset.initialized = "true";
 
-      btn.addEventListener('click', async () => {
-        const panel = btn.closest<HTMLElement>('[data-results-panel]');
+      btn.addEventListener("click", async () => {
+        const panel = btn.closest<HTMLElement>("[data-results-panel]");
         if (!panel) return;
 
-        const platform = panel.querySelector('[data-platform-name]')?.textContent?.trim() || 'Marketplace';
-        const netProfit = panel.querySelector('[data-out="net-profit"]')?.textContent?.trim() || '$0.00';
-        const headlinePrefix = panel.querySelector('[data-headline-prefix]')?.textContent?.trim() || 'You keep';
-        const margin = panel.querySelector('[data-out="profit-margin"]')?.textContent?.trim() || '0%';
-        const roi = panel.querySelector('[data-out="roi"]')?.textContent?.trim() || '0%';
-        const breakEven = panel.querySelector('[data-out="break-even"]')?.textContent?.trim() || '$0.00';
-        const totalFees = panel.querySelector('[data-out="total-fees"]')?.textContent?.trim() || '$0.00';
+        const platform =
+          panel.querySelector("[data-platform-name]")?.textContent?.trim() ||
+          "Marketplace";
+        const netProfit =
+          panel.querySelector('[data-out="net-profit"]')?.textContent?.trim() ||
+          "$0.00";
+        const headlinePrefix =
+          panel.querySelector("[data-headline-prefix]")?.textContent?.trim() ||
+          "You keep";
+        const margin =
+          panel
+            .querySelector('[data-out="profit-margin"]')
+            ?.textContent?.trim() || "0%";
+        const roi =
+          panel.querySelector('[data-out="roi"]')?.textContent?.trim() || "0%";
+        const breakEven =
+          panel.querySelector('[data-out="break-even"]')?.textContent?.trim() ||
+          "$0.00";
+        const totalFees =
+          panel.querySelector('[data-out="total-fees"]')?.textContent?.trim() ||
+          "$0.00";
 
         const lines = [
           `📊 ${platform} Fee & Profit Summary`,
@@ -328,38 +455,39 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
           `Calculated via SellerCalcHub.com (Verified Official Rates)`,
         ];
 
-        const textToCopy = lines.join('\n');
+        const textToCopy = lines.join("\n");
 
         try {
           await navigator.clipboard.writeText(textToCopy);
 
-          const btnText = btn.querySelector('[data-copy-btn-text]');
-          const statusEl = panel.querySelector<HTMLElement>('[data-copy-status]');
+          const btnText = btn.querySelector("[data-copy-btn-text]");
+          const statusEl =
+            panel.querySelector<HTMLElement>("[data-copy-status]");
 
-          if (btnText) btnText.textContent = '✓ Copied!';
+          if (btnText) btnText.textContent = "✓ Copied!";
           if (statusEl) {
-            statusEl.textContent = 'Breakdown copied to clipboard!';
-            statusEl.classList.remove('invisible');
+            statusEl.textContent = "Breakdown copied to clipboard!";
+            statusEl.classList.remove("invisible");
           }
-          btn.classList.add('bg-mint-50', 'border-primary');
+          btn.classList.add("bg-mint-50", "border-primary");
 
           setTimeout(() => {
-            if (btnText) btnText.textContent = 'Copy Breakdown';
-            if (statusEl) statusEl.classList.add('invisible');
-            btn.classList.remove('bg-mint-50', 'border-primary');
+            if (btnText) btnText.textContent = "Copy Breakdown";
+            if (statusEl) statusEl.classList.add("invisible");
+            btn.classList.remove("bg-mint-50", "border-primary");
           }, 2000);
         } catch (err) {
-          console.error('Failed to copy to clipboard:', err);
+          console.error("Failed to copy to clipboard:", err);
         }
       });
     });
 
     shareBtns.forEach((btn) => {
-      if (btn.dataset.initialized === 'true') return;
-      btn.dataset.initialized = 'true';
+      if (btn.dataset.initialized === "true") return;
+      btn.dataset.initialized = "true";
 
-      btn.addEventListener('click', async () => {
-        const panel = btn.closest<HTMLElement>('[data-results-panel]');
+      btn.addEventListener("click", async () => {
+        const panel = btn.closest<HTMLElement>("[data-results-panel]");
         if (!panel) return;
 
         const urlToCopy = window.location.href;
@@ -367,28 +495,29 @@ const headlinePrefix = isProfitable ? 'You keep' : 'You lose';
         try {
           await navigator.clipboard.writeText(urlToCopy);
 
-          const btnText = btn.querySelector('[data-share-btn-text]');
-          const statusEl = panel.querySelector<HTMLElement>('[data-copy-status]');
+          const btnText = btn.querySelector("[data-share-btn-text]");
+          const statusEl =
+            panel.querySelector<HTMLElement>("[data-copy-status]");
 
-          if (btnText) btnText.textContent = '✓ Copied!';
+          if (btnText) btnText.textContent = "✓ Copied!";
           if (statusEl) {
-            statusEl.textContent = 'Shareable link copied to clipboard!';
-            statusEl.classList.remove('invisible');
+            statusEl.textContent = "Shareable link copied to clipboard!";
+            statusEl.classList.remove("invisible");
           }
-          btn.classList.add('bg-mint-50', 'border-primary');
+          btn.classList.add("bg-mint-50", "border-primary");
 
           setTimeout(() => {
-            if (btnText) btnText.textContent = 'Share Link';
-            if (statusEl) statusEl.classList.add('invisible');
-            btn.classList.remove('bg-mint-50', 'border-primary');
+            if (btnText) btnText.textContent = "Share Link";
+            if (statusEl) statusEl.classList.add("invisible");
+            btn.classList.remove("bg-mint-50", "border-primary");
           }, 2000);
         } catch (err) {
-          console.error('Failed to copy link to clipboard:', err);
+          console.error("Failed to copy link to clipboard:", err);
         }
       });
     });
   }
 
   initActionButtons();
-  document.addEventListener('astro:page-load', initActionButtons);
+  document.addEventListener("astro:page-load", initActionButtons);
 </script>

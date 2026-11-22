@@ -1,13 +1,37 @@
 ---
-import ThemeToggle from './ThemeToggle.astro';
+import ThemeToggle from "./ThemeToggle.astro";
 
 const calculators = [
-  { name: 'Whatnot Fee Calculator', href: '/whatnot-fee-calculator/', badge: 'Live Sales' },
-  { name: 'TikTok Shop Fee Calculator', href: '/tiktok-shop-fee-calculator/', badge: 'E-commerce' },
-  { name: 'Depop Fee Calculator', href: '/depop-fee-calculator/', badge: 'Fashion' },
-  { name: 'Etsy Fee Calculator', href: '/etsy-fee-calculator/', badge: 'Handmade' },
-  { name: 'eBay Fee Calculator', href: '/ebay-fee-calculator/', badge: 'Reselling' },
-  { name: 'Twitch Bits Converter', href: '/twitch-bits-to-usd/', badge: 'Streaming' },
+  {
+    name: "Whatnot Fee Calculator",
+    href: "/whatnot-fee-calculator/",
+    badge: "Live Sales",
+  },
+  {
+    name: "TikTok Shop Fee Calculator",
+    href: "/tiktok-shop-fee-calculator/",
+    badge: "E-commerce",
+  },
+  {
+    name: "Depop Fee Calculator",
+    href: "/depop-fee-calculator/",
+    badge: "Fashion",
+  },
+  {
+    name: "Etsy Fee Calculator",
+    href: "/etsy-fee-calculator/",
+    badge: "Handmade",
+  },
+  {
+    name: "eBay Fee Calculator",
+    href: "/ebay-fee-calculator/",
+    badge: "Reselling",
+  },
+  {
+    name: "Twitch Bits Converter",
+    href: "/twitch-bits-to-usd/",
+    badge: "Streaming",
+  },
 ];
 ---
 
@@ -16,20 +40,26 @@ const calculators = [
     <!-- Brand Wordmark -->
     <a
       href="/"
-      class="flex items-center gap-2.5 text-heading-4 font-bold text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xs"
+      class="flex items-center gap-2.5 min-h-[44px] py-1 text-heading-4 font-bold text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xs"
       aria-label="Seller Calc Hub Home"
     >
-      <span class="inline-block w-4 h-4 rounded-xxs bg-logo-lime shrink-0" aria-hidden="true"></span>
-      <span class="text-ink hover:text-primary transition-colors">Seller Calc Hub</span>
+      <span
+        class="inline-block w-4 h-4 rounded-xxs bg-logo-lime shrink-0"
+        aria-hidden="true"
+      ></span>
+      <span class="text-ink hover:text-primary transition-colors">
+        Seller Calc Hub
+      </span>
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center gap-6" aria-label="Desktop Navigation">
+    <nav
+      class="hidden md:flex items-center gap-6"
+      aria-label="Desktop Navigation"
+    >
       <!-- Calculators Dropdown Menu (Accessible native details/summary) -->
       <details class="group relative">
-        <summary
-          class="list-none flex items-center gap-1.5 text-ui-label text-ink hover:text-primary transition-colors cursor-pointer py-1.5 px-2 rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 select-none"
-        >
+        <summary class="list-none flex items-center gap-1.5 text-ui-label text-ink hover:text-primary transition-colors cursor-pointer py-1.5 px-2 rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 select-none">
           <span>Calculators</span>
           <svg
             class="w-4 h-4 text-muted group-open:rotate-180 transition-transform duration-150"
@@ -47,9 +77,7 @@ const calculators = [
           </svg>
         </summary>
 
-        <div
-          class="absolute left-0 mt-2 w-72 rounded-lg bg-canvas border border-hairline-strong shadow-level-4 p-2 z-50 divide-y divide-hairline"
-        >
+        <div class="absolute left-0 mt-2 w-72 rounded-lg bg-canvas border border-hairline-strong shadow-level-4 p-2 z-50 divide-y divide-hairline">
           <div class="space-y-1 pb-1">
             {calculators.map((calc) => (
               <a
@@ -103,28 +131,43 @@ const calculators = [
 
     <!-- Mobile Navigation (Native details/summary: Zero JavaScript required) -->
     <div class="flex items-center gap-2 md:hidden">
-      <ThemeToggle />
+      <div class="hidden sm:block">
+        <ThemeToggle />
+      </div>
 
       <details class="relative">
         <summary
-          class="list-none flex items-center justify-center p-2 rounded-sm border border-hairline-strong text-ink hover:bg-canvas-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="list-none flex items-center justify-center w-11 h-11 p-2 rounded-sm border border-hairline-strong text-ink hover:bg-canvas-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           aria-label="Toggle mobile menu"
         >
           <!-- Hamburger Icon -->
-          <svg class="w-5 h-5" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            class="w-5 h-5"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </summary>
 
-        <div
-          class="absolute right-0 mt-2 w-72 rounded-lg bg-canvas border border-hairline-strong shadow-level-4 p-3 z-50 space-y-3"
-        >
-          <div class="text-eyebrow text-muted uppercase font-bold px-2">Marketplace Calculators</div>
+        <div class="absolute right-0 mt-2 w-72 rounded-lg bg-canvas border border-hairline-strong shadow-level-4 p-3 z-50 space-y-3">
+          <div class="text-eyebrow text-muted uppercase font-bold px-2">
+            Marketplace Calculators
+          </div>
           <div class="space-y-1">
             {calculators.map((calc) => (
               <a
                 href={calc.href}
-                class="flex items-center justify-between px-2.5 py-2 text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                class="flex items-center justify-between px-2.5 py-2.5 min-h-[44px] text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <span>{calc.name}</span>
                 <span class="text-micro text-muted font-normal px-1.5 py-0.5 rounded-xxs bg-canvas-soft border border-hairline">
@@ -137,22 +180,28 @@ const calculators = [
           <div class="border-t border-hairline pt-2 space-y-1">
             <a
               href="/methodology/"
-              class="block px-2.5 py-1.5 text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              class="flex items-center px-2.5 py-2.5 min-h-[44px] text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Methodology & Sources
             </a>
             <a
               href="/about/"
-              class="block px-2.5 py-1.5 text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              class="flex items-center px-2.5 py-2.5 min-h-[44px] text-ui-sm text-ink hover:bg-mint-50 hover:text-primary rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               About Seller Calc Hub
             </a>
             <a
               href="/design-tokens/"
-              class="block px-2.5 py-1.5 text-ui-sm text-link hover:underline rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              class="flex items-center px-2.5 py-2.5 min-h-[44px] text-ui-sm text-link hover:underline rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Design Tokens Reference
             </a>
+          </div>
+
+          <!-- Mobile Theme Switcher (for small screens < sm) -->
+          <div class="border-t border-hairline pt-2.5 flex items-center justify-between px-1 sm:hidden">
+            <span class="text-caption text-muted font-medium">Appearance</span>
+            <ThemeToggle />
           </div>
         </div>
       </details>

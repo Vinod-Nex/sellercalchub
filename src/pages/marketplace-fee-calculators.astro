@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import MarketplaceComparison from '../components/MarketplaceComparison.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MarketplaceComparison from "../components/MarketplaceComparison.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 
 // FAQ definitions
 const faqs = [
@@ -11,17 +11,20 @@ const faqs = [
       "Among major US resale platforms, Depop currently charges the lowest marketplace fee (0% selling fee, charging only a 3.3% + $0.45 payment processing fee), followed by TikTok Shop at a flat 6.0% referral fee. For handmade and craft goods, Etsy charges 6.5% + $0.20 listing fee + 3.0% + $0.25 payment processing. Whatnot charges 8.0% + 2.9% + $0.30, and eBay US charges 13.25% + $0.40 in most categories (or 12.35% for Store subscribers). In the UK, eBay private sellers enjoy 0% selling fees.",
   },
   {
-    question: "Why do fee structures differ so significantly between platforms?",
+    question:
+      "Why do fee structures differ so significantly between platforms?",
     answer:
       "Each platform balances traffic volume, buyer intent, and operational overhead differently. eBay bundles payment processing into its 13.25% Final Value Fee and invests heavily in buyer guarantees and global catalog infrastructure. Etsy charges separate listing ($0.20), transaction (6.5%), and payment gateway fees (3.0% + $0.25). Livestream apps like Whatnot focus on high-velocity auction sales with an 8.0% commission + 2.9% + $0.30 processing.",
   },
   {
-    question: "How does charging for shipping affect marketplace profitability?",
+    question:
+      "How does charging for shipping affect marketplace profitability?",
     answer:
       "On eBay and Etsy, final value and transaction fees apply to the total amount paid by the buyer—including shipping. If you charge $10 for shipping on eBay, eBay retains $1.33 in fees. On Whatnot, buyer-paid shipping labels are generated automatically by Whatnot and Whatnot's 8.0% commission is taken strictly from the sold item price, not the shipping label cost.",
   },
   {
-    question: "Should online resellers cross-list their inventory across multiple marketplaces?",
+    question:
+      "Should online resellers cross-list their inventory across multiple marketplaces?",
     answer:
       "Yes. Cross-listing increases inventory turnover and gives you pricing leverage. High-margin unique collectibles often command top dollar on eBay or Whatnot despite higher fees, while apparel and vintage clothing may sell faster and yield higher net margins on Depop due to its 0% seller commission structure.",
   },
@@ -35,33 +38,33 @@ const faqs = [
 // Structured Data
 const structuredData = [
   {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'Marketplace Fee Calculators & Comparison Hub',
-    url: 'https://sellercalchub.com/marketplace-fee-calculators/',
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Marketplace Fee Calculators & Comparison Hub",
+    url: "https://sellercalchub.com/marketplace-fee-calculators/",
     description:
-      'Compare seller fees and net profit across Whatnot, eBay, Etsy, TikTok Shop, Depop, and Twitch Bits. Use our synchronized comparison tool to see where you keep the most profit.',
+      "Compare seller fees and net profit across Whatnot, eBay, Etsy, TikTok Shop, Depop, and Twitch Bits. Use our synchronized comparison tool to see where you keep the most profit.",
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Marketplace Fee Comparison Hub',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'All',
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Marketplace Fee Comparison Hub",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "All",
     offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
     },
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
-        '@type': 'Answer',
+        "@type": "Answer",
         text: faq.answer,
       },
     })),
@@ -70,104 +73,107 @@ const structuredData = [
 
 const allCalculators = [
   {
-    category: 'eBay Ecosystem (US & UK)',
-    description: 'Final value fees, store subscriptions, shipping deductions, and managed payments.',
+    category: "eBay Ecosystem (US & UK)",
+    description:
+      "Final value fees, store subscriptions, shipping deductions, and managed payments.",
     items: [
       {
-        name: 'eBay Fee Calculator (US Pillar)',
-        href: '/ebay-fee-calculator/',
-        rate: '13.25% + $0.40 (12.35% Store)',
-        desc: 'The comprehensive US calculator covering category rates, store discounts, and promoted listings.',
-        badge: 'Pillar',
+        name: "eBay Fee Calculator (US Pillar)",
+        href: "/ebay-fee-calculator/",
+        rate: "13.25% + $0.40 (12.35% Store)",
+        desc: "The comprehensive US calculator covering category rates, store discounts, and promoted listings.",
+        badge: "Pillar",
       },
       {
-        name: 'eBay Final Value Fee Calculator',
-        href: '/ebay-final-value-fee-calculator/',
-        rate: 'FVF Isolation & Tiers',
-        desc: 'Calculate exact category commission cuts, $7,500 thresholds, and Top Rated Plus 10% discounts.',
-        badge: 'Specialized',
+        name: "eBay Final Value Fee Calculator",
+        href: "/ebay-final-value-fee-calculator/",
+        rate: "FVF Isolation & Tiers",
+        desc: "Calculate exact category commission cuts, $7,500 thresholds, and Top Rated Plus 10% discounts.",
+        badge: "Specialized",
       },
       {
-        name: 'eBay Profit & Margin Calculator',
-        href: '/ebay-profit-calculator/',
-        rate: 'Net P&L, Margin & ROI',
-        desc: 'Calculate net cash profit after COGS, postage, and packaging, with reverse target-pricing mode.',
-        badge: 'Profit',
+        name: "eBay Profit & Margin Calculator",
+        href: "/ebay-profit-calculator/",
+        rate: "Net P&L, Margin & ROI",
+        desc: "Calculate net cash profit after COGS, postage, and packaging, with reverse target-pricing mode.",
+        badge: "Profit",
       },
       {
-        name: 'eBay Shipping Fee Calculator',
-        href: '/ebay-shipping-fee-calculator/',
-        rate: 'Postage Fee Analysis',
-        desc: 'Understand eBay fees charged on shipping collected and avoid losing money on postage labels.',
-        badge: 'Shipping',
+        name: "eBay Shipping Fee Calculator",
+        href: "/ebay-shipping-fee-calculator/",
+        rate: "Postage Fee Analysis",
+        desc: "Understand eBay fees charged on shipping collected and avoid losing money on postage labels.",
+        badge: "Shipping",
       },
       {
-        name: 'eBay UK Fee Calculator',
-        href: '/ebay-fee-calculator-uk/',
-        rate: '0% Private / 12.8% Business + VAT',
-        desc: 'Calculate 0% fees for UK private sellers and 12.8% + 30p plus 20% UK VAT for business sellers in GBP (£).',
-        badge: 'UK (GBP)',
+        name: "eBay UK Fee Calculator",
+        href: "/ebay-fee-calculator-uk/",
+        rate: "0% Private / 12.8% Business + VAT",
+        desc: "Calculate 0% fees for UK private sellers and 12.8% + 30p plus 20% UK VAT for business sellers in GBP (£).",
+        badge: "UK (GBP)",
       },
       {
-        name: 'eBay & PayPal Explainer',
-        href: '/ebay-and-paypal-fee-calculator/',
-        rate: 'Managed Payments Reality',
-        desc: 'Learn why eBay sellers no longer pay separate PayPal fees and how direct bank payouts operate today.',
-        badge: 'Explainer',
+        name: "eBay & PayPal Explainer",
+        href: "/ebay-and-paypal-fee-calculator/",
+        rate: "Managed Payments Reality",
+        desc: "Learn why eBay sellers no longer pay separate PayPal fees and how direct bank payouts operate today.",
+        badge: "Explainer",
       },
     ],
   },
   {
-    category: 'Handmade, Vintage & Craft',
-    description: 'Fee calculators for Etsy handmade artisans and vintage resellers.',
+    category: "Handmade, Vintage & Craft",
+    description:
+      "Fee calculators for Etsy handmade artisans and vintage resellers.",
     items: [
       {
-        name: 'Etsy Fee Calculator',
-        href: '/etsy-fee-calculator/',
-        rate: '6.5% + $0.20 + 3% + $0.25',
-        desc: 'Calculate listing renewal fees, 6.5% transaction fees, and Etsy Payments processing margins.',
-        badge: 'Pillar',
+        name: "Etsy Fee Calculator",
+        href: "/etsy-fee-calculator/",
+        rate: "6.5% + $0.20 + 3% + $0.25",
+        desc: "Calculate listing renewal fees, 6.5% transaction fees, and Etsy Payments processing margins.",
+        badge: "Pillar",
       },
       {
-        name: 'Etsy Offsite Ads Calculator',
-        href: '/etsy-offsite-ads-fee-calculator/',
-        rate: '15% vs 12% ($100 Cap)',
-        desc: 'Model your net take-home profit when Etsy advertises your items on Google and social media.',
-        badge: 'Advertising',
+        name: "Etsy Offsite Ads Calculator",
+        href: "/etsy-offsite-ads-fee-calculator/",
+        rate: "15% vs 12% ($100 Cap)",
+        desc: "Model your net take-home profit when Etsy advertises your items on Google and social media.",
+        badge: "Advertising",
       },
     ],
   },
   {
-    category: 'Livestream, Social & Fashion',
-    description: 'Fee calculators for live auction selling, social commerce, and vintage streetwear.',
+    category: "Livestream, Social & Fashion",
+    description:
+      "Fee calculators for live auction selling, social commerce, and vintage streetwear.",
     items: [
       {
-        name: 'Whatnot Fee Calculator',
-        href: '/whatnot-fee-calculator/',
-        rate: '8.0% + 2.9% + $0.30',
-        desc: 'Calculate seller take-home earnings, margin %, and break-even prices for live video auctions.',
-        badge: 'Live Sales',
+        name: "Whatnot Fee Calculator",
+        href: "/whatnot-fee-calculator/",
+        rate: "8.0% + 2.9% + $0.30",
+        desc: "Calculate seller take-home earnings, margin %, and break-even prices for live video auctions.",
+        badge: "Live Sales",
       },
       {
-        name: 'Depop Fee Calculator',
-        href: '/depop-fee-calculator/',
-        rate: '0% Selling + 3.3% + $0.45',
-        desc: 'Calculate marketplace payment processing fees and profit margins for second-hand fashion.',
-        badge: 'Fashion',
+        name: "Depop Fee Calculator",
+        href: "/depop-fee-calculator/",
+        rate: "0% Selling + 3.3% + $0.45",
+        desc: "Calculate marketplace payment processing fees and profit margins for second-hand fashion.",
+        badge: "Fashion",
       },
       {
-        name: 'TikTok Shop Fee Calculator',
-        href: '/tiktok-shop-fee-calculator/',
-        rate: '6.0% Referral Fee',
-        desc: 'Calculate TikTok Shop referral commissions, affiliate creator splits, and social commerce profits.',
-        badge: 'Social Commerce',
+        name: "TikTok Shop Fee Calculator",
+        href: "/tiktok-shop-fee-calculator/",
+        rate: "6.0% Referral Fee",
+        desc: "Calculate TikTok Shop referral commissions, affiliate creator splits, and social commerce profits.",
+        badge: "Social Commerce",
       },
       {
-        name: 'Twitch Bits to USD Converter',
-        href: '/twitch-bits-to-usd/',
-        rate: '$0.01 / Bit Payout',
-        desc: 'Convert Twitch Bits to USD, review viewer bundle pricing markups, and track the $50 cashout threshold.',
-        badge: 'Streaming',
+        name: "Twitch Bits to USD Converter",
+        href: "/twitch-bits-to-usd/",
+        rate: "$0.01 / Bit Payout",
+        desc: "Convert Twitch Bits to USD, review viewer bundle pricing markups, and track the $50 cashout threshold.",
+        badge: "Streaming",
       },
     ],
   },
@@ -184,15 +190,18 @@ const allCalculators = [
     <!-- Breadcrumbs -->
     <Breadcrumbs
       items={[
-        { name: 'Home', href: '/' },
-        { name: 'All Marketplace Calculators' },
+        { name: "Home", href: "/" },
+        { name: "All Marketplace Calculators" },
       ]}
     />
 
     <!-- Hero Header -->
     <header class="space-y-4">
       <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
-        <span>Seller Calc Hub Central Directory · 100% Verified Official Fee Schedules</span>
+        <span>
+          Seller Calc Hub Central Directory · 100% Verified Official Fee
+          Schedules
+        </span>
       </div>
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
@@ -200,7 +209,17 @@ const allCalculators = [
       </h1>
 
       <p class="text-body-lg text-body max-w-3xl leading-relaxed">
-        Selling fees directly determine your online business margins. While platforms like <strong class="text-ink">Depop (0% selling fee + 3.3% + $0.45)</strong> and <strong class="text-ink">TikTok Shop (6.0% referral fee)</strong> offer lower marketplace cuts, platforms like <strong class="text-ink">Whatnot (8.0% + 2.9% + $0.30)</strong>, <strong class="text-ink">Etsy (6.5% + $0.20 + 3.0% + $0.25)</strong>, and <strong class="text-ink">eBay (13.25% + $0.40)</strong> provide massive built-in buyer traffic. Use our synchronized comparison tool below to enter your pricing once and see exactly what you keep on every platform side-by-side.
+        Selling fees directly determine your online business margins. While
+        platforms like{" "}
+        <strong class="text-ink">Depop (0% selling fee + 3.3% + $0.45)</strong>{" "}
+        and <strong class="text-ink">TikTok Shop (6.0% referral fee)</strong>{" "}
+        offer lower marketplace cuts, platforms like{" "}
+        <strong class="text-ink">Whatnot (8.0% + 2.9% + $0.30)</strong>,{" "}
+        <strong class="text-ink">Etsy (6.5% + $0.20 + 3.0% + $0.25)</strong>,
+        and <strong class="text-ink">eBay (13.25% + $0.40)</strong> provide
+        massive built-in buyer traffic. Use our synchronized comparison tool
+        below to enter your pricing once and see exactly what you keep on every
+        platform side-by-side.
       </p>
     </header>
 
@@ -212,9 +231,12 @@ const allCalculators = [
     <!-- Complete Directory Card Grid -->
     <section class="space-y-10 border-t border-hairline pt-10" id="directory">
       <div class="space-y-2">
-        <h2 class="text-heading-2 font-bold text-ink">All Marketplace Fee Calculators</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          All Marketplace Fee Calculators
+        </h2>
         <p class="text-body text-body max-w-3xl leading-relaxed">
-          Select a specialized calculator below for deep-dive category commission schedules, ad fee toggles, and reverse break-even analysis:
+          Select a specialized calculator below for deep-dive category
+          commission schedules, ad fee toggles, and reverse break-even analysis:
         </p>
       </div>
 
@@ -222,7 +244,9 @@ const allCalculators = [
         {allCalculators.map((group) => (
           <div class="space-y-4">
             <div class="border-b border-hairline pb-2">
-              <h3 class="text-heading-3 font-bold text-ink">{group.category}</h3>
+              <h3 class="text-heading-3 font-bold text-ink">
+                {group.category}
+              </h3>
               <p class="text-caption text-muted">{group.description}</p>
             </div>
 
@@ -237,7 +261,9 @@ const allCalculators = [
                       <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
                         {item.badge}
                       </span>
-                      <span class="text-micro font-mono text-muted">{item.rate}</span>
+                      <span class="text-micro font-mono text-muted">
+                        {item.rate}
+                      </span>
                     </div>
 
                     <h4 class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors">
@@ -251,7 +277,12 @@ const allCalculators = [
 
                   <div class="pt-4 mt-3 border-t border-hairline flex items-center justify-between text-ui-label font-bold text-primary text-body-sm">
                     <span>Open Calculator</span>
-                    <span class="group-hover:translate-x-1 transition-transform" aria-hidden="true">&rarr;</span>
+                    <span
+                      class="group-hover:translate-x-1 transition-transform"
+                      aria-hidden="true"
+                    >
+                      &rarr;
+                    </span>
                   </div>
                 </a>
               ))}
@@ -263,8 +294,15 @@ const allCalculators = [
 
     <!-- Platform Fee Rate Reference Matrix -->
     <section class="space-y-4 border-t border-hairline pt-10">
-      <h2 class="text-heading-2 font-bold text-ink">Marketplace Fee Rates at a Glance (2026)</h2>
-      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <h2 class="text-heading-2 font-bold text-ink">
+        Marketplace Fee Rates at a Glance (2026)
+      </h2>
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="Marketplace fee rates at a glance comparison table"
+      >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
@@ -288,7 +326,9 @@ const allCalculators = [
             <tr class="hover:bg-canvas-soft/40 transition-colors">
               <td class="p-3.5 font-bold text-ink">eBay (UK Private)</td>
               <td class="p-3.5 text-muted">£0.00 (300 free/mo)</td>
-              <td class="p-3.5 font-mono text-primary font-bold">0.0% (Free Selling)</td>
+              <td class="p-3.5 font-mono text-primary font-bold">
+                0.0% (Free Selling)
+              </td>
               <td class="p-3.5 text-primary font-bold">£0.00</td>
               <td class="p-3.5 text-primary font-bold">No (0% fee)</td>
               <td class="p-3.5 text-muted">1–2 business days (UK Bank)</td>
@@ -312,7 +352,9 @@ const allCalculators = [
             <tr class="hover:bg-canvas-soft/40 transition-colors">
               <td class="p-3.5 font-bold text-ink">Depop</td>
               <td class="p-3.5 text-muted">$0.00 (Free)</td>
-              <td class="p-3.5 font-mono text-primary font-bold">0.0% (Current)</td>
+              <td class="p-3.5 font-mono text-primary font-bold">
+                0.0% (Current)
+              </td>
               <td class="p-3.5 text-muted">3.3% + $0.45 (US)</td>
               <td class="p-3.5 text-muted">Processing only</td>
               <td class="p-3.5 text-muted">2–3 business days after delivery</td>
@@ -322,13 +364,17 @@ const allCalculators = [
               <td class="p-3.5 text-muted">$0.00 (Free)</td>
               <td class="p-3.5 font-mono text-ink">6.0% referral fee</td>
               <td class="p-3.5 text-muted">Included in referral</td>
-              <td class="p-3.5 text-primary font-bold">Yes (Total customer pay)</td>
+              <td class="p-3.5 text-primary font-bold">
+                Yes (Total customer pay)
+              </td>
               <td class="p-3.5 text-muted">1–5 business days post-delivery</td>
             </tr>
             <tr class="hover:bg-canvas-soft/40 transition-colors">
               <td class="p-3.5 font-bold text-ink">Twitch Bits</td>
               <td class="p-3.5 text-muted">N/A</td>
-              <td class="p-3.5 font-mono text-primary font-bold">$0.01 / bit payout</td>
+              <td class="p-3.5 font-mono text-primary font-bold">
+                $0.01 / bit payout
+              </td>
               <td class="p-3.5 text-muted">Viewer markup upfront (~40%)</td>
               <td class="p-3.5 text-muted">N/A</td>
               <td class="p-3.5 text-muted">Monthly ($50 threshold)</td>
@@ -341,16 +387,19 @@ const allCalculators = [
     <!-- FAQs -->
     <section class="space-y-6 border-t border-hairline pt-10">
       <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">Frequently Asked Questions</h2>
+        <h2 class="text-heading-2 font-bold text-ink">
+          Frequently Asked Questions
+        </h2>
         <p class="text-body text-body leading-relaxed">
-          Comprehensive answers comparing marketplace fee policies, profit margins, and multi-channel strategies.
+          Comprehensive answers comparing marketplace fee policies, profit
+          margins, and multi-channel strategies.
         </p>
       </div>
 
       <div class="space-y-3">
         {faqs.map((faq) => (
           <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
               <span>{faq.question}</span>
               <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
                 &#9660;
@@ -369,23 +418,39 @@ const allCalculators = [
       <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="space-y-1">
           <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span
+              class="w-2.5 h-2.5 rounded-full bg-primary shrink-0"
+              aria-hidden="true"
+            ></span>
             <span class="text-ui-label font-bold text-ink">
               Multi-Marketplace Verification Guarantee
             </span>
           </div>
           <p class="text-caption text-muted">
-            All marketplace fee calculations are backed by official documentation from eBay, Whatnot, Etsy, TikTok Shop, Depop, and Twitch. No invented or estimated fee rates.
+            All marketplace fee calculations are backed by official
+            documentation from eBay, Whatnot, Etsy, TikTok Shop, Depop, and
+            Twitch. No invented or estimated fee rates.
           </p>
         </div>
 
         <a
           href="/methodology/"
-          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
         >
           <span>View Verification Methodology & Sources</span>
-          <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          <svg
+            class="w-4 h-4"
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
           </svg>
         </a>
       </div>

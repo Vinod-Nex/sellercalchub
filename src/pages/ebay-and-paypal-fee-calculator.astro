@@ -137,7 +137,7 @@ const structuredData = [
       <div class="pt-1">
         <a
           href="/ebay-fee-calculator/"
-          class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
           <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -152,7 +152,7 @@ const structuredData = [
       <h2 class="text-heading-2 font-bold text-ink">Old Legacy System vs. How Payments Work Now</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Legacy Card -->
-        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-3 opacity-80">
+        <div class="rounded-lg border border-hairline bg-canvas p-5 space-y-3">
           <span class="text-caption font-bold text-muted uppercase tracking-wider block">Legacy Era (Pre-2021) — Outdated</span>
           <h3 class="text-heading-4 font-bold text-ink">Two Separate Invoices & Fees</h3>
           <ul class="space-y-2 text-body-sm text-body list-disc pl-5">
@@ -271,7 +271,7 @@ const structuredData = [
       <div class="space-y-3">
         {faqs.map((faq) => (
           <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
               <span>{faq.question}</span>
               <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
                 &#9660;
@@ -335,7 +335,7 @@ const structuredData = [
           href={sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
         >
           <span>View Official eBay Selling Fees</span>
           <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

@@ -147,7 +147,12 @@ const resolvedAssumptions = customAssumptions ?? defaultAssumptions;
       <span class="text-caption text-muted">{resolvedAssumptions}</span>
     </div>
 
-    <div class="overflow-x-auto">
+    <div
+      class="overflow-x-auto focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+      tabindex="0"
+      role="region"
+      aria-label={`${resolvedTitle} step-by-step calculation table`}
+    >
       <table class="w-full text-ui-sm text-left">
         <caption class="sr-only">{resolvedTitle} calculation steps</caption>
         <thead class="bg-canvas-soft/50 text-caption text-muted uppercase font-bold border-b border-hairline">

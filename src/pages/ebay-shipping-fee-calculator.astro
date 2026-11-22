@@ -131,7 +131,7 @@ const structuredData = [
       <div class="pt-1">
         <a
           href="/ebay-fee-calculator/"
-          class="inline-flex items-center gap-1.5 text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] text-link hover:underline font-semibold text-ui-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs"
         >
           <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -153,7 +153,12 @@ const structuredData = [
         Many new sellers fall into the trap of charging the buyer the exact postage counter price (e.g., $10.00), only to discover at month-end that they are losing money on every single package. Because eBay charges 13.25% on the entire order, you must account for the fee cut taken from shipping:
       </p>
 
-      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="eBay shipping fee strategy comparison table"
+      >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
@@ -207,7 +212,12 @@ const structuredData = [
         Use this simple formula to determine exactly what dollar amount to charge your buyer for shipping to avoid losing money:
       </p>
 
-      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink">
+      <div
+        class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="Break-even shipping formula"
+      >
         <div class="text-primary font-bold">Break-Even Shipping Charge Formula</div>
         <div class="pl-4 text-muted">
           Break-Even Shipping = Actual Label Cost &divide; (1 &minus; Final Value Fee Rate)
@@ -296,7 +306,7 @@ const structuredData = [
       <div class="space-y-3">
         {faqs.map((faq) => (
           <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-            <summary class="flex items-center justify-between font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
               <span>{faq.question}</span>
               <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
                 &#9660;
@@ -360,7 +370,7 @@ const structuredData = [
           href={sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+          class="inline-flex items-center gap-1.5 min-h-[44px] py-2.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-normal sm:whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
         >
           <span>View Official eBay Selling Fees</span>
           <svg class="w-4 h-4" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

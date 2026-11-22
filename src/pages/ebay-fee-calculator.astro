@@ -174,7 +174,12 @@ const structuredData = [
         charges. The exact math operates as follows:
       </p>
 
-      <div class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink">
+      <div
+        class="rounded-lg border border-hairline-strong bg-canvas-soft p-5 font-mono text-body-sm space-y-3 overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="eBay fee formulas"
+      >
         <div class="text-primary font-bold">1. Gross Order Total</div>
         <div class="pl-4 text-muted">
           Gross Order Total = (Sold Item Price &times; Quantity) + Shipping
@@ -232,7 +237,12 @@ const structuredData = [
         via eBay Delivery for <strong class="text-ink">$5.50</strong>:
       </p>
 
-      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="eBay worked example transaction table"
+      >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
@@ -298,9 +308,11 @@ const structuredData = [
               <td class="p-3.5 text-right font-mono text-muted">-$5.50</td>
             </tr>
             <tr class="bg-primary/10 font-bold text-ink">
-              <td class="p-3.5 text-primary">Clear Net Profit</td>
+              <td class="p-3.5 text-forest dark:text-emerald-300">
+                Clear Net Profit
+              </td>
               <td class="p-3.5 text-right text-muted">$56.85 &minus; $25.50</td>
-              <td class="p-3.5 text-right font-mono text-primary text-body-md">
+              <td class="p-3.5 text-right font-mono text-forest dark:text-emerald-300 text-body-md">
                 $31.35
               </td>
             </tr>
@@ -356,7 +368,12 @@ const structuredData = [
         </p>
       </div>
 
-      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="eBay category fee rate comparison table"
+      >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">

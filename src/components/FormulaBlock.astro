@@ -276,7 +276,12 @@ const activeFormulas = resolveDefaultFormulas();
           Complete Calculation Formula
         </div>
         {activeFormulas.map((formula) => (
-          <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+          <div
+            class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+            tabindex="0"
+            role="region"
+            aria-label={formula.label ? `${formula.label} formula` : 'Formula code'}
+          >
             {formula.label && (
               <span class="text-micro font-sans font-bold uppercase tracking-wider text-muted block mb-1">
                 {formula.label}:

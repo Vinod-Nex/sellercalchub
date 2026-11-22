@@ -188,7 +188,12 @@ const platformsList = [
         </p>
       </div>
 
-      <div class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas">
+      <div
+        class="overflow-x-auto rounded-lg border border-hairline-strong bg-canvas focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+        tabindex="0"
+        role="region"
+        aria-label="Verified rate matrix table"
+      >
         <table class="w-full text-body-sm text-left border-collapse">
           <thead>
             <tr class="border-b border-hairline bg-canvas-soft text-ink font-bold">
@@ -276,7 +281,7 @@ const platformsList = [
       <div>
         <a
           href="/contact/"
-          class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-primary-deep text-on-primary font-bold text-ui-sm rounded-xs transition-colors shadow-sm"
+          class="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] bg-primary hover:bg-primary-deep text-on-primary font-bold text-ui-sm rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Submit a Rate Correction</span>
           <span aria-hidden="true">&rarr;</span>
