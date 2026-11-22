@@ -1,46 +1,78 @@
-# Astro Starter Kit: Basics
+# Seller Calc Hub (`SellerCalcHub.com`)
 
-```sh
-npm create astro@latest -- --template basics
+Free, fast marketplace fee and profit calculators for resellers and online sellers: Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits. Users enter sale price and costs to see exactly what they keep.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js `22.23.4` or higher
+- npm
+
+### Installation
+
+```bash
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Development
 
-## 🚀 Project Structure
+Start the local Astro development server:
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```bash
+npm run dev
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Or run Astro in background mode:
 
-## 🧞 Commands
+```bash
+astro dev --background
+```
 
-All commands are run from the root of the project, from a terminal:
+Background server management:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- Status: `astro dev status`
+- Logs: `astro dev logs`
+- Stop: `astro dev stop`
 
-## 👀 Want to learn more?
+### Build (Static Site Generation)
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Build the production-ready static assets in `dist/`:
+
+```bash
+npm run build
+```
+
+Preview the build locally:
+
+```bash
+npm run preview
+```
+
+### Code Quality & Formatting
+
+Run ESLint:
+
+```bash
+npm run lint
+npm run lint:fix
+```
+
+Run Prettier:
+
+```bash
+npm run format
+npm run format:check
+```
+
+---
+
+## 📐 Project Rules & Architecture
+
+- **Static Output (SSG):** Ship zero or minimal JavaScript except interactive calculator islands.
+- **Strict TypeScript:** Strictly typed, small focused modules, no unused dependencies.
+- **Verified Fee Data Only:** Every platform fee rate is sourced from official documentation with `source_url` and `verified_on`.
+- **Design System:** Strictly adhere to [`DESIGN.md`](./DESIGN.md) (NerdWallet-inspired high-trust financial utility, mint/green ladder, WCAG AA accessibility, mobile-first, dark mode).
+- **Clean UX:** No popups, no interstitials, no autoplay, no layout shift.
