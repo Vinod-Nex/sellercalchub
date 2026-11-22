@@ -1,0 +1,202 @@
+---
+import { runCalculator, type PlatformId, PLATFORM_CONFIGS } from '../lib/calc';
+
+export interface WorkedExampleStep {
+  step: number | string;
+  fee: string;
+  math: string;
+  amount: string;
+  isTotal?: boolean;
+}
+
+export interface Props {
+  platform?: PlatformId | string;
+  title?: string;
+  description?: string;
+  itemPrice?: number;
+  shippingCharged?: number;
+  itemCost?: number;
+  shippingCost?: number;
+  quantity?: number;
+  options?: Record<string, unknown>;
+  customSteps?: WorkedExampleStep[];
+  assumptions?: string;
+  id?: string;
+}
+
+const {
+  platform,
+  title,
+  description,
+  itemPrice: propPrice,
+  shippingCharged: propShippingCharged,
+  itemCost: propItemCost,
+  shippingCost: propShippingCost,
+  quantity = 1,
+  options = {},
+  customSteps,
+  assumptions: customAssumptions,
+  id = 'worked-example',
+} = Astro.props;
+
+const config = platform && platform in PLATFORM_CONFIGS
+  ? PLATFORM_CONFIGS[platform as PlatformId]
+  : undefined;
+
+const itemPrice = propPrice ?? config?.defaultPrice ?? 50.0;
+const shippingCharged = propShippingCharged ?? config?.defaultShippingCharged ?? 0.0;
+const itemCost = propItemCost ?? config?.defaultItemCost ?? 15.0;
+const shippingCost = propShippingCost ?? config?.defaultShippingCost ?? 0.0;
+const currencySymbol = config?.currencySymbol ?? '$';
+
+const resolvedTitle = title ?? `Worked Example: Selling a ${currencySymbol}${itemPrice.toFixed(0)} Item`;
+const resolvedDescription =
+  description ??
+  `Here is a step-by-step breakdown of what you actually keep when selling an item for ${currencySymbol}${itemPrice.toFixed(2)} on ${config?.name ?? 'this marketplace'}.`;
+
+// Calculate dynamic breakdown if platform is provided and no customSteps
+let dynamicSteps: WorkedExampleStep[] = [];
+let netProfitFormatted = `${currencySymbol}0.00`;
+let statsSummary = '';
+
+if (platform && !customSteps) {
+  const calcResult = runCalculator(
+    platform as PlatformId,
+    {
+      price: itemPrice,
+      shippingCharged,
+      itemCost,
+      shippingCost,
+      quantity,
+    },
+    { ...config?.defaultOptions, ...options },
+  );
+
+  let stepCounter = 1;
+
+  for (const fee of calcResult.fees) {
+    dynamicSteps.push({
+      step: stepCounter++,
+      fee: fee.name,
+      math: fee.calculation || `${currencySymbol}${fee.amount.toFixed(2)}`,
+      amount: `-${currencySymbol}${fee.amount.toFixed(2)}`,
+    });
+  }
+
+  // Total Platform Deductions
+  const effectiveFeePct =
+    calcResult.grossRevenue > 0
+      ? (calcResult.totalFees / calcResult.grossRevenue) * 100
+      : 0;
+
+  dynamicSteps.push({
+    step: 'Total',
+    fee: `Total ${config?.name ?? 'Marketplace'} Deductions`,
+    math: `${currencySymbol}${calcResult.totalFees.toFixed(2)} (${effectiveFeePct.toFixed(1)}% effective)`,
+    amount: `-${currencySymbol}${calcResult.totalFees.toFixed(2)}`,
+    isTotal: true,
+  });
+
+  // Gross Payout Deposited
+  const payout = calcResult.grossRevenue - calcResult.totalFees;
+  dynamicSteps.push({
+    step: stepCounter++,
+    fee: 'Payout Deposited to Bank',
+    math: `${currencySymbol}${calcResult.grossRevenue.toFixed(2)} gross − ${currencySymbol}${calcResult.totalFees.toFixed(2)} fees`,
+    amount: `${currencySymbol}${payout.toFixed(2)}`,
+  });
+
+  // Inventory Cost
+  if (itemCost > 0) {
+    dynamicSteps.push({
+      step: stepCounter++,
+      fee: 'Inventory Cost (COGS)',
+      math: 'Original acquisition / sourcing cost',
+      amount: `-${currencySymbol}${(itemCost * quantity).toFixed(2)}`,
+    });
+  }
+
+  // Carrier Postage Cost
+  if (shippingCost > 0) {
+    dynamicSteps.push({
+      step: stepCounter++,
+      fee: 'Carrier Postage / Packaging',
+      math: 'Actual shipping label expense',
+      amount: `-${currencySymbol}${shippingCost.toFixed(2)}`,
+    });
+  }
+
+  netProfitFormatted = `${calcResult.netProfit >= 0 ? '+' : '-'}${currencySymbol}${Math.abs(calcResult.netProfit).toFixed(2)}`;
+  statsSummary = `${calcResult.profitMargin.toFixed(1)}% Margin · ${calcResult.roi.toFixed(1)}% ROI · ${currencySymbol}${calcResult.breakEvenPrice.toFixed(2)} Break-Even`;
+}
+
+const activeSteps = customSteps ?? dynamicSteps;
+const defaultAssumptions = `Item Sale Price: ${currencySymbol}${itemPrice.toFixed(2)} · Inventory Cost: ${currencySymbol}${itemCost.toFixed(2)}${shippingCharged > 0 ? ` · Shipping Charged: ${currencySymbol}${shippingCharged.toFixed(2)}` : ' · Buyer Pays Shipping'}${shippingCost > 0 ? ` · Postage Cost: ${currencySymbol}${shippingCost.toFixed(2)}` : ''}`;
+const resolvedAssumptions = customAssumptions ?? defaultAssumptions;
+---
+
+<section class="space-y-6 pt-6 border-t border-hairline" id={id}>
+  <div class="space-y-2">
+    <h2 class="text-heading-2 font-bold text-ink">{resolvedTitle}</h2>
+    <p class="text-body-md text-muted max-w-2xl">{resolvedDescription}</p>
+  </div>
+
+  <div class="rounded-lg border border-hairline-strong bg-canvas overflow-hidden shadow-level-3">
+    <div class="p-4 bg-canvas-soft border-b border-hairline flex flex-wrap justify-between items-center gap-2">
+      <span class="font-bold text-ink">Transaction Assumptions</span>
+      <span class="text-caption text-muted">{resolvedAssumptions}</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-ui-sm text-left">
+        <caption class="sr-only">{resolvedTitle} calculation steps</caption>
+        <thead class="bg-canvas-soft/50 text-caption text-muted uppercase font-bold border-b border-hairline">
+          <tr>
+            <th scope="col" class="py-3 px-4">Step</th>
+            <th scope="col" class="py-3 px-4">Fee / Deduction</th>
+            <th scope="col" class="py-3 px-4">Math Calculation</th>
+            <th scope="col" class="py-3 px-4 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline">
+          {
+            activeSteps.map((row) => (
+              <tr class={row.isTotal ? 'bg-mint-50/50 dark:bg-mint-200/5 font-semibold' : ''}>
+                <td class={`py-3 px-4 font-bold ${row.isTotal ? 'text-primary' : 'text-muted'}`}>
+                  {row.step}
+                </td>
+                <th scope="row" class={`py-3 px-4 font-medium ${row.isTotal ? 'text-primary' : 'text-ink'}`}>
+                  {row.fee}
+                </th>
+                <td class="py-3 px-4 text-muted font-mono">{row.math}</td>
+                <td class={`py-3 px-4 text-right font-bold tabular-nums ${row.isTotal ? 'text-primary' : 'text-ink'}`}>
+                  {row.amount}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+        {
+          (netProfitFormatted || statsSummary) && (
+            <tfoot class="bg-canvas-soft border-t-2 border-hairline-strong font-bold text-ui-label">
+              <tr>
+                <td colspan="3" class="py-3 px-4 text-ink">Your Net Take-Home Profit</td>
+                <td class="py-3 px-4 text-right text-primary text-stat-value tabular-nums">{netProfitFormatted}</td>
+              </tr>
+              {statsSummary && (
+                <tr>
+                  <td colspan="3" class="py-2 px-4 text-caption text-muted font-normal">
+                    Profit Margin / ROI / Break-Even
+                  </td>
+                  <td class="py-2 px-4 text-right text-caption text-muted tabular-nums">
+                    {statsSummary}
+                  </td>
+                </tr>
+              )}
+            </tfoot>
+          )
+        }
+      </table>
+    </div>
+  </div>
+</section>

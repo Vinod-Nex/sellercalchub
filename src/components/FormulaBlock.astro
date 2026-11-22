@@ -1,0 +1,291 @@
+---
+import { getPlatformFeeData, formatPct } from '../lib/calc/fee-data';
+
+export interface FormulaCard {
+  label: string;
+  formula: string;
+  note: string;
+}
+
+export interface FormulaCode {
+  label?: string;
+  code: string;
+}
+
+export interface Props {
+  platform?: string;
+  title?: string;
+  description?: string;
+  cards?: FormulaCard[];
+  plainTextFormulas?: FormulaCode[];
+  id?: string;
+}
+
+const {
+  platform,
+  title = 'How Fees Are Calculated: The Official Formula',
+  description = 'Transparent math with zero hidden charges. Here is the exact calculation breakdown for every transaction.',
+  cards: customCards,
+  plainTextFormulas: customFormulas,
+  id = 'formula',
+} = Astro.props;
+
+const feeData = platform ? getPlatformFeeData(platform) : undefined;
+
+// Generate dynamic cards if not explicitly provided
+function resolveDefaultCards(): FormulaCard[] {
+  if (customCards && customCards.length > 0) return customCards;
+  if (!platform || !feeData) return [];
+
+  switch (platform) {
+    case 'whatnot': {
+      const comm = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 8.0;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 2.9;
+      const procFixed = proc?.fixed_amount ?? 0.3;
+      return [
+        {
+          label: '1. Whatnot Commission',
+          formula: `Commission = Sold Price × ${formatPct(comm)}`,
+          note: `Charged solely on the item’s hammer price. Whatnot does not charge this ${formatPct(comm)} fee on shipping costs or sales tax.`,
+        },
+        {
+          label: '2. Payment Processing Fee',
+          formula: `Processing = (Total Buyer Paid × ${procPct.toFixed(1)}%) + $${procFixed.toFixed(2)}`,
+          note: 'Charged on the full transaction amount, including item price, buyer shipping, and tax.',
+        },
+      ];
+    }
+    case 'tiktok-shop': {
+      const referral = feeData.rates.find((r) => r.fee_kind === 'referral')?.percentage ?? 6.0;
+      return [
+        {
+          label: '1. Referral Commission',
+          formula: `Referral Fee = Total Customer Payment × ${referral.toFixed(1)}%`,
+          note: `TikTok Shop charges ${referral.toFixed(1)}% across total customer payment (item price plus buyer-paid shipping).`,
+        },
+        {
+          label: '2. Payment Processing',
+          formula: 'Processing = Included in Referral Fee',
+          note: 'TikTok Shop bundles merchant card payment processing directly within its referral fee.',
+        },
+      ];
+    }
+    case 'depop': {
+      const sellFee = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 0.0;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 3.3;
+      const procFixed = proc?.fixed_amount ?? 0.45;
+      return [
+        {
+          label: '1. Marketplace Selling Fee',
+          formula: `Selling Fee = Sold Price × ${sellFee.toFixed(1)}%`,
+          note: `Depop eliminated selling fees for US sellers (${sellFee.toFixed(1)}% marketplace commission).`,
+        },
+        {
+          label: '2. Payment Processing Fee',
+          formula: `Processing = (Total Buyer Paid × ${procPct.toFixed(1)}%) + $${procFixed.toFixed(2)}`,
+          note: 'Standard payment gateway fee charged on total buyer payment including shipping.',
+        },
+      ];
+    }
+    case 'etsy': {
+      const listing = feeData.rates.find((r) => r.fee_kind === 'listing')?.fixed_amount ?? 0.2;
+      const txn = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 6.5;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 3.0;
+      const procFixed = proc?.fixed_amount ?? 0.25;
+      return [
+        {
+          label: '1. Listing Fee',
+          formula: `Listing Fee = $${listing.toFixed(2)} per item`,
+          note: `Billed upon listing or 4-month auto-renewal, regardless of whether the item sells.`,
+        },
+        {
+          label: '2. Transaction Fee',
+          formula: `Transaction Fee = (Item Price + Shipping) × ${txn.toFixed(1)}%`,
+          note: `Etsy charges a ${txn.toFixed(1)}% transaction fee on the full selling price including shipping.`,
+        },
+        {
+          label: '3. Payment Processing',
+          formula: `Payment Fee = (Total Buyer Paid × ${procPct.toFixed(1)}%) + $${procFixed.toFixed(2)}`,
+          note: `Etsy Payments gateway processing charged on the total order amount.`,
+        },
+      ];
+    }
+    case 'ebay-us': {
+      const fvf = feeData.rates.find((r) => r.name?.includes('Most Categories') && !r.name?.includes('Store'))?.percentage ?? 13.25;
+      const orderFee = feeData.rates.find((r) => r.name?.includes('over $10.00'))?.fixed_amount ?? 0.4;
+      return [
+        {
+          label: '1. Final Value Fee (FVF)',
+          formula: `FVF = (Item Price + Shipping + Tax) × ${fvf.toFixed(2)}%`,
+          note: `eBay’s commission applies to the complete order total paid by the buyer, including shipping.`,
+        },
+        {
+          label: '2. Per-Order Fee',
+          formula: `Per-Order Fee = $${orderFee.toFixed(2)} per order`,
+          note: `$0.40 for sales over $10.00 ($0.30 for sales $10.00 or less).`,
+        },
+      ];
+    }
+    default:
+      return [];
+  }
+}
+
+// Generate dynamic plain text code formulas if not explicitly provided
+function resolveDefaultFormulas(): FormulaCode[] {
+  if (customFormulas && customFormulas.length > 0) return customFormulas;
+  if (!platform || !feeData) return [];
+
+  switch (platform) {
+    case 'whatnot': {
+      const comm = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 8.0;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 2.9;
+      const procFixed = proc?.fixed_amount ?? 0.3;
+      return [
+        {
+          label: 'Total Platform Deductions',
+          code: `Total Whatnot Fees = (Sold Price × ${(comm / 100).toFixed(3)}) + ((Sold Price + Shipping Charged + Tax) × ${(procPct / 100).toFixed(3)}) + $${procFixed.toFixed(2)}`,
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = Sold Price − Total Whatnot Fees − Inventory Cost (COGS) − Seller Postage/Packaging',
+        },
+        {
+          label: 'Profit Margin Percentage',
+          code: 'Profit Margin (%) = (Net Profit ÷ Sold Price) × 100',
+        },
+      ];
+    }
+    case 'tiktok-shop': {
+      const referral = feeData.rates.find((r) => r.fee_kind === 'referral')?.percentage ?? 6.0;
+      return [
+        {
+          label: 'Total Platform Deductions',
+          code: `Total TikTok Shop Fees = (Sold Price + Shipping Charged) × ${(referral / 100).toFixed(2)}`,
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = (Sold Price + Shipping Charged) − Total TikTok Shop Fees − Inventory Cost (COGS) − Carrier Postage',
+        },
+        {
+          label: 'Profit Margin Percentage',
+          code: 'Profit Margin (%) = (Net Profit ÷ Gross Revenue) × 100',
+        },
+      ];
+    }
+    case 'depop': {
+      const sellFee = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 0.0;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 3.3;
+      const procFixed = proc?.fixed_amount ?? 0.45;
+      return [
+        {
+          label: 'Total Platform Deductions',
+          code: `Total Depop Fees = (Sold Price × ${(sellFee / 100).toFixed(2)}) + ((Sold Price + Shipping Charged) × ${(procPct / 100).toFixed(3)}) + $${procFixed.toFixed(2)}`,
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = Sold Price − Total Depop Fees − Inventory Cost (COGS) − Seller Postage',
+        },
+        {
+          label: 'Profit Margin Percentage',
+          code: 'Profit Margin (%) = (Net Profit ÷ Sold Price) × 100',
+        },
+      ];
+    }
+    case 'etsy': {
+      const listing = feeData.rates.find((r) => r.fee_kind === 'listing')?.fixed_amount ?? 0.2;
+      const txn = feeData.rates.find((r) => r.fee_kind === 'commission')?.percentage ?? 6.5;
+      const proc = feeData.rates.find((r) => r.fee_kind === 'payment_processing');
+      const procPct = proc?.percentage ?? 3.0;
+      const procFixed = proc?.fixed_amount ?? 0.25;
+      return [
+        {
+          label: 'Total Platform Deductions',
+          code: `Total Etsy Fees = $${listing.toFixed(2)} + ((Sold Price + Shipping Charged) × ${(txn / 100).toFixed(3)}) + ((Total Buyer Paid) × ${(procPct / 100).toFixed(2)}) + $${procFixed.toFixed(2)}`,
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = (Sold Price + Shipping Charged) − Total Etsy Fees − Inventory Cost (COGS) − Actual Postage',
+        },
+        {
+          label: 'Profit Margin Percentage',
+          code: 'Profit Margin (%) = (Net Profit ÷ Gross Revenue) × 100',
+        },
+      ];
+    }
+    case 'ebay-us': {
+      const fvf = feeData.rates.find((r) => r.name?.includes('Most Categories') && !r.name?.includes('Store'))?.percentage ?? 13.25;
+      const orderFee = feeData.rates.find((r) => r.name?.includes('over $10.00'))?.fixed_amount ?? 0.4;
+      return [
+        {
+          label: 'Total Platform Deductions',
+          code: `Total eBay Fees = ((Sold Price + Shipping Charged + Tax) × ${(fvf / 100).toFixed(4)}) + $${orderFee.toFixed(2)}`,
+        },
+        {
+          label: 'Net Take-Home Cash Profit',
+          code: 'Net Profit = (Sold Price + Shipping Charged) − Total eBay Fees − Inventory Cost (COGS) − Shipping Postage',
+        },
+        {
+          label: 'Profit Margin Percentage',
+          code: 'Profit Margin (%) = (Net Profit ÷ Gross Revenue) × 100',
+        },
+      ];
+    }
+    default:
+      return [];
+  }
+}
+
+const activeCards = resolveDefaultCards();
+const activeFormulas = resolveDefaultFormulas();
+---
+
+<section class="space-y-6 pt-6 border-t border-hairline" id={id}>
+  <div class="space-y-2">
+    <h2 class="text-heading-2 font-bold text-ink">{title}</h2>
+    {description && <p class="text-body-md text-muted max-w-2xl">{description}</p>}
+  </div>
+
+  {
+    activeCards.length > 0 && (
+      <div class={`grid grid-cols-1 ${activeCards.length === 2 ? 'md:grid-cols-2' : activeCards.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4`}>
+        {activeCards.map((card) => (
+          <div class="p-5 rounded-lg bg-canvas-soft border border-hairline-strong space-y-2">
+            <span class="text-ui-label font-bold text-primary uppercase tracking-wider block">
+              {card.label}
+            </span>
+            <p class="text-stat-value font-mono font-bold text-ink tabular-nums">
+              {card.formula}
+            </p>
+            <p class="text-caption text-muted leading-relaxed">{card.note}</p>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    activeFormulas.length > 0 && (
+      <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-3 font-mono text-ui-sm text-body">
+        <div class="text-caption font-sans font-bold uppercase tracking-wider text-muted">
+          Complete Calculation Formula
+        </div>
+        {activeFormulas.map((formula) => (
+          <div class="p-3 bg-canvas-soft rounded-xs border border-hairline overflow-x-auto text-ink">
+            {formula.label && (
+              <span class="text-micro font-sans font-bold uppercase tracking-wider text-muted block mb-1">
+                {formula.label}:
+              </span>
+            )}
+            <code>{formula.code}</code>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</section>

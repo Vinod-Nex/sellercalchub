@@ -3,9 +3,18 @@
   "platform_name": "TikTok Shop",
   "region": "US",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "referral",
+      "name": "TikTok Shop Referral Fee",
+      "calculation_type": "percent",
+      "percentage": 6.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "Standard 6.0% referral fee on total customer payment"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://seller-us.tiktok.com/university/essay?knowledge_id=10012248",
-  "notes": "Awaiting user to paste official TikTok Shop fee schedule into chat to populate typed rates."
+  "notes": "Official TikTok Shop US referral fee: flat 6.0% on total customer payment."
 }

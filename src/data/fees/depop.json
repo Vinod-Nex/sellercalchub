@@ -3,9 +3,36 @@
   "platform_name": "Depop",
   "region": "US",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "commission",
+      "name": "Depop Selling Fee (US)",
+      "calculation_type": "percent",
+      "percentage": 0.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "0% marketplace selling fee for US sellers"
+    },
+    {
+      "fee_kind": "payment_processing",
+      "name": "Payment Processing Fee (US)",
+      "calculation_type": "percent_plus_fixed",
+      "percentage": 3.3,
+      "fixed_amount": 0.45,
+      "currency": "USD",
+      "applies_to": "total_buyer_paid",
+      "notes": "3.3% plus $0.45 payment processing fee on total buyer payment"
+    },
+    {
+      "fee_kind": "other",
+      "name": "Depop Boosted Listing Fee",
+      "calculation_type": "percent",
+      "percentage": 8.0,
+      "applies_to": "total_buyer_paid",
+      "notes": "Optional 8.0% fee when a buyer purchases via a boosted listing"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://depophelp.zendesk.com/hc/en-gb/articles/360001791127-What-are-the-fees-for-selling-on-Depop",
-  "notes": "Awaiting user to paste official Depop fee schedule into chat to populate typed rates."
+  "notes": "Official Depop US seller fee schedule: 0% selling fee + 3.3% + $0.45 payment processing fee. Boosted listings are 8.0% optional."
 }

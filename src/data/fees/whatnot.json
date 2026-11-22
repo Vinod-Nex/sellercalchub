@@ -3,9 +3,28 @@
   "platform_name": "Whatnot",
   "region": "US",
   "currency": "USD",
-  "rates": "TODO",
+  "rates": [
+    {
+      "fee_kind": "commission",
+      "name": "Whatnot Commission",
+      "calculation_type": "percent",
+      "percentage": 8.0,
+      "applies_to": "item_price",
+      "notes": "8.0% commission applied to the item sale price"
+    },
+    {
+      "fee_kind": "payment_processing",
+      "name": "Payment Processing Fee",
+      "calculation_type": "percent_plus_fixed",
+      "percentage": 2.9,
+      "fixed_amount": 0.30,
+      "currency": "USD",
+      "applies_to": "total_buyer_paid",
+      "notes": "2.9% plus $0.30 payment processing fee applied to the total order amount including shipping and tax"
+    }
+  ],
   "effective_from": "2026-01-01",
   "verified_on": "2026-11-22",
   "source_url": "https://help.whatnot.com/hc/en-us/articles/360061525052-Selling-Fees-on-Whatnot",
-  "notes": "Awaiting user to paste official Whatnot fee schedule into chat to populate typed rates."
+  "notes": "Official Whatnot selling fee schedule: 8.0% commission on item price + 2.9% + $0.30 payment processing on total order."
 }

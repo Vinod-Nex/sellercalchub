@@ -1,0 +1,55 @@
+---
+import { getPlatformFeeData, formatVerifiedDate } from '../lib/calc/fee-data';
+
+export interface Props {
+  author?: string;
+  role?: string;
+  verifiedDate?: string;
+  platform?: string;
+  reviewedBy?: string;
+}
+
+const {
+  author = 'Seller Calc Hub Research Team',
+  role = 'Marketplace Fee Analysts',
+  verifiedDate,
+  platform,
+  reviewedBy = 'Ecommerce Accounting & Reseller Specialists',
+} = Astro.props;
+
+const feeData = platform ? getPlatformFeeData(platform) : undefined;
+const dateIso = verifiedDate ?? feeData?.verified_on ?? '2026-11-22';
+const formattedDate = formatVerifiedDate(dateIso);
+---
+
+<div class="rounded-lg border border-hairline bg-canvas p-4 text-ui-sm text-body shadow-sm space-y-2">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hairline pb-2.5">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary font-bold flex items-center justify-center text-caption shrink-0">
+        SCH
+      </div>
+      <div>
+        <span class="font-bold text-ink block">{author}</span>
+        <span class="text-caption text-muted block">{role}</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5 text-caption text-muted bg-canvas-soft px-2.5 py-1 rounded-xs border border-hairline">
+      <svg class="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span>Fact-Checked &amp; Verified: <strong class="text-ink font-semibold">{formattedDate}</strong></span>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-2 text-caption text-muted pt-0.5">
+    <span>Reviewed by <strong class="text-ink">{reviewedBy}</strong></span>
+    <a href="/methodology/" class="text-primary hover:underline font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-xxs">
+      Read Methodology &rarr;
+    </a>
+  </div>
+</div>

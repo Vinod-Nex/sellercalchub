@@ -1,0 +1,58 @@
+---
+import { getAllCalculatorsMeta, type RelatedCalculatorMeta } from '../lib/calc/fee-data';
+
+export interface Props {
+  currentPlatform?: string;
+  title?: string;
+  description?: string;
+  calculators?: RelatedCalculatorMeta[];
+  limit?: number;
+  id?: string;
+}
+
+const {
+  currentPlatform,
+  title = 'Compare Other Marketplace Fees',
+  description = 'Cross-list your inventory? Compare your net margins against other major reseller platforms.',
+  calculators: customCalculators,
+  limit = 6,
+  id = 'related-calculators',
+} = Astro.props;
+
+const allCalculators = customCalculators ?? getAllCalculatorsMeta();
+const filtered = currentPlatform
+  ? allCalculators.filter((c) => c.id !== currentPlatform)
+  : allCalculators;
+const itemsToDisplay = filtered.slice(0, limit);
+---
+
+<section class="space-y-6 pt-6 border-t border-hairline" id={id}>
+  <div class="space-y-2">
+    <h2 class="text-heading-2 font-bold text-ink">{title}</h2>
+    {description && <p class="text-body-md text-muted max-w-2xl">{description}</p>}
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {
+      itemsToDisplay.map((item) => (
+        <a
+          href={item.href}
+          class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
+        >
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <span class="text-caption font-bold text-primary block">{item.rate}</span>
+            {item.badge && (
+              <span class="text-micro font-bold uppercase tracking-wider text-muted bg-canvas-soft px-2 py-0.5 rounded-xs border border-hairline">
+                {item.badge}
+              </span>
+            )}
+          </div>
+          <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-2">
+            {item.name}
+          </span>
+          <span class="text-caption text-muted block leading-relaxed">{item.desc}</span>
+        </a>
+      ))
+    }
+  </div>
+</section>

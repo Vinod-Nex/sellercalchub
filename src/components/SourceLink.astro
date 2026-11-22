@@ -1,0 +1,46 @@
+---
+import { getPlatformFeeData } from '../lib/calc/fee-data';
+
+export interface Props {
+  platform?: string;
+  href?: string;
+  label?: string;
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  platform,
+  href,
+  label = 'Official Fee Schedule',
+  class: className = '',
+  target = '_blank',
+  rel = 'noopener noreferrer',
+} = Astro.props;
+
+const feeData = platform ? getPlatformFeeData(platform) : undefined;
+const resolvedHref = href ?? feeData?.source_url ?? 'https://sellercalchub.com/methodology/';
+---
+
+<a
+  href={resolvedHref}
+  target={target}
+  rel={rel}
+  class={`inline-flex items-center gap-1.5 px-4 py-2 bg-canvas border border-hairline-strong hover:border-primary rounded-xs text-ui-sm font-bold text-primary transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${className}`}
+>
+  <span>{label}</span>
+  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path
+      fill-rule="evenodd"
+      d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h4a.75.75 0 010 1.5h-4z"
+      clip-rule="evenodd"
+    />
+    <path
+      fill-rule="evenodd"
+      d="M6.194 12.753a.75.75 0 001.06 1.06l7.5-7.5V9a.75.75 0 001.5 0V4.5a.75.75 0 00-.75-.75H11a.75.75 0 000 1.5h2.693l-7.499 7.503z"
+      clip-rule="evenodd"
+    />
+  </svg>
+  <span class="sr-only">(opens official policy in a new window)</span>
+</a>

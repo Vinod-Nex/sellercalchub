@@ -1,0 +1,76 @@
+---
+import SourceLink from './SourceLink.astro';
+import { getPlatformFeeData, formatVerifiedDate } from '../lib/calc/fee-data';
+
+export interface Props {
+  platform?: string;
+  date?: string;
+  platformName?: string;
+  sourceUrl?: string;
+  compact?: boolean;
+}
+
+const {
+  platform,
+  date,
+  platformName,
+  sourceUrl,
+  compact = false,
+} = Astro.props;
+
+const feeData = platform ? getPlatformFeeData(platform) : undefined;
+const resolvedDateIso = date ?? feeData?.verified_on ?? '2026-11-22';
+const resolvedPlatformName = platformName ?? feeData?.platform_name ?? 'Marketplace';
+const resolvedSourceUrl = sourceUrl ?? feeData?.source_url;
+const formattedDate = formatVerifiedDate(resolvedDateIso);
+---
+
+{
+  compact ? (
+    <div class="inline-flex items-center gap-2 text-caption text-muted">
+      <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span>
+        {resolvedPlatformName} rates verified on <strong class="text-ink font-semibold">{formattedDate}</strong>.
+      </span>
+      {resolvedSourceUrl && (
+        <a
+          href={resolvedSourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary hover:underline font-semibold"
+        >
+          Source policy &rarr;
+        </a>
+      )}
+    </div>
+  ) : (
+    <footer class="pt-6 border-t border-hairline">
+      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
+            <span class="text-ui-label font-bold text-ink">
+              Official Rate Verification
+            </span>
+          </div>
+          <p class="text-caption text-muted">
+            {resolvedPlatformName} fee rates officially verified on{' '}
+            <strong class="text-ink">{formattedDate}</strong>. Sourced directly from {resolvedPlatformName}’s published fee documentation.
+          </p>
+        </div>
+
+        <SourceLink
+          platform={platform}
+          href={resolvedSourceUrl}
+          label="Official Fee Schedule"
+        />
+      </div>
+    </footer>
+  )
+}
