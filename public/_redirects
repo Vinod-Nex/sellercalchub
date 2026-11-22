@@ -1,0 +1,15 @@
+# ==============================================================================
+# Cloudflare Pages Redirects Configuration
+# Domain: SellerCalcHub.com
+# ==============================================================================
+
+# 1. Force HTTPS and Canonical Apex Host (sellercalchub.com)
+https://www.sellercalchub.com/* https://sellercalchub.com/:splat 301!
+http://www.sellercalchub.com/* https://sellercalchub.com/:splat 301!
+http://sellercalchub.com/* https://sellercalchub.com/:splat 301!
+
+# 2. Page Aliases and Canonicals
+/twitch-bits-calculator/ https://sellercalchub.com/twitch-bits-to-usd/ 301
+/twitch-bits-calculator https://sellercalchub.com/twitch-bits-to-usd/ 301
+/ebay-uk-fee-calculator/ https://sellercalchub.com/ebay-fee-calculator-uk/ 301
+/ebay-uk-fee-calculator https://sellercalchub.com/ebay-fee-calculator-uk/ 301
