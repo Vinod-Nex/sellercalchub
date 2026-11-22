@@ -1,91 +1,386 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CalculatorIsland from '../components/CalculatorIsland.astro';
+import MarketplaceComparison from '../components/MarketplaceComparison.astro';
 
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Seller Calc Hub',
-  url: 'https://sellercalchub.com/',
-  description: 'Free, fast marketplace fee and profit calculators for online resellers and sellers.',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://sellercalchub.com/?q={search_term_string}',
-    'query-input': 'required name=search_term_string',
+// Structured Data
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Seller Calc Hub',
+    url: 'https://sellercalchub.com/',
+    description:
+      'Free, fast marketplace fee and profit calculators for online resellers across Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://sellercalchub.com/?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
   },
-};
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Seller Calc Hub Marketplace Fee & Profit Calculator',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  },
+];
+
+// All platform calculators organized by category
+const calculatorGroups = [
+  {
+    category: 'eBay Ecosystem (US & UK)',
+    description: 'Final value fees, store tiers, shipping deductions, and UK managed rates.',
+    items: [
+      {
+        name: 'eBay Fee Calculator (US Pillar)',
+        href: '/ebay-fee-calculator/',
+        rate: '13.25% + $0.40 (12.35% Store)',
+        desc: 'Comprehensive US calculator covering category rates, store discounts, and promoted listings.',
+        badge: 'Pillar',
+      },
+      {
+        name: 'eBay Final Value Fee Calculator',
+        href: '/ebay-final-value-fee-calculator/',
+        rate: 'FVF Isolation & Tiers',
+        desc: 'Isolate category commission percentages, the $7,500 threshold, and Top Rated Plus discounts.',
+        badge: 'Specialized',
+      },
+      {
+        name: 'eBay Profit & Margin Calculator',
+        href: '/ebay-profit-calculator/',
+        rate: 'Net P&L, Margin & ROI',
+        desc: 'Calculate net cash profit after COGS and postage, with reverse target-pricing mode.',
+        badge: 'Profit',
+      },
+      {
+        name: 'eBay Shipping Fee Calculator',
+        href: '/ebay-shipping-fee-calculator/',
+        rate: 'Postage Fee Analysis',
+        desc: 'Model eBay fees charged on buyer shipping and avoid losing money on postage labels.',
+        badge: 'Shipping',
+      },
+      {
+        name: 'eBay UK Fee Calculator',
+        href: '/ebay-fee-calculator-uk/',
+        rate: '0% Private / 12.8% Business + VAT',
+        desc: 'Calculate 0% fees for UK private sellers and 12.8% + 30p plus 20% VAT for business sellers in GBP (£).',
+        badge: 'UK (GBP)',
+      },
+      {
+        name: 'eBay & PayPal Explainer',
+        href: '/ebay-and-paypal-fee-calculator/',
+        rate: 'Managed Payments Reality',
+        desc: 'Understand why eBay no longer charges separate PayPal fees and how direct payouts work.',
+        badge: 'Explainer',
+      },
+    ],
+  },
+  {
+    category: 'Handmade, Vintage & Craft',
+    description: 'Fee calculators for Etsy artisans, vintage resellers, and external marketing.',
+    items: [
+      {
+        name: 'Etsy Fee Calculator',
+        href: '/etsy-fee-calculator/',
+        rate: '6.5% + $0.20 + 3% + $0.25',
+        desc: 'Calculate listing renewals, 6.5% transaction fees, and Etsy Payments processing margins.',
+        badge: 'Pillar',
+      },
+      {
+        name: 'Etsy Offsite Ads Calculator',
+        href: '/etsy-offsite-ads-fee-calculator/',
+        rate: '15% vs 12% ($100 Cap)',
+        desc: 'Model your net take-home when Etsy advertises your items across Google, Facebook, and Bing.',
+        badge: 'Advertising',
+      },
+    ],
+  },
+  {
+    category: 'Livestream, Social & Creator',
+    description: 'Fee calculators for live auctions, social storefronts, and creator monetization.',
+    items: [
+      {
+        name: 'Whatnot Fee Calculator',
+        href: '/whatnot-fee-calculator/',
+        rate: '8.0% + 2.9% + $0.30',
+        desc: 'Calculate seller take-home earnings, margin %, and break-even prices for live video auctions.',
+        badge: 'Live Sales',
+      },
+      {
+        name: 'TikTok Shop Fee Calculator',
+        href: '/tiktok-shop-fee-calculator/',
+        rate: '6.0% Referral Fee',
+        desc: 'Calculate TikTok Shop referral commissions, affiliate splits, and social commerce profits.',
+        badge: 'Social Commerce',
+      },
+      {
+        name: 'Depop Fee Calculator',
+        href: '/depop-fee-calculator/',
+        rate: '0% Selling + 3.3% + $0.45',
+        desc: 'Calculate marketplace payment processing fees and profit margins for vintage streetwear.',
+        badge: 'Fashion',
+      },
+      {
+        name: 'Twitch Bits to USD Converter',
+        href: '/twitch-bits-to-usd/',
+        rate: '$0.01 / Bit Payout',
+        desc: 'Convert Twitch Bits to USD, review viewer bundle pricing markups, and track the $50 threshold.',
+        badge: 'Streaming',
+      },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  title="Seller Calc Hub - Free Marketplace Fee & Profit Calculators"
-  description="Free, fast marketplace fee and profit calculators for Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits. See exactly what you keep on every sale."
+  title="Free Marketplace Fee & Profit Calculator (Side-by-Side Comparison)"
+  description="Compare seller fees and net profit across Whatnot, TikTok Shop, Depop, Etsy, and eBay with one unified input. 100% free, verified 2026 fee schedules, zero popups."
   canonicalPath="/"
-  structuredData={websiteSchema}
+  structuredData={structuredData}
 >
-  <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
-    <!-- Hero Band (Single H1 for the page) -->
-    <section class="rounded-lg overflow-hidden bg-gradient-to-r from-forest via-primary-deep to-primary text-on-primary p-8 md:p-12 shadow-level-3">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="text-micro font-bold uppercase tracking-wider text-lime-panel bg-forest/50 px-2 py-0.5 rounded-xs">
-          100% Free · Verified 2026 Fee Schedules
+  <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    <!-- Header / Headline (Above the Fold, Text-only LCP, No Hero Image, No Carousel) -->
+    <header class="space-y-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-mint-50 dark:bg-mint-200/10 border border-mint-200 text-caption text-primary font-bold">
+          <span class="w-2 h-2 rounded-full bg-primary" aria-hidden="true"></span>
+          100% Free Reseller Tool · Zero Popups · No Layout Shift
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-xs bg-canvas-soft border border-hairline text-caption text-muted">
+          Verified for 2026 Seller Schedules
         </span>
       </div>
-      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-white mb-4">
-        Keep More of What You Sell
+
+      <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
+        Free Marketplace Fee &amp; Profit Calculator
       </h1>
-      <p class="text-body-lg font-light text-mint-50 max-w-2xl mb-8">
-        Fast, accurate marketplace fee and profit calculators for online resellers across Whatnot, TikTok Shop, Depop, Etsy, eBay, and Twitch Bits.
+
+      <p class="text-body-lg text-body max-w-3xl leading-relaxed">
+        Enter your sale price and costs once below. See your exact net take-home profit, marketplace fees, and profit margin across <strong class="text-ink font-semibold">Depop</strong>, <strong class="text-ink font-semibold">TikTok Shop</strong>, <strong class="text-ink font-semibold">Etsy</strong>, <strong class="text-ink font-semibold">Whatnot</strong>, and <strong class="text-ink font-semibold">eBay</strong> side by side.
       </p>
-      <div class="flex flex-wrap gap-4">
-        <a
-          href="/marketplace-fee-calculators/"
-          class="bg-primary text-on-primary font-bold text-ui-label uppercase p-md rounded-xs hover:bg-primary-deep transition-colors inline-block shadow-level-3"
-        >
-          Compare All Marketplaces
-        </a>
-        <a
-          href="/whatnot-fee-calculator/"
-          class="bg-white/10 hover:bg-white/20 text-white font-bold text-ui-label uppercase p-md rounded-xs transition-colors inline-block border border-white/20"
-        >
-          Whatnot Calculator
-        </a>
+
+      <!-- Visible Freshness Line -->
+      <div class="flex items-center gap-2 text-caption text-muted pt-1">
+        <svg class="w-4 h-4 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+        </svg>
+        <span>
+          Fee schedules verified on <strong class="text-ink font-semibold">November 22, 2026</strong> against official marketplace documentation.
+        </span>
       </div>
+    </header>
+
+    <!-- Master Tool Above the Fold: Side-by-Side Marketplace Comparison -->
+    <section id="comparison-tool" class="space-y-4">
+      <MarketplaceComparison />
     </section>
 
-    <!-- Interactive Calculator Island -->
-    <section id="calculator" class="space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-heading-2 font-bold text-ink">Instant Profit & Fee Calculator</h2>
-          <p class="text-body-md text-muted">
-            Select a marketplace, enter your pricing and expenses, and see your exact take-home payout.
+    <!-- "How We Calculate" Block -->
+    <section class="space-y-6 border-t border-hairline pt-10" id="how-we-calculate">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">How We Calculate Marketplace Net Profit</h2>
+        <p class="text-body text-body max-w-3xl leading-relaxed">
+          Online marketplaces calculate seller fees on different bases. While some deduct fees only from the item price, others apply commissions to the total transaction amount paid by the customer—including shipping. We use each platform’s official, current formula to show your true take-home earnings:
+        </p>
+      </div>
+
+      <!-- Core Formula Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+              Step 1
+            </span>
+            <span class="text-caption font-mono text-muted">+ Revenue</span>
+          </div>
+          <h3 class="text-heading-4 font-bold text-ink">Gross Revenue</h3>
+          <p class="text-caption text-body leading-relaxed">
+            Total money collected from the buyer:
           </p>
+          <div class="p-2 rounded-xs bg-canvas-soft font-mono text-caption text-ink font-bold">
+            Item Price + Shipping Charged
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-negative bg-negative/10 px-2 py-0.5 rounded-xs">
+              Step 2
+            </span>
+            <span class="text-caption font-mono text-negative">- Fees</span>
+          </div>
+          <h3 class="text-heading-4 font-bold text-ink">Marketplace Fees</h3>
+          <p class="text-caption text-body leading-relaxed">
+            Platform commissions and payment gateway fees:
+          </p>
+          <div class="p-2 rounded-xs bg-canvas-soft font-mono text-caption text-negative font-bold">
+            Commission + Processing + Fixed
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-hairline-strong bg-canvas p-5 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-muted bg-canvas-soft px-2 py-0.5 rounded-xs">
+              Step 3
+            </span>
+            <span class="text-caption font-mono text-muted">- Costs</span>
+          </div>
+          <h3 class="text-heading-4 font-bold text-ink">Direct Expenses</h3>
+          <p class="text-caption text-body leading-relaxed">
+            Your out-of-pocket costs to fulfill the order:
+          </p>
+          <div class="p-2 rounded-xs bg-canvas-soft font-mono text-caption text-body font-bold">
+            Inventory Sourcing + Label Cost
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-primary/30 bg-mint-50/30 p-5 space-y-2 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-micro font-bold uppercase tracking-wider text-primary bg-primary text-on-primary px-2 py-0.5 rounded-xs">
+              Result
+            </span>
+            <span class="text-caption font-mono text-primary font-bold">= Net</span>
+          </div>
+          <h3 class="text-heading-4 font-bold text-ink">Net Take-Home Cash</h3>
+          <p class="text-caption text-body leading-relaxed">
+            The exact dollar profit deposited to your bank:
+          </p>
+          <div class="p-2 rounded-xs bg-canvas font-mono text-caption text-primary font-bold border border-primary/20">
+            Gross - Fees - Sourcing - Postage
+          </div>
         </div>
       </div>
-      <CalculatorIsland platform="whatnot" showPlatformTabs={true} />
+
+      <!-- Plain Text Formula Breakdown -->
+      <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4">
+        <h3 class="text-heading-3 font-bold text-ink">Summary of Verified Platform Commission Rules</h3>
+        <ul class="space-y-3 text-body-sm text-body leading-relaxed">
+          <li class="flex items-start gap-2.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true"></span>
+            <div>
+              <strong class="text-ink font-semibold">Depop:</strong> 0% selling commission + 3.3% + $0.45 payment processing fee. Depop removed selling fees for US sellers, making it one of the lowest-fee platforms for fashion and apparel.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true"></span>
+            <div>
+              <strong class="text-ink font-semibold">TikTok Shop:</strong> Flat 6.0% referral fee charged against the total customer payment (item price plus buyer-paid shipping).
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true"></span>
+            <div>
+              <strong class="text-ink font-semibold">Etsy:</strong> $0.20 listing fee + 6.5% transaction fee (on item price + shipping) + 3.0% + $0.25 Etsy Payments processing fee (on total buyer payment).
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true"></span>
+            <div>
+              <strong class="text-ink font-semibold">Whatnot:</strong> 8.0% commission applied strictly to the sold item price + 2.9% + $0.30 payment processing fee on the total order.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true"></span>
+            <div>
+              <strong class="text-ink font-semibold">eBay (US):</strong> 13.25% Final Value Fee (or 12.35% for eBay Store subscribers in most categories) applied to the total order including shipping, plus a $0.30 (for sales &le; $10) or $0.40 (for sales &gt; $10) per-order fee.
+            </div>
+          </li>
+        </ul>
+      </div>
     </section>
 
-    <!-- Platform Quick Links Grid -->
-    <section class="space-y-4">
-      <h2 class="text-heading-2 font-bold text-ink">Supported Marketplaces</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {[
-          { name: 'Whatnot', href: '/whatnot-fee-calculator/' },
-          { name: 'TikTok Shop', href: '/tiktok-shop-fee-calculator/' },
-          { name: 'Depop', href: '/depop-fee-calculator/' },
-          { name: 'Etsy', href: '/etsy-fee-calculator/' },
-          { name: 'eBay', href: '/ebay-fee-calculator/' },
-          { name: 'Twitch Bits', href: '/twitch-bits-to-usd/' },
-        ].map((platform) => (
-          <a
-            href={platform.href}
-            class="rounded-lg border border-hairline-strong bg-canvas p-4 text-center hover:border-primary hover:bg-mint-50/50 transition-colors block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span class="text-heading-4 text-ink font-bold block mb-1">{platform.name}</span>
-            <span class="text-caption text-muted">Fee Calculator</span>
-          </a>
+    <!-- Links to Every Calculator (Structured Directory) -->
+    <section class="space-y-8 border-t border-hairline pt-10" id="calculators">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <h2 class="text-heading-2 font-bold text-ink">Free Marketplace Fee &amp; Profit Calculators</h2>
+          <p class="text-body text-body max-w-2xl leading-relaxed">
+            Need deep-dive category commission schedules, reverse break-even calculators, or currency options? Select a dedicated tool below:
+          </p>
+        </div>
+        <a
+          href="/marketplace-fee-calculators/"
+          class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xs bg-forest hover:bg-primary-deep text-white font-bold text-ui-label uppercase transition-colors shrink-0 shadow-sm"
+        >
+          <span>View Comparison Hub</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <div class="space-y-8">
+        {calculatorGroups.map((group) => (
+          <div class="space-y-4">
+            <div class="border-b border-hairline pb-2">
+              <h3 class="text-heading-3 font-bold text-ink">{group.category}</h3>
+              <p class="text-caption text-muted">{group.description}</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {group.items.map((item) => (
+                <a
+                  href={item.href}
+                  class="rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/20 transition-all duration-150 flex flex-col justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
+                >
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-micro font-bold uppercase tracking-wider text-primary bg-mint-50 dark:bg-mint-200/10 px-2 py-0.5 rounded-xs">
+                        {item.badge}
+                      </span>
+                      <span class="text-micro font-mono text-muted">{item.rate}</span>
+                    </div>
+
+                    <h4 class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors">
+                      {item.name}
+                    </h4>
+
+                    <p class="text-caption text-body leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div class="pt-4 mt-3 border-t border-hairline flex items-center justify-between text-ui-label font-bold text-primary text-body-sm">
+                    <span>Open Calculator</span>
+                    <span class="group-hover:translate-x-1 transition-transform" aria-hidden="true">&rarr;</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
+
+    <!-- Visible Freshness & Verification Guarantee Footer -->
+    <footer class="pt-6 border-t border-hairline">
+      <div class="rounded-lg border border-mint-200 bg-mint-50 dark:bg-mint-200/10 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true"></span>
+            <span class="text-ui-label font-bold text-ink">
+              Official Rate Verification Guarantee
+            </span>
+          </div>
+          <p class="text-caption text-muted max-w-2xl">
+            Seller Calc Hub maintains a strict zero-guesswork policy. Every commission rate, listing fee, and payment threshold is audited against official marketplace seller policy documentation. Last verified on <strong class="text-ink font-semibold">November 22, 2026</strong>.
+          </p>
+        </div>
+
+        <a
+          href="/methodology/"
+          class="inline-flex items-center gap-1.5 text-ui-label font-bold text-primary hover:text-primary-deep transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs shrink-0"
+        >
+          <span>Read Verification Methodology</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </footer>
   </div>
 </BaseLayout>

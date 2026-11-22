@@ -156,7 +156,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
           >
             {/* Top Rank Badge */}
             {isTop && (
-              <div class="absolute -top-3 right-4 bg-primary text-on-primary text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm">
+              <div class="highest-badge absolute -top-3 right-4 bg-forest text-white text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm">
                 Highest Payout
               </div>
             )}
@@ -368,7 +368,7 @@ initialResults.sort((a, b) => b.calc.netProfit - a.calc.netProfit);
           if (isTop) {
             if (!existingBadge) {
               const badge = document.createElement('div');
-              badge.className = 'highest-badge absolute -top-3 right-4 bg-primary text-on-primary text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm';
+              badge.className = 'highest-badge absolute -top-3 right-4 bg-forest text-white text-micro font-bold uppercase tracking-wider px-2 py-0.5 rounded-xs shadow-sm';
               badge.textContent = 'Highest Payout';
               card.appendChild(badge);
             }
