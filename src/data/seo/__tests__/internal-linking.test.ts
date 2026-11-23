@@ -179,6 +179,8 @@ describe('Phase 36: Site Graph, Orphan Pages & Click Distance (dist/)', () => {
       if (
         f.endsWith('404.html') ||
         f.includes('/404/') ||
+        f.endsWith('500.html') ||
+        f.includes('/500/') ||
         f.includes('/embed/') ||
         f.includes('/social-preview-debugger/')
       )

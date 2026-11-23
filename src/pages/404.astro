@@ -21,40 +21,52 @@ const structuredData = [
 
 const popularCalculators = [
   {
-    name: 'eBay Fee Calculator',
+    name: 'eBay Fee Calculator (US)',
     href: '/ebay-fee-calculator/',
     rate: '13.25% + $0.40',
-    desc: 'Calculate final value fees, store subscriber discounts, and promoted listing fees.',
+    desc: 'Calculate final value fees, store subscriber rates, and promoted listings deductions.',
+  },
+  {
+    name: 'eBay Fee Calculator (UK)',
+    href: '/ebay-fee-calculator-uk/',
+    rate: '0% Private / 12.8% Business',
+    desc: 'Verify 0% private seller fee savings versus standard business seller rates.',
   },
   {
     name: 'Whatnot Fee Calculator',
     href: '/whatnot-fee-calculator/',
     rate: '8.0% + 2.9% + $0.30',
-    desc: 'Accurately estimate livestream sales earnings and buyer-paid shipping fees.',
+    desc: 'Accurately estimate livestream auction earnings and buyer-paid shipping fee deductions.',
   },
   {
     name: 'TikTok Shop Fee Calculator',
     href: '/tiktok-shop-fee-calculator/',
     rate: '6.0% Referral Fee',
-    desc: 'Calculate social commerce take-home profits and creator affiliate commissions.',
+    desc: 'Calculate social commerce take-home payouts and creator affiliate commissions.',
   },
   {
     name: 'Depop Fee Calculator',
     href: '/depop-fee-calculator/',
     rate: '0% Selling Fee',
-    desc: 'Project earnings under Depop’s 0% commission structure for US and UK sellers.',
+    desc: 'Project profits under Depop’s 0% commission structure for US and UK sellers.',
   },
   {
     name: 'Etsy Fee Calculator',
     href: '/etsy-fee-calculator/',
     rate: '6.5% + $0.20 + 3%',
-    desc: 'Account for listing renewals, transaction fees, and Offsite Ads deductions.',
+    desc: 'Account for listing renewals, transaction fees, and mandatory Offsite Ads.',
   },
   {
     name: 'Twitch Bits to USD Converter',
     href: '/twitch-bits-to-usd/',
-    rate: '$0.01 / bit',
-    desc: 'Convert cheered Bits to streamer payouts across all official web bundle tiers.',
+    rate: '$0.01 / Bit Payout',
+    desc: 'Convert cheered Twitch Bits directly into exact streamer cash payouts.',
+  },
+  {
+    name: 'Marketplace Comparison Hub',
+    href: '/marketplace-fee-calculators/',
+    rate: 'Cross-Platform',
+    desc: 'Compare take-home profit and effective commission rates side-by-side across all platforms.',
   },
 ];
 ---
@@ -71,8 +83,11 @@ const popularCalculators = [
     <Breadcrumbs items={breadcrumbs} />
 
     <!-- 404 Hero Section -->
-    <header class="space-y-4 text-center md:text-left">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-mint-100 dark:bg-mint-200/10 border border-mint-200 text-caption font-bold text-primary">
+    <header class="space-y-5 text-center md:text-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 text-caption font-bold text-amber-800 dark:text-amber-300">
+        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
         <span>HTTP 404 · Resource Not Found</span>
       </div>
 
@@ -81,20 +96,20 @@ const popularCalculators = [
       </h1>
 
       <p class="text-body-lg text-body max-w-2xl leading-relaxed">
-        The link you followed may be outdated, mistyped, or the page may have moved. Use the shortcuts below to find the exact marketplace calculator you need.
+        The link you followed may be outdated, mistyped, or the calculator URL may have moved during our recent fee schedule updates. Use the verified shortcuts below to jump to the exact calculator you need.
       </p>
 
       <div class="flex flex-wrap items-center gap-3 pt-2 justify-center md:justify-start">
         <a
           href="/marketplace-fee-calculators/"
-          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xs bg-primary text-on-primary font-bold text-ui-label hover:bg-primary-deep transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] rounded-xs bg-forest hover:bg-primary-deep text-white font-bold text-ui-label transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Browse All Marketplace Calculators</span>
           <span aria-hidden="true">&rarr;</span>
         </a>
         <a
           href="/"
-          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-ui-label hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-ui-label hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Return to Homepage</span>
         </a>
@@ -104,26 +119,32 @@ const popularCalculators = [
     <!-- Popular Calculators Grid -->
     <section class="space-y-6 border-t border-hairline pt-10">
       <div class="space-y-1">
-        <h2 class="text-heading-2 font-bold text-ink">Popular Reseller Fee Calculators</h2>
+        <h2 class="text-heading-2 font-bold text-ink">Verified Reseller Fee Calculators</h2>
         <p class="text-body-md text-muted">
-          Jump directly to our most frequently used verified calculators:
+          Jump directly to our most frequently used verified tools:
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {
           popularCalculators.map((calc) => (
             <a
               href={calc.href}
-              class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm group"
+              class="block rounded-lg border border-hairline-strong bg-canvas p-5 hover:border-primary hover:bg-mint-50/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-xs group flex flex-col justify-between"
             >
-              <div class="flex items-center justify-between gap-2 mb-1.5">
-                <span class="text-caption font-bold text-primary block">{calc.rate}</span>
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-caption font-bold text-primary block">{calc.rate}</span>
+                </div>
+                <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-1.5">
+                  {calc.name}
+                </span>
+                <span class="text-caption text-body block leading-relaxed">{calc.desc}</span>
               </div>
-              <span class="text-heading-4 font-bold text-ink group-hover:text-primary transition-colors block mb-1">
-                {calc.name}
+              <span class="text-caption font-bold text-primary inline-flex items-center gap-1 mt-3 group-hover:translate-x-0.5 transition-transform">
+                <span>Calculate Fees</span>
+                <span aria-hidden="true">&rarr;</span>
               </span>
-              <span class="text-caption text-muted block leading-relaxed">{calc.desc}</span>
             </a>
           ))
         }
@@ -131,20 +152,28 @@ const popularCalculators = [
     </section>
 
     <!-- Need Help / Report -->
-    <section class="rounded-lg border border-hairline-strong bg-canvas-soft p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <section class="rounded-lg border border-hairline bg-canvas-soft p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div class="space-y-1">
-        <h3 class="text-body-md font-bold text-ink">Looking for a specific tool or found a broken link?</h3>
+        <h3 class="text-body-md font-bold text-ink">Looking for a specific platform or found a broken link?</h3>
         <p class="text-caption text-muted">
-          Report broken links or request new platform fee models to our editorial team.
+          Our research and engineering team monitors fee changes and fixes broken links promptly.
         </p>
       </div>
-      <a
-        href="/contact/"
-        class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-caption hover:border-primary transition-colors"
-      >
-        <span>Contact Editorial Team</span>
-        <span aria-hidden="true">&rarr;</span>
-      </a>
+      <div class="flex flex-wrap items-center gap-3">
+        <a
+          href="/report-fee/"
+          class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 min-h-[44px] rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-caption hover:border-primary transition-colors"
+        >
+          <span>Report an Issue</span>
+        </a>
+        <a
+          href="/contact/"
+          class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 min-h-[44px] rounded-xs bg-forest hover:bg-primary-deep text-white font-bold text-caption transition-colors"
+        >
+          <span>Contact Support</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </section>
   </div>
 </BaseLayout>

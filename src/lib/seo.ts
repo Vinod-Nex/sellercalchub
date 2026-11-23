@@ -34,6 +34,9 @@ export function getOgImagePath(path: string): string {
   if (!clean || clean === 'index') {
     return '/og/og-home.png';
   }
+  if (clean === '404' || clean === '500') {
+    return '/og/og-default.png';
+  }
   if (clean.startsWith('guides/')) {
     const guideSlug = clean.replace('guides/', '');
     return `/og/og-guide-${guideSlug}.png`;
