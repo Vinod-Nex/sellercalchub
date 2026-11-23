@@ -3,7 +3,6 @@ import '../styles/global.css';
 import Head from '../components/Head.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import ConsentBanner from '../components/ConsentBanner.astro';
 import CloudflareAnalytics from '../components/CloudflareAnalytics.astro';
 
 export interface Props {
@@ -87,9 +86,6 @@ const {
     <slot name="footer">
       <Footer />
     </slot>
-
-    <!-- Non-blocking Privacy / Consent Banner -->
-    <ConsentBanner />
 
     <!-- Privacy-Preserving Cloudflare Web Analytics & Custom Event Dispatcher -->
     <CloudflareAnalytics />
