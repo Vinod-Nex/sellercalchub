@@ -15,15 +15,36 @@ const structuredData = [
     name: 'Privacy Policy - Seller Calc Hub',
     url: 'https://sellercalchub.com/privacy/',
     description:
-      'Seller Calc Hub Privacy Policy: zero selling of user data, client-side calculations, and no third-party tracking cookies.',
+      'Seller Calc Hub Privacy Policy: zero selling of user data, 100% client-side calculations, no tracking cookies, and full GDPR & CCPA compliance.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Seller Calc Hub',
+      url: 'https://sellercalchub.com/',
+      logo: 'https://sellercalchub.com/favicon.svg',
+    },
   },
   buildBreadcrumbSchema(breadcrumbs, '/privacy/'),
+];
+
+const localStorageKeys = [
+  {
+    key: 'sch_theme',
+    purpose: 'Stores your preferred color scheme (light, dark, or system default) to prevent screen flickering between page visits.',
+    duration: 'Persistent until cleared by user',
+    type: 'Local Browser Storage',
+  },
+  {
+    key: 'sch_privacy_notice_dismissed',
+    purpose: 'Records whether you dismissed the non-intrusive informational notice regarding client-side data privacy.',
+    duration: 'Persistent until cleared by user',
+    type: 'Local Browser Storage',
+  },
 ];
 ---
 
 <BaseLayout
   title="Privacy Policy - Seller Calc Hub"
-  description="Seller Calc Hub Privacy Policy: zero selling of user data, client-side calculations, and no third-party tracking cookies."
+  description="Seller Calc Hub Privacy Policy: zero selling of user data, 100% client-side calculations, no tracking cookies, and full GDPR & CCPA compliance."
   canonicalPath="/privacy/"
   structuredData={structuredData}
 >
@@ -42,89 +63,188 @@ const structuredData = [
       </h1>
 
       <p class="text-body-sm text-muted">
-        Last Updated &amp; Effective Date: <strong class="text-ink">November 22, 2026</strong>
+        Last Updated &amp; Effective Date: <strong class="text-ink">November 23, 2026</strong>
       </p>
 
       <p class="text-body-lg text-body leading-relaxed">
-        Seller Calc Hub (“we”, “us”, or “our”) is committed to protecting your privacy. This Privacy Policy explains our straightforward approach to data: <strong class="text-ink font-semibold">we do not collect, store, or sell the pricing or financial figures you calculate on our website.</strong>
+        Seller Calc Hub (“we”, “us”, or “our”) is dedicated to absolute data privacy. Our privacy philosophy is simple and uncompromising: <strong class="text-ink font-semibold">we do not collect, store, transmit, or sell the pricing figures, costs of goods sold (COGS), or profit calculations you enter on our website.</strong>
       </p>
     </header>
 
-    <!-- Content Sections -->
-    <div class="space-y-8 border-t border-hairline pt-8 text-body text-body leading-relaxed">
+    <!-- Main Policy Sections -->
+    <div class="space-y-10 border-t border-hairline pt-8 text-body text-body leading-relaxed">
       <!-- Section 1 -->
       <section class="space-y-3">
         <h2 class="text-heading-2 font-bold text-ink">1. Client-Side Calculation Guarantee</h2>
         <p>
-          All fee calculations, gross revenues, sourcing costs (COGS), postage expenses, and net profit results are processed entirely within your web browser using client-side JavaScript or pre-rendered static HTML.
+          All fee computations, shipping expense breakdowns, net payout deductions, and return on investment (ROI) simulations are executed entirely within your web browser using client-side JavaScript or pre-compiled static HTML.
         </p>
-        <p class="bg-mint-50/50 dark:bg-mint-200/10 border border-mint-200 rounded-lg p-4 text-body-sm font-medium text-ink">
-          We never transmit the prices or product costs you type into our calculator inputs to our servers or any remote third-party database. When you refresh or close your browser, your entered numbers vanish from your session unless you choose to bookmark an optional shareable URL containing your calculation parameters.
-        </p>
+        <div class="bg-mint-50/50 dark:bg-mint-200/10 border border-mint-200 rounded-lg p-5 text-body-sm font-medium text-ink space-y-2">
+          <p class="font-bold flex items-center gap-2 text-primary">
+            <span class="w-2.5 h-2.5 rounded-full bg-primary" aria-hidden="true"></span>
+            <span>Zero-Transmission Architecture</span>
+          </p>
+          <p>
+            When you type a sale price, shipping charge, or inventory acquisition cost into any calculator input on Seller Calc Hub, those numbers remain exclusively in your local device memory. We never transmit your entries across the internet to our servers or any remote database. When you refresh or close your browser tab, your entered figures are erased unless you voluntarily bookmark an optional shareable URL containing your calculation state parameters.
+          </p>
+        </div>
       </section>
 
       <!-- Section 2 -->
       <section class="space-y-3">
         <h2 class="text-heading-2 font-bold text-ink">2. Information We Do NOT Collect</h2>
-        <p>Unlike many online tools, Seller Calc Hub does not require registration or personal data collection:</p>
-        <ul class="list-disc pl-5 space-y-1.5 text-body-sm">
-          <li><strong>No User Accounts:</strong> You do not need to create an account, log in, or provide an email address to use our tools.</li>
-          <li><strong>No Financial Account Links:</strong> We do not connect to your bank accounts, eBay Managed Payments, Etsy Payments, or PayPal.</li>
-          <li><strong>No Inventory Scraping:</strong> We do not access or crawl your online marketplace store listings.</li>
-          <li><strong>No Behavioral Profiling:</strong> We do not sell your browsing habits or financial calculations to data brokers or advertisers.</li>
+        <p>
+          Unlike conventional software platforms, Seller Calc Hub operates with zero requirement for personal data collection:
+        </p>
+        <ul class="list-disc pl-5 space-y-2 text-body-sm">
+          <li><strong>No User Registration or Profiles:</strong> You do not need to register an account, set up a password, or submit your name or email address to access our complete suite of calculators.</li>
+          <li><strong>No Financial Account Integration:</strong> We do not integrate with, connect to, or request credentials for your bank accounts, eBay Managed Payments, PayPal, Etsy Payments, or merchant accounts.</li>
+          <li><strong>No Store or Inventory Scraping:</strong> We do not scrape, inspect, or connect to your active store listings, order history, or customer shipping addresses.</li>
+          <li><strong>No Cross-Site Behavioral Tracking:</strong> We do not profile your shopping or browsing behavior across other websites, nor do we sell user data to advertising exchanges, data brokers, or financial institutions.</li>
         </ul>
       </section>
 
       <!-- Section 3 -->
-      <section class="space-y-3">
-        <h2 class="text-heading-2 font-bold text-ink">3. Cookies &amp; Local Browser Storage</h2>
+      <section class="space-y-4">
+        <h2 class="text-heading-2 font-bold text-ink">3. Cookies &amp; Local Browser Storage Transparency</h2>
         <p>
-          Seller Calc Hub does not use intrusive tracking cookies, third-party advertising cookies, or fingerprinting scripts. We utilize standard browser local storage (<code class="text-ink font-mono text-micro">localStorage</code>) strictly for functional user preferences:
+          Seller Calc Hub does not use third-party tracking cookies or fingerprinting scripts. We utilize standard browser local storage (<code class="text-ink font-mono text-micro">localStorage</code>) strictly for essential user experience preferences:
         </p>
-        <ul class="list-disc pl-5 space-y-1.5 text-body-sm">
-          <li><strong>Theme Preference:</strong> Storing your choice of dark or light mode (<code class="text-ink font-mono text-micro">sch_theme</code>).</li>
-          <li><strong>Notice Dismissal:</strong> Remembering that you dismissed our non-blocking informational privacy notice (<code class="text-ink font-mono text-micro">sch_privacy_notice_dismissed</code>).</li>
-        </ul>
+
+        <div class="overflow-x-auto rounded-lg border border-hairline">
+          <table class="w-full text-left text-body-sm">
+            <thead class="bg-canvas-soft border-b border-hairline text-caption font-bold text-ink uppercase tracking-wider">
+              <tr>
+                <th class="p-3.5">Storage Key</th>
+                <th class="p-3.5">Purpose &amp; Description</th>
+                <th class="p-3.5">Storage Mechanism</th>
+                <th class="p-3.5">Retention</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hairline">
+              {localStorageKeys.map((item) => (
+                <tr class="hover:bg-canvas-soft/40 transition-colors">
+                  <td class="p-3.5 font-mono text-ui-sm font-semibold text-primary">{item.key}</td>
+                  <td class="p-3.5 text-body-sm text-body">{item.purpose}</td>
+                  <td class="p-3.5 text-caption text-muted">{item.type}</td>
+                  <td class="p-3.5 text-caption text-muted">{item.duration}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         <p class="text-caption text-muted">
-          You can clear your local storage at any time through your browser settings without affecting the functionality of our calculators.
+          You may clear your browser local storage or disable local storage at any time via your browser settings. Doing so will simply reset your color theme to your operating system default and will not impact the mathematical functionality of our calculators.
         </p>
       </section>
 
       <!-- Section 4 -->
       <section class="space-y-3">
-        <h2 class="text-heading-2 font-bold text-ink">4. Server Logs &amp; Technical Security</h2>
+        <h2 class="text-heading-2 font-bold text-ink">4. Advertising &amp; Future Monetization Transparency</h2>
         <p>
-          Like all websites, our hosting servers automatically log standard, temporary web request headers (such as IP address, browser user agent, requested URL, and timestamp). These logs are utilized strictly for DDoS mitigation, rate limiting, and technical infrastructure monitoring, and are routinely deleted.
+          Seller Calc Hub is currently 100% free of commercial display advertisements, popups, and sponsored tracking tags.
         </p>
+        <p class="text-body-sm text-body">
+          To ensure long-term sustainability while keeping our calculators free forever, we may in the future introduce non-intrusive contextual display advertising or transparent affiliate links to reputable seller tools (such as shipping label services or inventory management platforms). If and when monetization is introduced:
+        </p>
+        <ul class="list-disc pl-5 space-y-1.5 text-body-sm">
+          <li>We will <strong>never</strong> use invasive behavioral tracking cookies or sell your browsing history to third-party ad networks.</li>
+          <li>Any affiliate partnerships will be clearly disclosed in accordance with Federal Trade Commission (FTC) guidelines.</li>
+          <li>Affiliate relationships or advertising will <strong>never</strong> influence or alter our published fee schedules, calculation formulas, or editorial ratings.</li>
+        </ul>
       </section>
 
       <!-- Section 5 -->
       <section class="space-y-3">
-        <h2 class="text-heading-2 font-bold text-ink">5. Third-Party Links &amp; Marketplace Documentation</h2>
+        <h2 class="text-heading-2 font-bold text-ink">5. Server Infrastructure &amp; Technical Security</h2>
         <p>
-          Our calculators and methodology pages link directly to official third-party marketplace fee policies (e.g. eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch). Once you leave SellerCalcHub.com, you are governed by the privacy policies and terms of those respective platforms. We encourage you to review their policies directly.
+          Like all web services delivered via standard web infrastructure, our hosting delivery network (CDN) ephemerally processes standard web request headers (including IP address, browser user-agent, requested file URL, and timestamp). This information is processed exclusively for technical security, rate limiting, and DDoS defense, and is routinely purged. All data transmitted between your browser and Seller Calc Hub is protected using modern HTTPS (TLS) encryption.
         </p>
       </section>
 
       <!-- Section 6 -->
       <section class="space-y-3">
-        <h2 class="text-heading-2 font-bold text-ink">6. GDPR &amp; CCPA / CPRA Compliance</h2>
+        <h2 class="text-heading-2 font-bold text-ink">6. Third-Party Links to Marketplace Documentation</h2>
         <p>
-          Because Seller Calc Hub does not process, store, or sell personal identifiers or financial information, our platform is inherently compliant with the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA/CPRA). If you have questions regarding your data privacy rights, you may contact our privacy team at any time.
+          Our calculators, fee changelogs, and methodology pages include outbound links to official marketplace policies (e.g. eBay, Etsy, Whatnot, TikTok Shop, Depop, and Twitch). Once you navigate away from SellerCalcHub.com, your activity is subject to the terms and privacy practices of those external platforms. We encourage you to review their privacy policies directly.
         </p>
       </section>
 
       <!-- Section 7 -->
       <section class="space-y-3">
-        <h2 class="text-heading-2 font-bold text-ink">7. Contact Regarding Privacy</h2>
+        <h2 class="text-heading-2 font-bold text-ink">7. European Union &amp; UK Data Protection (GDPR)</h2>
         <p>
-          For any privacy inquiries or data protection questions, please reach out to:
+          If you are an individual resident within the European Economic Area (EEA) or the United Kingdom, the General Data Protection Regulation (GDPR) and UK Data Protection Act 2018 afford you specific statutory rights regarding personal data:
         </p>
-        <div class="p-4 rounded-lg border border-hairline bg-canvas font-mono text-ui-sm text-ink">
-          <p>Email: <a href="mailto:privacy@sellercalchub.com" class="text-primary hover:underline font-bold">privacy@sellercalchub.com</a></p>
-          <p class="text-caption font-sans text-muted mt-1">Seller Calc Hub Privacy Team · SellerCalcHub.com</p>
+        <ul class="list-disc pl-5 space-y-1.5 text-body-sm">
+          <li><strong>Right of Access (Article 15):</strong> The right to obtain confirmation as to whether your personal data is processed.</li>
+          <li><strong>Right to Rectification (Article 16):</strong> The right to rectify inaccurate personal information.</li>
+          <li><strong>Right to Erasure (Article 17):</strong> The right to request deletion of personal information.</li>
+          <li><strong>Right to Restriction of Processing (Article 18):</strong> The right to restrict certain processing activities.</li>
+          <li><strong>Right to Data Portability (Article 20):</strong> The right to receive your personal data in a machine-readable format.</li>
+          <li><strong>Right to Object (Article 21):</strong> The right to object to data processing based on legitimate interests.</li>
+        </ul>
+        <p class="text-body-sm text-body">
+          Because Seller Calc Hub does not collect or store personal profiles, email addresses, or transaction data, our platform is private by default. For any inquiries regarding GDPR data rights, please contact our Data Protection Officer at <a href="mailto:privacy@sellercalchub.com" class="text-primary hover:underline font-semibold">privacy@sellercalchub.com</a>.
+        </p>
+      </section>
+
+      <!-- Section 8 -->
+      <section class="space-y-3">
+        <h2 class="text-heading-2 font-bold text-ink">8. California Privacy Rights (CCPA / CPRA)</h2>
+        <p>
+          Under the California Consumer Privacy Act (CCPA) as amended by the California Privacy Rights Act (CPRA), California residents are entitled to notice regarding their personal information:
+        </p>
+        <ul class="list-disc pl-5 space-y-1.5 text-body-sm">
+          <li><strong>Zero Sale of Personal Information:</strong> We do not sell, rent, or trade personal data to third parties.</li>
+          <li><strong>Zero Sharing for Cross-Context Behavioral Advertising:</strong> We do not share personal data with advertisers for targeted marketing.</li>
+          <li><strong>Right to Know &amp; Delete:</strong> You have the right to request disclosure or deletion of any personal data held by us.</li>
+          <li><strong>Right to Non-Discrimination:</strong> You will never be denied equal access or pricing for exercising your privacy rights.</li>
+        </ul>
+      </section>
+
+      <!-- Section 9 -->
+      <section class="space-y-3">
+        <h2 class="text-heading-2 font-bold text-ink">9. Children’s Online Privacy Protection (COPPA)</h2>
+        <p>
+          Seller Calc Hub is a commercial calculation and business planning utility intended strictly for adult online sellers, independent business owners, and resellers aged 18 and older. We do not knowingly collect, request, or maintain information from children under the age of 13 in compliance with the Children’s Online Privacy Protection Act (COPPA).
+        </p>
+      </section>
+
+      <!-- Section 10 -->
+      <section class="space-y-4">
+        <h2 class="text-heading-2 font-bold text-ink">10. Contacting Our Privacy Team</h2>
+        <p>
+          If you have questions, feedback, or formal data protection requests regarding this Privacy Policy or our client-side architecture, please contact us:
+        </p>
+        <div class="p-5 rounded-lg border border-hairline bg-canvas font-mono text-ui-sm text-ink space-y-2">
+          <p>
+            <strong>Data Protection Team:</strong> <a href="mailto:privacy@sellercalchub.com" class="text-primary hover:underline font-bold">privacy@sellercalchub.com</a>
+          </p>
+          <p class="text-caption font-sans text-muted">
+            Seller Calc Hub Data Protection Officer · SellerCalcHub.com · Privacy Inquiries
+          </p>
         </div>
       </section>
     </div>
+
+    <!-- Navigation Footer -->
+    <section class="border-t border-hairline pt-6 flex flex-wrap items-center justify-between gap-4 text-ui-sm font-bold text-primary">
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="/terms/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+          <span>Terms of Service &amp; Fee Disclaimer</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="/about/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+          <span>About Seller Calc Hub</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <a href="/contact/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+        <span>Contact Us</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
   </div>
 </BaseLayout>

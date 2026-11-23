@@ -174,9 +174,15 @@ describe('Phase 36: Site Graph, Orphan Pages & Click Distance (dist/)', () => {
   it('reports zero orphan pages and verifies every page is within three clicks of home', () => {
     const allFiles = findHtmlFiles(DIST_DIR);
 
-    // Filter out static redirect stubs, error pages (404.html), and standalone iframe embeds
+    // Filter out static redirect stubs, error pages (404.html), dev utilities, and standalone iframe embeds
     const contentFiles = allFiles.filter((f) => {
-      if (f.endsWith('404.html') || f.includes('/404/') || f.includes('/embed/')) return false;
+      if (
+        f.endsWith('404.html') ||
+        f.includes('/404/') ||
+        f.includes('/embed/') ||
+        f.includes('/social-preview-debugger/')
+      )
+        return false;
       const content = fs.readFileSync(f, 'utf-8');
       return !content.includes('<meta http-equiv="refresh"');
     });

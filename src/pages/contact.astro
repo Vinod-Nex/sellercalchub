@@ -1,29 +1,55 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Breadcrumbs from "../components/Breadcrumbs.astro";
-import { buildBreadcrumbSchema } from "../lib/schema";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
-  { name: "Home", href: "/" },
-  { name: "Contact & Corrections" },
+  { name: 'Home', href: '/' },
+  { name: 'Contact Us' },
 ];
 
 const structuredData = [
   {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    name: "Contact Seller Calc Hub",
-    url: "https://sellercalchub.com/contact/",
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contact Seller Calc Hub: Support & Rate Corrections',
+    url: 'https://sellercalchub.com/contact/',
     description:
-      "Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback.",
+      'Contact the Seller Calc Hub editorial and engineering team: submit marketplace fee corrections, report calculation discrepancies, request new calculators, or share feedback.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Seller Calc Hub',
+      url: 'https://sellercalchub.com/',
+      logo: 'https://sellercalchub.com/favicon.svg',
+    },
   },
-  buildBreadcrumbSchema(breadcrumbs, "/contact/"),
+  buildBreadcrumbSchema(breadcrumbs, '/contact/'),
+];
+
+const inquiryTypes = [
+  { id: 'rate-correction', label: 'Marketplace Fee Correction / Policy Update' },
+  { id: 'math-discrepancy', label: 'Calculation Discrepancy / Bug Report' },
+  { id: 'new-platform', label: 'New Marketplace Calculator Request' },
+  { id: 'general-feedback', label: 'General Reseller Feedback / Suggestion' },
+  { id: 'embed-partnership', label: 'Widget Embed / Partnership Inquiry' },
+  { id: 'privacy-legal', label: 'Privacy / Legal Inquiry' },
+];
+
+const platforms = [
+  'eBay US (Managed Payments & Categories)',
+  'eBay UK (0% Private & Business VAT)',
+  'Whatnot (Livestream Commission & Smart Shipping)',
+  'TikTok Shop (Referral Fees & Subsidies)',
+  'Etsy (Transaction, Listing & Offsite Ads)',
+  'Depop (0% Selling Fees & Processing)',
+  'Twitch Bits (USD Creator Payouts)',
+  'Other / Unlisted Marketplace',
 ];
 ---
 
 <BaseLayout
-  title="Contact & Rate Correction Submissions - Seller Calc Hub"
-  description="Contact the Seller Calc Hub editorial team: submit marketplace fee corrections, report calculation discrepancies, or share feedback."
+  title="Contact Us & Rate Corrections - Seller Calc Hub"
+  description="Contact the Seller Calc Hub editorial and engineering team: submit marketplace fee corrections, report calculation discrepancies, request new calculators, or share feedback."
   canonicalPath="/contact/"
   structuredData={structuredData}
 >
@@ -38,136 +64,278 @@ const structuredData = [
       </div>
 
       <h1 class="text-display-lg md:text-display-xl font-bold tracking-tight text-ink">
-        Contact &amp; Rate Correction Submissions
+        Contact Us &amp; Rate Corrections
       </h1>
 
       <p class="text-body-lg text-body leading-relaxed">
-        Notice a recent marketplace fee change, a category reclassification, or
-        a math nuance we should refine? Our research and engineering team
-        reviews all submissions promptly.
+        Notice a recent marketplace fee adjustment, a category reclassification, or a mathematical edge case? Our research and engineering team reviews all submissions promptly. Use the direct email desks below or send a message using our inquiry form.
       </p>
     </header>
 
-    <!-- Contact Cards Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-hairline pt-8">
+    <!-- Priority Channels 4-Card Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-hairline pt-8">
       <!-- Card 1: Rate Corrections -->
-      <div class="rounded-lg border-2 border-hairline-strong bg-canvas p-6 space-y-4 shadow-sm flex flex-col justify-between">
+      <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4 shadow-xs flex flex-col justify-between">
         <div class="space-y-2.5">
-          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-xs bg-mint-50 text-primary text-micro font-bold uppercase tracking-wider">
-            High Priority
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-mint-50 dark:bg-mint-200/10 text-primary text-micro font-bold uppercase tracking-wider border border-mint-200">
+            High Priority SLA
           </div>
           <h2 class="text-heading-3 font-bold text-ink">
             Rate Updates &amp; Corrections
           </h2>
           <p class="text-body-sm text-body leading-relaxed">
-            If a platform announced a new fee schedule, updated transaction
-            percentage, or changed its fixed per-order fee, let us know. Please
-            include:
+            If a platform announced a new fee schedule, altered category percentage ladders, or changed its fixed per-order fee, let us know. Please include an official announcement link so we can verify and deploy it within 24 to 48 hours.
           </p>
-          <ul class="text-caption text-muted space-y-1.5 list-disc pl-4 leading-relaxed">
-            <li>Platform name (e.g. eBay, Etsy, Whatnot, TikTok Shop)</li>
-            <li>
-              Direct link to the official marketplace announcement or policy
-              page
-            </li>
-            <li>Effective date of the change</li>
-            <li>Category or seller tier impacted (if applicable)</li>
-          </ul>
         </div>
-
-        <div class="pt-4 border-t border-hairline">
+        <div class="pt-4 border-t border-hairline space-y-2">
           <a
             href="mailto:corrections@sellercalchub.com?subject=Marketplace%20Fee%20Correction"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <span>Email Rate Corrections</span>
+            <span>Email corrections@sellercalchub.com</span>
           </a>
-          <span class="text-micro text-muted block text-center mt-2">
-            Reviewed within 24–48 hours of verification
+          <span class="text-micro text-muted block text-center">
+            SLA: Verified &amp; updated within 24–48 hours
           </span>
         </div>
       </div>
 
-      <!-- Card 2: General Feedback & Calculator Requests -->
-      <div class="rounded-lg border border-hairline-strong bg-canvas p-6 space-y-4 shadow-sm flex flex-col justify-between">
+      <!-- Card 2: General Feedback & Requests -->
+      <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4 shadow-xs flex flex-col justify-between">
         <div class="space-y-2.5">
-          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-xs bg-canvas-soft text-muted text-micro font-bold uppercase tracking-wider">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-canvas-soft text-muted text-micro font-bold uppercase tracking-wider border border-hairline">
             General Inquiries
           </div>
           <h2 class="text-heading-3 font-bold text-ink">
-            General Feedback &amp; Suggestions
+            Feedback &amp; New Calculators
           </h2>
           <p class="text-body-sm text-body leading-relaxed">
-            Have an idea for a new calculator, feature improvement, or
-            partnership inquiry? We welcome suggestions from active online
-            resellers, creator agencies, and accounting specialists.
-          </p>
-          <p class="text-caption text-muted leading-relaxed">
-            Frequently requested future platforms: Poshmark, Mercari, Amazon
-            Seller Central (FBA/FBM), and Shopify Payments.
+            Have an idea for a new calculator, feature improvement, or partnership? We welcome suggestions from active resellers, creator agencies, and accounting specialists. Commonly requested: Poshmark, Mercari, and Amazon FBA.
           </p>
         </div>
-
-        <div class="pt-4 border-t border-hairline">
+        <div class="pt-4 border-t border-hairline space-y-2">
           <a
-            href="mailto:hello@sellercalchub.com?subject=Seller%20Calc%20Hub%20Feedback"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            href="mailto:hello@sellercalchub.com?subject=Seller%20Calc%20Hub%20Inquiry"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <span>Email General Inquiries</span>
+            <span>Email hello@sellercalchub.com</span>
           </a>
-          <span class="text-micro text-muted block text-center mt-2">
+          <span class="text-micro text-muted block text-center">
             Typically answered within 1–2 business days
           </span>
         </div>
       </div>
+
+      <!-- Card 3: Privacy & Data Protection -->
+      <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4 shadow-xs flex flex-col justify-between">
+        <div class="space-y-2.5">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-canvas-soft text-muted text-micro font-bold uppercase tracking-wider border border-hairline">
+            Compliance
+          </div>
+          <h2 class="text-heading-3 font-bold text-ink">
+            Privacy &amp; Data Rights
+          </h2>
+          <p class="text-body-sm text-body leading-relaxed">
+            Questions regarding our zero-storage client-side architecture, local storage usage, or GDPR / CCPA data rights. Our Data Protection Officer responds to all privacy inquiries promptly.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-hairline">
+          <a
+            href="mailto:privacy@sellercalchub.com?subject=Privacy%20Inquiry"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span>Email privacy@sellercalchub.com</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: Legal & Embed Partnerships -->
+      <div class="rounded-lg border border-hairline bg-canvas p-6 space-y-4 shadow-xs flex flex-col justify-between">
+        <div class="space-y-2.5">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-canvas-soft text-muted text-micro font-bold uppercase tracking-wider border border-hairline">
+            Partnerships &amp; Legal
+          </div>
+          <h2 class="text-heading-3 font-bold text-ink">
+            Legal &amp; Embed Syndication
+          </h2>
+          <p class="text-body-sm text-body leading-relaxed">
+            For terms of service clarifications, copyright matters, or inquiries regarding embedding our calculator widgets on high-traffic reseller resource sites and educational blogs.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-hairline">
+          <a
+            href="mailto:legal@sellercalchub.com?subject=Legal%20or%20Embed%20Inquiry"
+            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span>Email legal@sellercalchub.com</span>
+          </a>
+        </div>
+      </div>
     </section>
 
-    <!-- FAQ / What to Expect Section -->
+    <!-- Interactive Contact Form Container -->
+    <section class="space-y-6 border-t border-hairline pt-8">
+      <div class="space-y-2">
+        <h2 class="text-heading-2 font-bold text-ink">Send an Editorial Message</h2>
+        <p class="text-body text-body leading-relaxed">
+          Prefer to send a direct message online? Fill out the fields below. We will route your inquiry to the appropriate researcher or engineer.
+        </p>
+      </div>
+
+      <div class="rounded-lg border border-hairline bg-canvas p-6 sm:p-8 shadow-xs space-y-6">
+        <!-- Status Notification Banner -->
+        <div
+          id="contact-status-banner"
+          role="status"
+          aria-live="polite"
+          class="hidden p-4 rounded-xs text-ui-sm font-semibold border transition-all"
+        ></div>
+
+        <form id="contact-form" class="space-y-6" novalidate>
+          <!-- Spam Honeypot Field -->
+          <div class="hidden" aria-hidden="true">
+            <label for="hp-company">Leave this field blank</label>
+            <input type="text" id="hp-company" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Full Name (Optional) -->
+            <div class="space-y-1.5">
+              <label for="contact-name" class="block text-ui-label font-bold text-ink">
+                Your Name <span class="text-caption text-muted font-normal">(Optional)</span>
+              </label>
+              <input
+                type="text"
+                id="contact-name"
+                name="name"
+                class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="e.g. Alex Reseller"
+              />
+            </div>
+
+            <!-- Email Address (Required) -->
+            <div class="space-y-1.5">
+              <label for="contact-email" class="block text-ui-label font-bold text-ink">
+                Your Email Address <span class="text-error" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="contact-email"
+                name="email"
+                required
+                class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="name@example.com"
+              />
+              <span id="contact-email-error" class="hidden text-caption text-error font-medium" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Inquiry Subject Category -->
+            <div class="space-y-1.5">
+              <label for="contact-subject" class="block text-ui-label font-bold text-ink">
+                Inquiry Topic <span class="text-error" aria-hidden="true">*</span>
+              </label>
+              <select
+                id="contact-subject"
+                name="subject"
+                required
+                class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {inquiryTypes.map((item) => (
+                  <option value={item.label}>{item.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <!-- Marketplace Platform -->
+            <div class="space-y-1.5">
+              <label for="contact-platform" class="block text-ui-label font-bold text-ink">
+                Marketplace Platform
+              </label>
+              <select
+                id="contact-platform"
+                name="platform"
+                class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <option value="General / Not Platform-Specific">General / Not Platform-Specific</option>
+                {platforms.map((plat) => (
+                  <option value={plat}>{plat}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <!-- Documentation Link (Optional) -->
+          <div class="space-y-1.5">
+            <label for="contact-url" class="block text-ui-label font-bold text-ink">
+              Official Marketplace Policy URL <span class="text-caption text-muted font-normal">(Helpful for fee changes)</span>
+            </label>
+            <input
+              type="url"
+              id="contact-url"
+              name="url"
+              class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              placeholder="https://www.ebay.com/help/selling/fees-credits-invoices/..."
+            />
+          </div>
+
+          <!-- Message Details -->
+          <div class="space-y-1.5">
+            <label for="contact-message" class="block text-ui-label font-bold text-ink">
+              Message &amp; Calculation Details <span class="text-error" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="5"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xs border border-hairline-strong bg-canvas text-ink text-body-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              placeholder="Please describe the fee discrepancy, question, or feedback in detail..."
+            ></textarea>
+            <span id="contact-message-error" class="hidden text-caption text-error font-medium" role="alert"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <button
+              type="submit"
+              id="contact-submit-btn"
+              class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <span>Send Message to Team</span>
+            </button>
+            <p class="text-micro text-muted text-center sm:text-right">
+              Protected by client-side privacy · Zero data stored
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
     <section class="space-y-4 border-t border-hairline pt-8">
       <h2 class="text-heading-2 font-bold text-ink">
-        Frequently Asked Questions About Submissions
+        Frequently Asked Questions Regarding Contact &amp; Corrections
       </h2>
       <div class="space-y-3">
         <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
           <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-            <span>
-              How fast do you update rates after a marketplace changes them?
-            </span>
-            <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
-              &#9660;
-            </span>
-          </summary>
-          <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-            Once an official policy URL confirms a fee change, our engineering
-            pipeline updates the respective JSON data file and deploys the new
-            calculations site-wide within 24 to 48 hours.
-          </p>
-        </details>
-
-        <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-          <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-            <span>
-              Do you accept rate corrections without an official link?
-            </span>
-            <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">
-              &#9660;
-            </span>
-          </summary>
-          <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-            No. To prevent misinformation and maintain our strict audit
-            standard, every rate modification must be verified against official
-            primary documentation (e.g. an official marketplace help document,
-            terms amendment, or seller center announcement).
-          </p>
-        </details>
-
-        <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
-          <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
-            <span>How do you verify complex category tiers and thresholds?</span>
+            <span>How fast do you update rates after a marketplace changes them?</span>
             <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">&#9660;</span>
           </summary>
           <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-            For multi-tier fee structures such as eBay category ladders, Etsy Offsite Ads brackets, or UK business seller VAT thresholds, our analysts inspect official seller fee schedules, verify fee caps, and write programmatic unit tests covering boundary conditions before pushing updates.
+            Once an official policy URL confirms a fee change, our engineering pipeline updates the respective JSON data file, writes verification tests, and deploys the new calculations site-wide within 24 to 48 hours.
+          </p>
+        </details>
+
+        <details class="group rounded-lg border border-hairline bg-canvas p-4 transition-colors open:border-hairline-strong">
+          <summary class="flex items-center justify-between min-h-[44px] py-1 font-bold text-ink cursor-pointer list-none select-none text-body-md">
+            <span>Do you accept rate corrections without an official source link?</span>
+            <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">&#9660;</span>
+          </summary>
+          <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
+            No. To prevent rumors and maintain our strict zero-hallucination standard, every rate modification must be verified against official primary documentation (e.g. an official marketplace help document, terms amendment, or seller center announcement).
           </p>
         </details>
 
@@ -177,18 +345,130 @@ const structuredData = [
             <span class="text-muted group-open:rotate-180 transition-transform text-caption ml-2">&#9660;</span>
           </summary>
           <p class="mt-3 text-body-sm text-body leading-relaxed pt-2 border-t border-hairline">
-            Seller Calc Hub never sells, rents, or shares your contact details. Communications sent to our editorial and engineering team are retained solely for the purpose of clarifying fee submissions, resolving bug reports, or answering seller inquiries.
+            Seller Calc Hub never sells, rents, or shares your contact details. Communications sent to our editorial and engineering team are retained solely for the purpose of clarifying fee submissions, resolving bug reports, or answering reseller inquiries.
           </p>
         </details>
       </div>
     </section>
 
-    <!-- Editorial Commitment Box -->
+    <!-- Editorial Commitment Callout -->
     <section class="rounded-lg border border-hairline bg-canvas-soft p-6 space-y-3">
       <h3 class="text-heading-3 font-bold text-ink">Our Editorial &amp; Accuracy Commitment</h3>
       <p class="text-body-sm text-body leading-relaxed">
         Online resellers rely on our calculators to price inventory profitably and protect their margins against unexpected platform charges. If you detect any discrepancy—even a fractional penny rounding variance or regional tax classification—please alert us immediately. Every submission helps maintain accuracy for the entire selling community.
       </p>
     </section>
+
+    <!-- Navigation Footer -->
+    <section class="border-t border-hairline pt-6 flex flex-wrap items-center justify-between gap-4 text-ui-sm font-bold text-primary">
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="/report-fee/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+          <span>Report a Wrong Fee Tool</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="/methodology/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+          <span>Fee Methodology &amp; Sources</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <a href="/about/" class="hover:underline min-h-[44px] inline-flex items-center gap-1.5">
+        <span>About Seller Calc Hub</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
   </div>
 </BaseLayout>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const banner = document.getElementById('contact-status-banner');
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement | null;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+    const emailError = document.getElementById('contact-email-error');
+    const messageError = document.getElementById('contact-message-error');
+    const honeypot = document.getElementById('hp-company') as HTMLInputElement | null;
+
+    if (!form || !banner) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Reset errors
+      if (emailError) emailError.classList.add('hidden');
+      if (messageError) messageError.classList.add('hidden');
+      banner.classList.add('hidden');
+
+      // Honeypot check
+      if (honeypot && honeypot.value.trim().length > 0) {
+        return; // Silent discard bot submission
+      }
+
+      const email = emailInput?.value.trim() || '';
+      const message = messageInput?.value.trim() || '';
+      const subject = (document.getElementById('contact-subject') as HTMLSelectElement)?.value || 'General Feedback';
+      const platform = (document.getElementById('contact-platform') as HTMLSelectElement)?.value || 'General';
+      const url = (document.getElementById('contact-url') as HTMLInputElement)?.value.trim() || '';
+      const name = (document.getElementById('contact-name') as HTMLInputElement)?.value.trim() || '';
+
+      let hasError = false;
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        if (emailError) {
+          emailError.textContent = 'Please enter a valid email address.';
+          emailError.classList.remove('hidden');
+        }
+        emailInput?.focus();
+        hasError = true;
+      }
+
+      if (!message || message.length < 10) {
+        if (messageError) {
+          messageError.textContent = 'Please enter a message of at least 10 characters.';
+          messageError.classList.remove('hidden');
+        }
+        if (!hasError) messageInput?.focus();
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Construct mailto link as zero-backend delivery fallback
+      const targetEmail = subject.includes('Fee Correction') ? 'corrections@sellercalchub.com' : 'hello@sellercalchub.com';
+      const emailSubject = encodeURIComponent(`[Seller Calc Hub] ${subject} - ${platform}`);
+      const emailBody = encodeURIComponent(
+        `Name: ${name || 'Anonymous Reseller'}\n` +
+        `Contact Email: ${email}\n` +
+        `Inquiry Subject: ${subject}\n` +
+        `Marketplace: ${platform}\n` +
+        `Policy Link: ${url || 'N/A'}\n\n` +
+        `Message:\n${message}\n`
+      );
+
+      // Display success message
+      banner.className = 'p-4 rounded-xs text-ui-sm font-semibold border bg-mint-50 dark:bg-mint-200/10 border-mint-200 text-primary block';
+      banner.innerHTML = `
+        <div class="space-y-1">
+          <p class="font-bold">Thank you for your submission!</p>
+          <p class="text-body-sm font-normal text-ink">
+            Your message has been prepared for our editorial desk. If your email client does not open automatically, you can email us directly at
+            <a href="mailto:${targetEmail}" class="underline font-bold text-primary">${targetEmail}</a>.
+          </p>
+        </div>
+      `;
+
+      // Trigger mailto intent
+      const mailtoUrl = `mailto:${targetEmail}?subject=${emailSubject}&body=${emailBody}`;
+      window.location.href = mailtoUrl;
+
+      form.reset();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupContactForm);
+  } else {
+    setupContactForm();
+  }
+</script>
