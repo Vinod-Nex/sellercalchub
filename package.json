@@ -30,7 +30,9 @@
     "verify:launch": "tsx scripts/verify-launch-week.ts",
     "mock:fee-change": "tsx scripts/mock-fee-change.ts",
     "lhci": "lhci autorun",
-    "audit:perf": "lhci autorun"
+    "audit:perf": "lhci autorun",
+    "deploy": "npm run build:prod && wrangler pages deploy dist --project-name=sellercalchub --commit-dirty=true",
+    "deploy:pages": "wrangler pages deploy dist --project-name=sellercalchub"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",
@@ -51,6 +53,7 @@
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.73.0",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.1",
+    "wrangler": "^4.166.0"
   }
 }
