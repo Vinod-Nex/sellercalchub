@@ -104,7 +104,7 @@ function getUrlLastmod(url) {
 export default defineConfig({
   output: "static",
   site: "https://sellercalchub.com",
-  trailingSlash: "always",
+  trailingSlash: "ignore",
   redirects: {
     "/twitch-bits-calculator/": "/twitch-bits-to-usd/",
     "/ebay-uk-fee-calculator/": "/ebay-fee-calculator-uk/",
