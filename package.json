@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "tsx scripts/generate-og-images.ts && tsx scripts/lint-seo.ts && astro build && tsx scripts/check-thin-content.ts",
     "build:prod": "tsx scripts/generate-og-images.ts && tsx scripts/lint-seo.ts && STRICT_PROD=true astro build && tsx scripts/check-thin-content.ts",
     "generate:og": "tsx scripts/generate-og-images.ts",
     "lint:seo": "tsx scripts/lint-seo.ts",
