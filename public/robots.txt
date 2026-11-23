@@ -1,16 +1,25 @@
+# Seller Calc Hub - Robots Exclusion Protocol (robots.txt)
+# Official documentation: https://sellercalchub.com/
+# Sitemaps and AI Agent discovery references
+
 User-agent: *
 Allow: /
 
-# Disallow non-indexable utility, dev demo, and error routes
+# Disallow internal developer utilities, non-indexable test demos, and widget iframes
 Disallow: /inputs-demo/
 Disallow: /design-tokens/
+Disallow: /social-preview-debugger/
+Disallow: /embed/
+
+# Disallow static error pages
 Disallow: /404/
 Disallow: /404.html
+Disallow: /500/
+Disallow: /500.html
 
-# Sitemaps
+# XML Sitemaps (Compliant with Astro @astrojs/sitemap)
 Sitemap: https://sellercalchub.com/sitemap-index.xml
 Sitemap: https://sellercalchub.com/sitemap.xml
 
 # LLM & AI Agents Index
 # Clean, factual plain-text reference available at /llms.txt
-

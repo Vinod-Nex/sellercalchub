@@ -42,7 +42,7 @@ describe('Phase 38: Technical SEO Audit & Critical Check', () => {
 
     for (const f of contentFiles) {
       const relPath = f.replace(DIST_DIR, '');
-      const is404 = relPath.includes('404');
+      const isErrorPage = relPath.includes('404') || relPath.includes('500');
       const html = fs.readFileSync(f, 'utf-8');
 
       // 1. Viewport tag
@@ -71,7 +71,7 @@ describe('Phase 38: Technical SEO Audit & Critical Check', () => {
       }
 
       // 5. Canonical tag on indexable pages
-      if (!is404) {
+      if (!isErrorPage) {
         const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
         if (!canonicalMatch) {
           criticalViolations.push(`${relPath}: missing canonical tag`);
@@ -89,8 +89,8 @@ describe('Phase 38: Technical SEO Audit & Critical Check', () => {
       const robotsMatch = html.match(/<meta[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i);
       if (!robotsMatch) {
         criticalViolations.push(`${relPath}: missing meta robots tag`);
-      } else if (is404 && robotsMatch[1] !== 'noindex, nofollow') {
-        criticalViolations.push(`${relPath}: 404 page must be noindex, nofollow`);
+      } else if (isErrorPage && robotsMatch[1] !== 'noindex, nofollow') {
+        criticalViolations.push(`${relPath}: error page must be noindex, nofollow`);
       }
 
       // 7. Images without alt attribute

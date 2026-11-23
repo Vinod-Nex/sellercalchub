@@ -47,10 +47,13 @@ describe('Phase 37: Robots.txt Configuration', () => {
     expect(content).toContain('Sitemap: https://sellercalchub.com/sitemap-index.xml');
     expect(content).toContain('Sitemap: https://sellercalchub.com/sitemap.xml');
 
-    // Disallows error and internal dev routes
+    // Disallows error, iframe embeds, and internal dev routes
     expect(content).toContain('Disallow: /inputs-demo/');
     expect(content).toContain('Disallow: /design-tokens/');
+    expect(content).toContain('Disallow: /social-preview-debugger/');
+    expect(content).toContain('Disallow: /embed/');
     expect(content).toContain('Disallow: /404/');
+    expect(content).toContain('Disallow: /500/');
   });
 });
 
@@ -74,8 +77,11 @@ describe('Phase 37: Sitemap Configuration & Real lastmod Dates', () => {
       expect(item.loc.includes('?')).toBe(false);
       expect(item.loc.includes('#')).toBe(false);
 
-      // Must not contain 404, demo, or redirect URLs
+      // Must not contain error, demo, iframe embed, or redirect URLs
       expect(item.loc).not.toContain('404');
+      expect(item.loc).not.toContain('500');
+      expect(item.loc).not.toContain('/embed/');
+      expect(item.loc).not.toContain('social-preview-debugger');
       expect(item.loc).not.toContain('inputs-demo');
       expect(item.loc).not.toContain('design-tokens');
       expect(item.loc).not.toContain('ebay-uk-fee-calculator'); // Redirect alias
@@ -87,6 +93,21 @@ describe('Phase 37: Sitemap Configuration & Real lastmod Dates', () => {
     for (const page of seoPagesData.pages) {
       const canonical = `https://sellercalchub.com${page.url}`;
       expect(locUrls, `Sitemap must contain canonical URL for ${page.url}`).toContain(canonical);
+    }
+
+    // Must contain all core trust and policy pages
+    const trustPages = [
+      'https://sellercalchub.com/about/',
+      'https://sellercalchub.com/contact/',
+      'https://sellercalchub.com/privacy/',
+      'https://sellercalchub.com/terms/',
+      'https://sellercalchub.com/disclaimer/',
+      'https://sellercalchub.com/methodology/',
+      'https://sellercalchub.com/fee-changes/',
+      'https://sellercalchub.com/report-fee/',
+    ];
+    for (const tp of trustPages) {
+      expect(locUrls, `Sitemap must contain ${tp}`).toContain(tp);
     }
   });
 
@@ -137,9 +158,16 @@ describe('Phase 37: Self-Referencing Canonicals & Robots Directives', () => {
   it('every indexable page has a self-referencing canonical URL', () => {
     const allFiles = findHtmlFiles(DIST_DIR);
 
-    // Filter out redirect stubs, 404 page, and standalone iframe widgets
+    // Filter out redirect stubs, error pages (404, 500), and standalone iframe widgets
     const indexableFiles = allFiles.filter((f) => {
-      if (f.endsWith('404.html') || f.includes('/404/') || f.includes('/embed/')) return false;
+      if (
+        f.endsWith('404.html') ||
+        f.includes('/404/') ||
+        f.endsWith('500.html') ||
+        f.includes('/500/') ||
+        f.includes('/embed/')
+      )
+        return false;
       const content = fs.readFileSync(f, 'utf-8');
       return !content.includes('<meta http-equiv="refresh"');
     });
@@ -177,6 +205,21 @@ describe('Phase 37: Self-Referencing Canonicals & Robots Directives', () => {
     // Contains friendly recovery navigation
     expect(html).toContain('href="/marketplace-fee-calculators/"');
     expect(html).toContain('href="/"');
+  });
+
+  it('500 error page has noindex, nofollow directives and proper static 500 output', () => {
+    const errorPagePath = path.join(DIST_DIR, '500.html');
+    expect(fs.existsSync(errorPagePath), 'dist/500.html must exist').toBe(true);
+
+    const html = fs.readFileSync(errorPagePath, 'utf-8');
+    const robotsMatch = html.match(/<meta[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i);
+    expect(robotsMatch, '500 page must have robots tag').not.toBeNull();
+    expect(robotsMatch![1]).toBe('noindex, nofollow');
+
+    // Contains friendly recovery navigation
+    expect(html).toContain('href="/marketplace-fee-calculators/"');
+    expect(html).toContain('href="/"');
+    expect(html).toContain('id="reload-page-btn"');
   });
 
   it('query-parameter states have client-side and server-side noindex handling', () => {
