@@ -55,6 +55,7 @@ export function extractPageContent(html: string, filePath: string, distDir: stri
   rawBody = rawBody.replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, ' ');
   rawBody = rawBody.replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, ' ');
   rawBody = rawBody.replace(/<div[^>]*id=["']consent-banner["'][^>]*>[\s\S]*?<\/div>/gi, ' ');
+  rawBody = rawBody.replace(/<(?:div|aside)[^>]*id=["']privacy-notice["'][\s\S]*?<\/(?:div|aside)>/gi, ' ');
 
   // Strip tags and decode entities
   const text = rawBody
