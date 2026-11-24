@@ -53,7 +53,9 @@ describe('Error Pages: 404 (Not Found) & 500 (Server Error)', () => {
     expect(content).toContain('window.location.reload()');
     expect(content).toContain('href="/"');
     expect(content).toContain('href="/marketplace-fee-calculators/"');
-    expect(content).toContain('mailto:hello@sellercalchub.com?subject=HTTP%20500%20Error%20Report');
+    expect(content).toContain('info@sellercalchub.com');
+    expect(content).toContain('EmailAction');
+    expect(content).not.toContain('hello@sellercalchub.com');
   });
 
   it('verifies astro.config.mjs excludes 404 and 500 from sitemap', () => {

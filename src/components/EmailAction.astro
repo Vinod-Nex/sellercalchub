@@ -1,0 +1,165 @@
+---
+/**
+ * Reusable Email Action Component
+ * - Redirects email clicks directly to Gmail compose (`mail.google.com`) pre-addressed to info@sellercalchub.com
+ * - Provides a compact, accessible Copy Email button with instant visual confirmation
+ */
+export interface Props {
+  email?: string;
+  subject?: string;
+  body?: string;
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'inline';
+  class?: string;
+}
+
+const {
+  email = 'info@sellercalchub.com',
+  subject = '',
+  body = '',
+  label = `Email ${email}`,
+  variant = 'secondary',
+  class: className = '',
+} = Astro.props;
+
+const params = new URLSearchParams({
+  view: 'cm',
+  fs: '1',
+  to: email,
+});
+if (subject) params.set('su', subject);
+if (body) params.set('body', body);
+
+const gmailHref = `https://mail.google.com/mail/?${params.toString()}`;
+---
+
+{
+  variant === 'inline' ? (
+    <span class={`inline-flex flex-wrap items-center gap-2 align-baseline ${className}`}>
+      <a
+        href={gmailHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-primary hover:underline font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xxs"
+        title={`Open Gmail to compose a message to ${email}`}
+      >
+        {email}
+      </a>
+      <button
+        type="button"
+        data-copy-email={email}
+        class="inline-flex items-center gap-1 px-2 py-0.5 min-h-[28px] rounded-xs border border-hairline-strong bg-canvas-soft hover:border-primary hover:text-primary text-ink font-sans text-micro font-semibold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label={`Copy ${email} to clipboard`}
+        title={`Copy ${email}`}
+      >
+        <svg class="w-3.5 h-3.5 copy-icon-default shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        <svg class="w-3.5 h-3.5 copy-icon-success hidden text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="copy-label">Copy</span>
+      </button>
+    </span>
+  ) : (
+    <div class={`flex items-stretch gap-2 w-full ${className}`}>
+      <a
+        href={gmailHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary text-center ${
+          variant === 'primary'
+            ? 'bg-forest hover:bg-primary-deep text-white'
+            : 'bg-canvas border border-hairline-strong hover:border-primary text-ink'
+        }`}
+        title={`Open Gmail to compose a message to ${email}`}
+      >
+        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        <span class="truncate">{label}</span>
+      </a>
+      <button
+        type="button"
+        data-copy-email={email}
+        class="shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-xs border border-hairline-strong bg-canvas-soft hover:border-primary hover:text-primary text-ink font-bold text-caption transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label={`Copy ${email} to clipboard`}
+        title={`Copy ${email}`}
+      >
+        <svg class="w-4 h-4 copy-icon-default shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        <svg class="w-4 h-4 copy-icon-success hidden text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="copy-label">Copy</span>
+      </button>
+    </div>
+  )
+}
+
+<script>
+  function initEmailCopyButtons() {
+    if ((window as unknown as { __emailCopyInit?: boolean }).__emailCopyInit) return;
+    (window as unknown as { __emailCopyInit?: boolean }).__emailCopyInit = true;
+
+    document.addEventListener('click', async (event) => {
+      const target = event.target as HTMLElement | null;
+      const btn = target?.closest<HTMLButtonElement>('[data-copy-email]');
+      if (!btn) return;
+
+      const email = btn.getAttribute('data-copy-email');
+      if (!email) return;
+
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(email);
+          copied = true;
+        }
+      } catch {
+        // Fallback below
+      }
+
+      if (!copied) {
+        try {
+          const textarea = document.createElement('textarea');
+          textarea.value = email;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          copied = document.execCommand('copy');
+          document.body.removeChild(textarea);
+        } catch {
+          copied = false;
+        }
+      }
+
+      if (copied) {
+        const label = btn.querySelector('.copy-label');
+        const defaultIcon = btn.querySelector('.copy-icon-default');
+        const successIcon = btn.querySelector('.copy-icon-success');
+
+        if (label) label.textContent = 'Copied!';
+        defaultIcon?.classList.add('hidden');
+        successIcon?.classList.remove('hidden');
+        btn.classList.add('border-primary', 'text-primary');
+
+        window.setTimeout(() => {
+          if (label) label.textContent = 'Copy';
+          defaultIcon?.classList.remove('hidden');
+          successIcon?.classList.add('hidden');
+          btn.classList.remove('border-primary', 'text-primary');
+        }, 2000);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEmailCopyButtons, { once: true });
+  } else {
+    initEmailCopyButtons();
+  }
+</script>

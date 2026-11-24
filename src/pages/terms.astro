@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import FeeDisclaimer from '../components/FeeDisclaimer.astro';
+import EmailAction from '../components/EmailAction.astro';
 import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
@@ -200,8 +201,8 @@ const structuredData = [
           For legal inquiries, copyright notices, or questions regarding these Terms of Service, please contact our administrative team:
         </p>
         <div class="p-5 rounded-lg border border-hairline bg-canvas font-mono text-ui-sm text-ink space-y-2">
-          <p>
-            <strong>Legal Department:</strong> <a href="mailto:legal@sellercalchub.com" class="text-primary hover:underline font-bold">legal@sellercalchub.com</a>
+          <p class="flex flex-wrap items-center gap-2">
+            <strong>Legal Department:</strong> <EmailAction variant="inline" email="info@sellercalchub.com" subject="Legal & Terms Inquiry" />
           </p>
           <p class="text-caption font-sans text-muted">
             Seller Calc Hub Legal Affairs · SellerCalcHub.com · Independent Reseller Utility

@@ -40,7 +40,8 @@ describe('Trust & Compliance Pages: Privacy, About, Terms, Contact & Disclaimer'
     expect(content).toContain('GDPR');
     expect(content).toContain('CCPA / CPRA');
     expect(content).toContain('COPPA');
-    expect(content).toContain('privacy@sellercalchub.com');
+    expect(content).toContain('info@sellercalchub.com');
+    expect(content).not.toContain('privacy@sellercalchub.com');
 
     // Schema
     expect(content).toContain('@type\': \'WebPage');
@@ -79,7 +80,8 @@ describe('Trust & Compliance Pages: Privacy, About, Terms, Contact & Disclaimer'
     expect(content).toContain('Marketplace Trademark &amp; Non-Affiliation Disclaimer');
     expect(content).toContain('Embeddable Calculator Widgets Terms of Use');
     expect(content).toContain('Limitation of Liability');
-    expect(content).toContain('legal@sellercalchub.com');
+    expect(content).toContain('info@sellercalchub.com');
+    expect(content).not.toContain('legal@sellercalchub.com');
 
     // Explicit platforms listed
     expect(content).toContain('eBay Inc.');
@@ -95,11 +97,18 @@ describe('Trust & Compliance Pages: Privacy, About, Terms, Contact & Disclaimer'
     expect(content).toContain('canonicalPath="/contact/"');
     expect(content).toContain('@type\': \'ContactPage');
 
-    // Desks
-    expect(content).toContain('corrections@sellercalchub.com');
-    expect(content).toContain('hello@sellercalchub.com');
-    expect(content).toContain('privacy@sellercalchub.com');
-    expect(content).toContain('legal@sellercalchub.com');
+    // Unified Contact Email & Gmail / Copy support
+    expect(content).toContain('info@sellercalchub.com');
+    expect(content).toContain('EmailAction');
+    expect(content).not.toContain('corrections@sellercalchub.com');
+    expect(content).not.toContain('hello@sellercalchub.com');
+    expect(content).not.toContain('privacy@sellercalchub.com');
+    expect(content).not.toContain('legal@sellercalchub.com');
+
+    // EmailAction component verifies Gmail direct link and clipboard copy
+    const emailActionContent = fs.readFileSync(path.join(rootDir, 'src/components/EmailAction.astro'), 'utf8');
+    expect(emailActionContent).toContain('https://mail.google.com/mail/');
+    expect(emailActionContent).toContain('data-copy-email');
 
     // SLA
     expect(content).toContain('24–48 hours');

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import EmailAction from '../components/EmailAction.astro';
 import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
@@ -186,7 +187,7 @@ const localStorageKeys = [
           <li><strong>Right to Object (Article 21):</strong> The right to object to data processing based on legitimate interests.</li>
         </ul>
         <p class="text-body-sm text-body">
-          Because Seller Calc Hub does not collect or store personal profiles, email addresses, or transaction data, our platform is private by default. For any inquiries regarding GDPR data rights, please contact our Data Protection Officer at <a href="mailto:privacy@sellercalchub.com" class="text-primary hover:underline font-semibold">privacy@sellercalchub.com</a>.
+          Because Seller Calc Hub does not collect or store personal profiles, email addresses, or transaction data, our platform is private by default. For any inquiries regarding GDPR data rights, please contact our Data Protection Officer at <EmailAction variant="inline" email="info@sellercalchub.com" subject="GDPR & Data Rights Inquiry" />.
         </p>
       </section>
 
@@ -219,8 +220,8 @@ const localStorageKeys = [
           If you have questions, feedback, or formal data protection requests regarding this Privacy Policy or our client-side architecture, please contact us:
         </p>
         <div class="p-5 rounded-lg border border-hairline bg-canvas font-mono text-ui-sm text-ink space-y-2">
-          <p>
-            <strong>Data Protection Team:</strong> <a href="mailto:privacy@sellercalchub.com" class="text-primary hover:underline font-bold">privacy@sellercalchub.com</a>
+          <p class="flex flex-wrap items-center gap-2">
+            <strong>Data Protection Team:</strong> <EmailAction variant="inline" email="info@sellercalchub.com" subject="Privacy Policy Inquiry" />
           </p>
           <p class="text-caption font-sans text-muted">
             Seller Calc Hub Data Protection Officer · SellerCalcHub.com · Privacy Inquiries

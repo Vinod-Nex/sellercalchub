@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import EmailAction from '../components/EmailAction.astro';
 import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
@@ -199,12 +200,13 @@ const popularCalculators = [
         </p>
       </div>
       <div class="flex flex-wrap items-center gap-3">
-        <a
-          href="mailto:hello@sellercalchub.com?subject=HTTP%20500%20Error%20Report"
-          class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 min-h-[44px] rounded-xs border border-hairline-strong bg-canvas text-ink font-bold text-caption hover:border-primary transition-colors"
-        >
-          <span>Email Engineering Desk</span>
-        </a>
+        <EmailAction
+          email="info@sellercalchub.com"
+          subject="HTTP 500 Error Report"
+          label="Email Engineering Desk"
+          variant="secondary"
+          class="sm:w-auto"
+        />
         <a
           href="/contact/"
           class="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 min-h-[44px] rounded-xs bg-forest hover:bg-primary-deep text-white font-bold text-caption transition-colors"

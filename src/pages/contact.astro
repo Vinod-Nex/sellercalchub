@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import EmailAction from '../components/EmailAction.astro';
 import { buildBreadcrumbSchema } from '../lib/schema';
 
 const breadcrumbs = [
@@ -88,12 +89,12 @@ const platforms = [
           </p>
         </div>
         <div class="pt-4 border-t border-hairline space-y-2">
-          <a
-            href="mailto:corrections@sellercalchub.com?subject=Marketplace%20Fee%20Correction"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-forest hover:bg-primary-deep text-white font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span>Email corrections@sellercalchub.com</span>
-          </a>
+          <EmailAction
+            email="info@sellercalchub.com"
+            subject="Marketplace Fee Correction"
+            label="Email info@sellercalchub.com"
+            variant="primary"
+          />
           <span class="text-micro text-muted block text-center">
             SLA: Verified &amp; updated within 24–48 hours
           </span>
@@ -114,12 +115,12 @@ const platforms = [
           </p>
         </div>
         <div class="pt-4 border-t border-hairline space-y-2">
-          <a
-            href="mailto:hello@sellercalchub.com?subject=Seller%20Calc%20Hub%20Inquiry"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span>Email hello@sellercalchub.com</span>
-          </a>
+          <EmailAction
+            email="info@sellercalchub.com"
+            subject="Seller Calc Hub Inquiry"
+            label="Email info@sellercalchub.com"
+            variant="secondary"
+          />
           <span class="text-micro text-muted block text-center">
             Typically answered within 1–2 business days
           </span>
@@ -140,12 +141,12 @@ const platforms = [
           </p>
         </div>
         <div class="pt-4 border-t border-hairline">
-          <a
-            href="mailto:privacy@sellercalchub.com?subject=Privacy%20Inquiry"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span>Email privacy@sellercalchub.com</span>
-          </a>
+          <EmailAction
+            email="info@sellercalchub.com"
+            subject="Privacy Inquiry"
+            label="Email info@sellercalchub.com"
+            variant="secondary"
+          />
         </div>
       </div>
 
@@ -163,12 +164,12 @@ const platforms = [
           </p>
         </div>
         <div class="pt-4 border-t border-hairline">
-          <a
-            href="mailto:legal@sellercalchub.com?subject=Legal%20or%20Embed%20Inquiry"
-            class="inline-flex items-center justify-center w-full px-4 py-2.5 min-h-[44px] bg-canvas border border-hairline-strong hover:border-primary text-ink font-bold text-ui-label rounded-xs transition-colors shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <span>Email legal@sellercalchub.com</span>
-          </a>
+          <EmailAction
+            email="info@sellercalchub.com"
+            subject="Legal or Embed Inquiry"
+            label="Email info@sellercalchub.com"
+            variant="secondary"
+          />
         </div>
       </div>
     </section>
@@ -188,8 +189,30 @@ const platforms = [
           id="contact-status-banner"
           role="status"
           aria-live="polite"
-          class="hidden p-4 rounded-xs text-ui-sm font-semibold border transition-all"
-        ></div>
+          class="hidden p-4 rounded-xs text-ui-sm font-semibold border bg-mint-50 dark:bg-mint-200/10 border-mint-200 text-primary transition-all"
+        >
+          <div class="space-y-2">
+            <p class="font-bold">Thank you for your submission!</p>
+            <p class="text-body-sm font-normal text-ink">
+              Your message has been prepared for our editorial desk in Gmail. If a new tab did not open automatically, click
+              <a
+                id="contact-gmail-link"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=info%40sellercalchub.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline font-bold text-primary"
+              >Open in Gmail (info@sellercalchub.com)</a>
+              or
+              <button
+                type="button"
+                data-copy-email="info@sellercalchub.com"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border border-hairline-strong bg-canvas text-ink font-semibold text-micro hover:border-primary cursor-pointer ml-1"
+              >
+                <span class="copy-label">Copy Email</span>
+              </button>.
+            </p>
+          </div>
+        </div>
 
         <form id="contact-form" class="space-y-6" novalidate>
           <!-- Spam Honeypot Field -->
@@ -434,8 +457,8 @@ const platforms = [
 
       if (hasError) return;
 
-      // Construct mailto link as zero-backend delivery fallback
-      const targetEmail = subject.includes('Fee Correction') ? 'corrections@sellercalchub.com' : 'hello@sellercalchub.com';
+      // Construct direct Gmail compose URL as zero-backend delivery
+      const targetEmail = 'info@sellercalchub.com';
       const emailSubject = encodeURIComponent(`[Seller Calc Hub] ${subject} - ${platform}`);
       const emailBody = encodeURIComponent(
         `Name: ${name || 'Anonymous Reseller'}\n` +
@@ -445,22 +468,17 @@ const platforms = [
         `Policy Link: ${url || 'N/A'}\n\n` +
         `Message:\n${message}\n`
       );
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${emailSubject}&body=${emailBody}`;
 
-      // Display success message
-      banner.className = 'p-4 rounded-xs text-ui-sm font-semibold border bg-mint-50 dark:bg-mint-200/10 border-mint-200 text-primary block';
-      banner.innerHTML = `
-        <div class="space-y-1">
-          <p class="font-bold">Thank you for your submission!</p>
-          <p class="text-body-sm font-normal text-ink">
-            Your message has been prepared for our editorial desk. If your email client does not open automatically, you can email us directly at
-            <a href="mailto:${targetEmail}" class="underline font-bold text-primary">${targetEmail}</a>.
-          </p>
-        </div>
-      `;
+      // Update direct Gmail link & show confirmation banner
+      const gmailLink = document.getElementById('contact-gmail-link') as HTMLAnchorElement | null;
+      if (gmailLink) {
+        gmailLink.href = gmailUrl;
+      }
+      banner.classList.remove('hidden');
 
-      // Trigger mailto intent
-      const mailtoUrl = `mailto:${targetEmail}?subject=${emailSubject}&body=${emailBody}`;
-      window.location.href = mailtoUrl;
+      // Redirect / Open Gmail compose window
+      window.open(gmailUrl, '_blank', 'noopener,noreferrer');
 
       form.reset();
     });
