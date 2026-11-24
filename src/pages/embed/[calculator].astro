@@ -1,5 +1,6 @@
 ---
 import CalculatorIsland from '../../components/CalculatorIsland.astro';
+import GoogleTag from '../../components/GoogleTag.astro';
 import type { PlatformId } from '../../lib/calc';
 import '../../styles/global.css';
 
@@ -68,6 +69,7 @@ const { platform, name, parentUrl } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
+    <GoogleTag />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{name} Widget - Seller Calc Hub</title>
