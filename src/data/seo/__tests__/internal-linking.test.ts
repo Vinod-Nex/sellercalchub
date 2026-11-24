@@ -182,7 +182,8 @@ describe('Phase 36: Site Graph, Orphan Pages & Click Distance (dist/)', () => {
         f.endsWith('500.html') ||
         f.includes('/500/') ||
         f.includes('/embed/') ||
-        f.includes('/social-preview-debugger/')
+        f.includes('/social-preview-debugger/') ||
+        f.includes('/inputs-demo/')
       )
         return false;
       const content = fs.readFileSync(f, 'utf-8');
