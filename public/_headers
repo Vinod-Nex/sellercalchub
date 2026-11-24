@@ -25,3 +25,10 @@
 
 /sitemap-0.xml
   Cache-Control: public, max-age=3600, must-revalidate
+
+https://sellercalchub.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+https://*.sellercalchub.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
